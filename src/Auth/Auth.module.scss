@@ -28,26 +28,11 @@
 	font-weight: 300;
 }
 
-@keyframes slideLeft {
+@keyframes fade {
 	0% {
-		transform: translateX(0);
 		opacity: 1;
 	}
 	100% {
-		transform: translateX(-50rem);
-		visibility: hidden;
-		opacity: 0;
-	}
-}
-
-@keyframes slideRight {
-	0% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-	100% {
-		transform: translateX(50rem);
-		visibility: hidden;
 		opacity: 0;
 	}
 }

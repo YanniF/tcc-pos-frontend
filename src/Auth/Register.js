@@ -10,13 +10,13 @@ function Register(props) {
 	};
 
 	return (
-		<div className={classes.form}>
-			<div style={{ animation: `${props.showLogin ? classes.slideLeft : classes.slideRight} .6s ease-in-out reverse` }}>
+		<form className={classes.form}>
+			<div style={{ animation: `${props.showRegister && classes.fade} .5s reverse` }}>
 				<h2 className={classes.title}>Criar Conta</h2>
 				<Button title="Criar Conta" onClick={handleRegister} styles={{ minWidth: '22rem' }} />
 				<Button title="Acessar Sistema" type="highlight" onClick={props.changeForm} styles={{ minWidth: '22rem' }} />
 			</div>
-		</div>
+		</form>
 	);
 }
 

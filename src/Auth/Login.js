@@ -9,21 +9,21 @@ function Login(props) {
 	const handleLogin = () => {
 		console.log('login');
 	};
-	console.log(props.showLogin);
+
 	return (
-		<div className={classes.form}>
-			<div style={{ animation: `${props.showLogin ? classes.slideLeft : classes.slideRight} .6s ease-in-out reverse` }}>
+		<form className={classes.form}>
+			<div style={{ animation: `${props.showLogin && classes.fade} .5s reverse` }}>
 				<h2 className={classes.title}>Bem-vindo(a)</h2>
 				<div style={{ marginBottom: '30px' }}>
-					<Input type="email" name="email" label="E-mail" />
-					<Input type="password" name="senha" label="Senha" />
+					<Input type="email" name="email" label="E-mail" required />
+					<Input type="password" name="senha" label="Senha" required />
 				</div>
 				<div>
 					<Button title="Acessar Sistema" onClick={handleLogin} styles={{ minWidth: '22rem' }} />
 					<Button title="Criar Conta" type="highlight" onClick={props.changeForm} styles={{ minWidth: '22rem' }} />
 				</div>
 			</div>
-		</div>
+		</form>
 	);
 }
 

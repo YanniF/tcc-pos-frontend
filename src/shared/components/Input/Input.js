@@ -12,6 +12,7 @@ function Input(props) {
 				className={classes.input}
 				placeholder={props.label}
 				onChange={props.onChange}
+				required={props.required}
 			/>
 			<label htmlFor={props.name} className={classes.label}>
 				{props.label}
@@ -25,6 +26,7 @@ Input.propTypes = {
 	name: PropTypes.string,
 	value: PropTypes.string,
 	label: PropTypes.string,
+	required: PropTypes.bool,
 };
 
 export default Input;

@@ -19,7 +19,7 @@ function Auth() {
 				{showLogin ? (
 					<Login showLogin={showLogin} changeForm={() => setShowLogin(false)} />
 				) : (
-					<Register showLogin={showLogin} changeForm={() => setShowLogin(true)} />
+					<Register showRegister={!showLogin} changeForm={() => setShowLogin(true)} />
 				)}
 			</div>
 		</div>
