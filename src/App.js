@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Auth from './Auth/Auth';
-import Courses from './Employee/Courses';
+import Courses from './Courses/Courses';
 import './App.css';
 
 function App(props) {

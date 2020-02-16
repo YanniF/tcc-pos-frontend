@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import classes from './Input.module.scss';
 
 function Input(props) {
+	const [ showPassword, setShowPassword ] = useState(false);
+	const [ inputType, setInputType ] = useState(props.type);
+
+	const handleShowPassword = () => {
+		showPassword ? setInputType('password') : setInputType('text');
+		setShowPassword(!showPassword);
+	};
+
 	return (
-		<div>
+		<div className={classes.group}>
 			<input
-				type={props.type || 'text'}
+				type={inputType}
 				name={props.name}
 				className={classes.input}
 				placeholder={props.label}
@@ -17,6 +25,11 @@ function Input(props) {
 			<label htmlFor={props.name} className={classes.label}>
 				{props.label}
 			</label>
+			{props.type === 'password' && (
+				<span className={classes.showPassword} onClick={handleShowPassword}>
+					{showPassword ? 'Esconder' : 'Mostrar'}
+				</span>
+			)}
 		</div>
 	);
 }

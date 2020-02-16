@@ -18,7 +18,8 @@ function Register(props) {
 			<div className={props.showRegister && classes.fade}>
 				<h2 className={classes.title}>Criar Conta</h2>
 				<div>
-					<Input type="name" name="name" label="Nome" required />
+					<Input type="text" name="firstname" label="Nome" required />
+					<Input type="text" name="lastname" label="Sobrenome" required />
 					<Input type="email" name="email" label="E-mail" required />
 					<Input type="password" name="password" label="Senha" required />
 					<span style={{ display: 'block' }}>Você é:</span>
