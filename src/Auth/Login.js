@@ -10,7 +10,7 @@ function Login(props) {
 	const [ rememberMe, setRememberMe ] = useState(true);
 
 	const handleLogin = () => {
-		console.log('login');
+		props.authStart();
 	};
 
 	return (
@@ -28,8 +28,19 @@ function Login(props) {
 					/>
 				</div>
 				<div className={classes.buttons}>
-					<Button title="Acessar Sistema" onClick={handleLogin} styles={{ minWidth: '22rem' }} />
-					<Button title="Criar Conta" type="highlight" onClick={props.changeForm} styles={{ minWidth: '22rem' }} />
+					<Button
+						title={'Acessar Sistema'}
+						onClick={handleLogin}
+						styles={{ minWidth: '22rem' }}
+						loading={props.loading}
+					/>
+					<Button
+						title="Criar Conta"
+						type="highlight"
+						onClick={props.changeForm}
+						styles={{ minWidth: '22rem' }}
+						disabled={props.loading}
+					/>
 				</div>
 			</div>
 		</form>
@@ -39,6 +50,8 @@ function Login(props) {
 Login.propTypes = {
 	showLogin: PropTypes.bool,
 	changeForm: PropTypes.func,
+	loading: PropTypes.bool,
+	authStart: PropTypes.func,
 };
 
 export default Login;

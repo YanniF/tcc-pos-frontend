@@ -10,7 +10,7 @@ function Register(props) {
 	const [ userType, setUserType ] = useState('aluno');
 
 	const handleRegister = () => {
-		console.log('register');
+		props.authStart();
 	};
 
 	return (
@@ -41,8 +41,14 @@ function Register(props) {
 					{userType === 'supervisor' && <Input type="text" name="code" label="Código" required />}
 				</div>
 				<div className={classes.buttons}>
-					<Button title="Criar Conta" onClick={handleRegister} styles={{ minWidth: '22rem' }} />
-					<Button title="Fazer Login" type="highlight" onClick={props.changeForm} styles={{ minWidth: '22rem' }} />
+					<Button title="Criar Conta" onClick={handleRegister} styles={{ minWidth: '22rem' }} loading={props.loading} />
+					<Button
+						title="Fazer Login"
+						type="highlight"
+						onClick={props.changeForm}
+						styles={{ minWidth: '22rem' }}
+						disabled={props.loading}
+					/>
 				</div>
 			</div>
 		</form>
@@ -50,7 +56,10 @@ function Register(props) {
 }
 
 Register.propTypes = {
+	showRegister: PropTypes.bool,
 	changeForm: PropTypes.func,
+	loading: PropTypes.bool,
+	authStart: PropTypes.func,
 };
 
 export default Register;

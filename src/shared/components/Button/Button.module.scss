@@ -15,8 +15,13 @@
 		outline-color: $highlight-color;
 	}
 
-	&:hover {
+	&:hover:enabled {
 		box-shadow: none;
+	}
+
+	&:disabled {
+		background-color: $light-grey;
+		cursor: not-allowed;
 	}
 }
 
@@ -24,7 +29,7 @@
 	background-color: $primary-color;
 	color: $white-color;
 
-	&:hover {
+	&:hover:enabled {
 		background-color: darken($primary-color, 5);
 	}
 }
@@ -33,7 +38,12 @@
 	background-color: $highlight-color;
 	color: $primary-color;
 
-	&:hover {
+	&:hover:enabled {
 		background-color: darken($highlight-color, 5);
 	}
+}
+
+.loadingText {
+	margin-left: 1rem;
+	font-size: 1.4rem;
 }

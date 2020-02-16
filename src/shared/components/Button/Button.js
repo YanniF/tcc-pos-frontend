@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Loader from '../Loader/Loader';
 import classes from './Button.module.scss';
 
 function Button(props) {
@@ -11,8 +12,13 @@ function Button(props) {
 	}
 
 	return (
-		<button className={buttonClasses.join(' ')} onClick={props.onClick} style={{ ...props.styles }}>
-			{props.title}
+		<button
+			className={buttonClasses.join(' ')}
+			onClick={props.onClick}
+			style={{ ...props.styles }}
+			disabled={props.disabled}
+		>
+			{props.loading ? <Loader height="17" /> : props.title}
 		</button>
 	);
 }
@@ -22,6 +28,8 @@ Button.propTypes = {
 	type: PropTypes.oneOf([ 'default', 'highlight' ]),
 	onClick: PropTypes.func,
 	styles: PropTypes.object,
+	loading: PropTypes.bool,
+	disabled: PropTypes.bool,
 };
 
 export default Button;
