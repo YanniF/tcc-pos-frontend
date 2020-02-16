@@ -4,11 +4,27 @@ import PropTypes from 'prop-types';
 import classes from './Input.module.scss';
 
 function Input(props) {
-	return <input className={classes.input} onChange={props.onChange} />;
+	return (
+		<div>
+			<input
+				type={props.type || 'text'}
+				name={props.name}
+				className={classes.input}
+				placeholder={props.label}
+				onChange={props.onChange}
+			/>
+			<label htmlFor={props.name} className={classes.label}>
+				{props.label}
+			</label>
+		</div>
+	);
 }
 
 Input.propTypes = {
+	type: PropTypes.string,
+	name: PropTypes.string,
 	value: PropTypes.string,
+	label: PropTypes.string,
 };
 
 export default Input;

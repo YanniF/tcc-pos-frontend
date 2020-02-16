@@ -1,14 +1,38 @@
 @import '../../variables.scss';
 
 .input {
-	padding: 1rem 2rem;
+	margin-top: 1.8rem;
+	padding: 1rem 1.5rem;
 	width: 100%;
 	font-size: inherit;
 	font-family: inherit;
+	color: inherit;
 	border: $default-border;
 	border-radius: $border-radius;
 
 	&:focus {
 		outline-color: $highlight-color;
+	}
+
+	&::placeholder {
+		color: lighten($text-color, 40);
+	}
+}
+
+.label {
+	display: block;
+	margin-left: 1.5rem;
+	margin-top: .4rem;
+	transform: translateY(-8rem);
+	transition: all .3s $timing-function;
+}
+
+input:placeholder-shown + label {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-4rem);
+
+	&:focus {
+		opacity: 1;
 	}
 }

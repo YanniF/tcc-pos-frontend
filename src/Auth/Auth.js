@@ -17,9 +17,9 @@ function Auth() {
 			<div className={classes.forms}>
 				<Image width="75rem" height="75rem" />
 				{showLogin ? (
-					<Login changeForm={() => setShowLogin(false)} />
+					<Login showLogin={showLogin} changeForm={() => setShowLogin(false)} />
 				) : (
-					<Register changeForm={() => setShowLogin(true)} />
+					<Register showLogin={showLogin} changeForm={() => setShowLogin(true)} />
 				)}
 			</div>
 		</div>
