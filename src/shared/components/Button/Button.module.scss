@@ -1,0 +1,39 @@
+@import '../../variables.scss';
+
+.button {
+	padding: 1.5rem 3rem;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: 600;
+	border: none;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	cursor: pointer;
+	transition: all .3s $timing-function;
+
+	&:focus {
+		outline-color: $highlight-color;
+	}
+
+	&:hover {
+		box-shadow: none;
+	}
+}
+
+.default {
+	background-color: $primary-color;
+	color: $white-color;
+
+	&:hover {
+		background-color: darken($primary-color, 5);
+	}
+}
+
+.highlight {
+	background-color: $highlight-color;
+	color: $primary-color;
+
+	&:hover {
+		background-color: darken($highlight-color, 5);
+	}
+}

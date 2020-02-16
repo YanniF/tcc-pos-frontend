@@ -1,0 +1,27 @@
+@import '../shared//variables.scss';
+
+.auth {
+	margin: 3rem auto;
+	max-width: 80vw;
+}
+
+.forms {
+	display: flex;
+	justify-content: space-between;
+}
+
+.form {
+	padding: 3rem 6rem;
+	border: $thin-border;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+
+	button:not(:last-child) {
+		margin-right: 2rem;
+	}
+}
+
+.title {
+	font-size: 3.6rem;
+	font-weight: 300;
+}

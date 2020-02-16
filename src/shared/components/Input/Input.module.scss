@@ -1,0 +1,14 @@
+@import '../../variables.scss';
+
+.input {
+	padding: 1rem 2rem;
+	width: 100%;
+	font-size: inherit;
+	font-family: inherit;
+	border: $default-border;
+	border-radius: $border-radius;
+
+	&:focus {
+		outline-color: $highlight-color;
+	}
+}
