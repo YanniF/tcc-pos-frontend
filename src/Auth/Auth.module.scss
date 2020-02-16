@@ -11,21 +11,36 @@
 }
 
 .form {
-	padding: 3rem 6rem;
+	align-self: center;
+	padding: 3rem 6rem 6rem;
 	border: $thin-border;
 	border-radius: $border-radius;
 	box-shadow: $box-shadow;
 	overflow: hidden;
-
-	button:not(:last-child) {
-		margin-right: 2rem;
-	}
 }
 
 .title {
 	margin-bottom: 2rem;
 	font-size: 3.6rem;
 	font-weight: 300;
+}
+
+.buttons {
+	margin-top: 4rem;
+
+	button:not(:last-child) {
+		margin-right: 3rem;
+	}
+}
+
+.radioButtons {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 3.5rem;
+}
+
+.fade {
+	animation: fade .5s reverse;
 }
 
 @keyframes fade {
