@@ -2,16 +2,24 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import withStyles from '@material-ui/core/styles/withStyles';
+
 import Auth from './Auth/Auth';
 import Courses from './Courses/Courses';
 import './App.css';
 
+const styles = (theme) => ({
+	...theme.properties,
+});
+
 function App(props) {
 	let routes = (
-		<Switch>
-			<Route path="/" exact component={Auth} />
-			<Redirect to="/" />
-		</Switch>
+		<div className={props.classes.container}>
+			<Switch>
+				<Route path="/" exact component={Auth} />
+				<Redirect to="/" />
+			</Switch>
+		</div>
 	);
 
 	if (props.isAuthenticatedEmployee) {
@@ -30,4 +38,4 @@ const mapStateToProps = ({ auth }) => ({
 	isAuthenticatedEmployee: auth.token !== null,
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withStyles(styles)(App));
