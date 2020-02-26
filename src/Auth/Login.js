@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Input from '../shared/components/Input/Input';
-import Checkbox from '../shared/components/Checkbox/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import TextField from '@material-ui/core/TextField';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -19,7 +21,7 @@ const styles = (theme) => ({
 	},
 	buttons: {
 		display: 'flex',
-		marginTop: '4rem',
+		marginTop: '3rem',
 		'& button:not(:last-child)': {
 			marginRight: '3rem',
 		},
@@ -44,13 +46,31 @@ function Login(props) {
 							Bem-vindo(a)
 						</Typography>
 						<div>
-							<Input type="email" name="email" label="E-mail" required />
-							<Input type="password" name="password" label="Senha" required />
-							<Checkbox
-								name="lembrar"
+							{/* TODO - add errors */}
+							<TextField type="email" id="email" name="email" label="Email" variant="outlined" fullWidth required />
+							<TextField
+								type="password"
+								id="password"
+								name="password"
+								label="Senha"
+								variant="outlined"
+								fullWidth
+								required
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										name="lembrar"
+										label="Manter logado"
+										color="primary"
+										icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 40 }} />}
+										checkedIcon={<CheckBoxIcon style={{ fontSize: 40 }} />}
+										checked={rememberMe}
+										onChange={() => setRememberMe(!rememberMe)}
+									/>
+								}
 								label="Manter logado"
-								checked={rememberMe}
-								onChange={() => setRememberMe(!rememberMe)}
 							/>
 						</div>
 						<div className={classes.buttons}>
