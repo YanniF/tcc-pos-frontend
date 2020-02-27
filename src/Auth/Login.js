@@ -20,11 +20,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import IconButton from "@material-ui/core/IconButton";
 
-import authStyle from "./authStyle";
+import authStyles from "./authStyles";
 
 const styles = theme => ({
   ...theme.properties,
-	...authStyle,
+	...authStyles,
 	InputSpacing: {
 		marginTop: 20,
 		marginBottom: 20,
