@@ -1,4 +1,18 @@
-@import './shared/variables.scss';
+// colours
+// $primary-color: #141c3a;
+$primary-color: #3f3d56;
+$highlight-color: #6df0c2;
+
+// animations
+$timing-function: ease-in-out;
+
+// borders
+$thin-border: 1px solid rgba(0, 0, 0, 0.06);
+$default-border: 1px solid rgba(0, 0, 0, 0.1);
+$border-radius: 4px;
+
+// others
+$box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
 body {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
@@ -8,5 +22,5 @@ body {
 
 ::selection {
 	background-color: $primary-color;
-	color: $white-color;
+	color: #fff;
 }

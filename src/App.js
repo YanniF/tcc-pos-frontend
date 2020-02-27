@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import Auth from './Auth/Auth';
-import Courses from './Courses/Courses';
-import './App.css';
+import Auth from './Auth';
+import Courses from './Courses';
 
 const styles = (theme) => ({
 	...theme.properties,
+	container: {
+		...theme.properties.container,
+		marginTop: '5rem',
+		marginBottom: '5rem',
+	},
 });
 
 function App(props) {
@@ -25,7 +29,7 @@ function App(props) {
 	if (props.isAuthenticatedEmployee) {
 		routes = (
 			<Switch>
-				<Route path="/courses" component={Courses} />
+				<Route path="/courses" exact component={Courses} />
 				<Redirect to="/courses" />
 			</Switch>
 		);

@@ -1,5 +1,7 @@
 import React from 'react';
 
+// import withStyles from '@material-ui/core/styles/withStyles';
+
 import Navbar from '../shared/components/NavBar/Navbar';
 import DisplayCourses from './DisplayCourses';
 import classes from './Courses.module.scss';

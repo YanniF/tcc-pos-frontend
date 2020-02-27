@@ -10,5 +10,5 @@ export const authStart = () => (dispatch) => {
 
 	setTimeout(() => {
 		dispatch(actionCreator(AUTH_SUCCESS));
-	}, 3000);
+	}, 300);
 };

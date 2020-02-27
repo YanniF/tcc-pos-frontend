@@ -22,7 +22,7 @@ export default {
 	properties: {
 		container: {
 			width: '80vw',
-			margin: '3rem auto',
+			margin: '0 auto',
 		},
 		btnLarge: {
 			padding: '.8rem 1.8rem',
