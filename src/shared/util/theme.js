@@ -24,11 +24,8 @@ export default {
 			width: '80vw',
 			margin: '3rem auto',
 		},
-		paperAuth: {
-			padding: '3rem',
-		},
 		btnLarge: {
-			padding: '1rem 2rem',
+			padding: '.8rem 1.8rem',
 		},
 	},
 };
