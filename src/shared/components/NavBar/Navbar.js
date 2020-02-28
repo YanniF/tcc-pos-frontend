@@ -26,7 +26,7 @@ function Navbar(props) {
 		<AppBar>
 			<div className={classes.container}>
 				<Toolbar className={classes.toolbar}>
-					<Logo />
+					<Logo option='logoWhite' width='250px' />
 					<div>
 						<Button color="inherit" component={NavLink} to="/courses" activeClassName={classes.activeLink}>
 							Cursos

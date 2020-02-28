@@ -1,10 +1,16 @@
 import React from 'react';
 
-function Logo() {
-	// props pro tamanho
+import logo from '../../assets/logo.png'
+import logoWhite from '../../assets/logoWhite.png'
+
+function Logo({ option = 'logo', width = '250px' }) {	
 	return (
-		<div style={{ display: 'inline-block' }}>
-			<h1>Evoluindo</h1>
+		<div>
+			{option === 'logo' ? (
+				<img src={logo} alt='Logo' style={{ width }} />
+			) : (
+				<img src={logoWhite} alt='Logo' style={{ width }} />
+			)}
 		</div>
 	);
 }
