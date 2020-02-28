@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+	Paper,
+	Typography,
+	Fade,
+	Button,
+	CircularProgress,
+	FormControl,
+	FormControlLabel,
+	Checkbox,
+	TextField,
+	InputLabel,
+	OutlinedInput,
+	IconButton,
+	InputAdornment } from '@material-ui/core';
+
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import IconButton from '@material-ui/core/IconButton';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import authStyles from './authStyles';
 
@@ -43,7 +45,7 @@ function Login(props) {
 
 	// TODO: centralizar form
 	return (
-		<Paper className={classes.paperAuth}>
+		<Paper className={classes.paperForm}>
 			<form>
 				<Fade in={props.showLogin}>
 					<React.Fragment>
@@ -74,7 +76,7 @@ function Login(props) {
 									endAdornment={
 										<InputAdornment position="end">
 											<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-												{showPassword ? <Visibility /> : <VisibilityOff />}
+												{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
 											</IconButton>
 										</InputAdornment>
 									}

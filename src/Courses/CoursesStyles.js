@@ -1,5 +1,5 @@
 export default {
-	paperAuth: {
+	paperForm: {
 		padding: '3rem',
 	},
 };

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+import { AppBar, Toolbar, Button } from '@material-ui/core';
 
 import Logo from '../Logo/Logo';
 

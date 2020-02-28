@@ -1,7 +1,7 @@
 import theme from '../shared/util/theme'
 
 export default {	
-	paperAuth: {
+	paperForm: {
 		padding: '3rem',
 	},
 	btnLarge: {
