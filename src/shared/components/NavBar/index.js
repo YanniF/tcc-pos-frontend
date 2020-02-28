@@ -24,13 +24,10 @@ function Navbar(props) {
 		<AppBar>
 			<div className={classes.container}>
 				<Toolbar className={classes.toolbar}>
-					<Logo option='logoWhite' width='250px' />
+					<Logo option="logoWhite" width="250px" />
 					<div>
 						<Button color="inherit" component={NavLink} to="/courses" activeClassName={classes.activeLink}>
 							Cursos
-						</Button>
-						<Button color="inherit" component={NavLink} to="/profile" activeClassName={classes.activeLink}>
-							Perfil
 						</Button>
 						<Button color="inherit" component={NavLink} to="/logout" activeClassName={classes.activeLink}>
 							Sair

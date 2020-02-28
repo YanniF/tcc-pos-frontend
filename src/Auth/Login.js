@@ -15,7 +15,8 @@ import {
 	InputLabel,
 	OutlinedInput,
 	IconButton,
-	InputAdornment } from '@material-ui/core';
+	InputAdornment,
+} from '@material-ui/core';
 
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -49,7 +50,7 @@ function Login(props) {
 			<form>
 				<Fade in={props.showLogin}>
 					<React.Fragment>
-						<Typography variant="h4" component="h3" gutterBottom align="center">
+						<Typography variant="h4" component="h2" gutterBottom align="center">
 							Bem-vindo(a)
 						</Typography>
 						<div>

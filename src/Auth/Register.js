@@ -17,7 +17,8 @@ import {
 	Radio,
 	RadioGroup,
 	FormControlLabel,
-	FormLabel } from '@material-ui/core';
+	FormLabel,
+} from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
@@ -54,24 +55,15 @@ function Register(props) {
 			<form>
 				<Fade in={props.showRegister}>
 					<React.Fragment>
-						<Typography variant="h4" component="h3" gutterBottom align="center">
+						<Typography variant="h4" component="h2" gutterBottom align="center">
 							Criar Conta
 						</Typography>
 						<div>
 							{/* TODO - add errors */}
 							<TextField
 								type="text"
-								name="firstname"
-								label="Nome"
-								variant="outlined"
-								className={classes.InputSpacing}
-								fullWidth
-								required
-							/>
-							<TextField
-								type="text"
-								name="lastname"
-								label="Sobrenome"
+								name="name"
+								label="Nome completo"
 								variant="outlined"
 								className={classes.InputSpacing}
 								fullWidth

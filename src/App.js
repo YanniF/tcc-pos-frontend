@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Auth from './Auth';
-import Navbar from './shared/components/NavBar'
+import Navbar from './shared/components/NavBar';
 import Courses from './Courses';
-import Profile from './User/Profile'
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -34,7 +33,6 @@ function App(props) {
 				<Navbar />
 				<Switch>
 					<Route path="/courses" exact component={Courses} />
-					<Route path="/profile" exact component={Profile} />
 					<Redirect to="/courses" />
 				</Switch>
 			</div>

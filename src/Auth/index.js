@@ -24,7 +24,7 @@ function Auth(props) {
 				<Grid item sm={7}>
 					<Image width="50rem" />
 				</Grid>
-				<Grid item sm={5}>
+				<Grid item sm={5} style={{ display: 'flex', alignItems: 'center' }}>
 					{showLogin ? (
 						<Login
 							showLogin={showLogin}

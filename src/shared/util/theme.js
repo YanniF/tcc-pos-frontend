@@ -7,9 +7,9 @@ export default {
 			contrastText: '#fff',
 		},
 		secondary: {
-			light: '#98f4d4',
-			main: '#6df0c2',
-			dark: '#16dd97',
+			light: '#3cebae',
+			main: '#16dd97',
+			dark: '#11b078',
 			contrastText: '#fff',
 		},
 		text: {
