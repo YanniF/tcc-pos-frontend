@@ -5,14 +5,14 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
+import coursesStyles from './coursesStyles';
+import Ratings from './Ratings';
 import Image from '../shared/components/SVG/PressPlay';
 import courseImage from '../shared/assets/thumb2.jpg';
 
 const styles = (theme) => ({
 	...theme.properties,
-	paper: {
-		padding: '2.2rem',
-	},
+	...coursesStyles,
 	title: {
 		margin: '2rem 0 1.5rem',
 	},
@@ -20,9 +20,6 @@ const styles = (theme) => ({
 		marginTop: '1rem',
 		padding: '.7rem',
 		width: '100%',
-	},
-	group: {
-		margin: '2rem 0',
 	},
 	thumbnail: {
 		margin: '0 auto',
@@ -79,7 +76,7 @@ function CourseDetails(props) {
 							<Typography variant="body1" color="primary" component="p">
 								Professor(a)
 							</Typography>
-							<Typography variant="h4" color="textSecondary" component="p">
+							<Typography variant="h4" component="p">
 								John Doe
 							</Typography>
 						</div>
@@ -87,9 +84,14 @@ function CourseDetails(props) {
 							<Typography variant="body1" color="primary" component="p">
 								Avaliações
 							</Typography>
-							<Rating name="read-only" value={4} precision={0.5} size="large" readOnly />
+							<Rating value={4} precision={0.5} size="large" readOnly />
 						</div>
 					</Paper>
+				</Grid>
+			</Grid>
+			<Grid container spacing={10}>
+				<Grid item sm={8}>
+					<Ratings />
 				</Grid>
 			</Grid>
 		</main>

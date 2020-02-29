@@ -72,7 +72,7 @@ function CourseCard(props) {
 					frozen peas along with the mussels, if you like.
 				</Typography>
 				<div style={{ display: 'flex', marginTop: '1rem' }}>
-					<Rating name="read-only" value={rating.rating} precision={0.5} readOnly />
+					<Rating value={rating.rating} precision={0.5} readOnly />
 					<Typography component="legend" color="textSecondary" style={{ marginLeft: '.5rem' }}>
 						{rating.numberOfRatings} avaliações
 					</Typography>
