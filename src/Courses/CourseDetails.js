@@ -24,7 +24,7 @@ const styles = (theme) => ({
 	thumbnail: {
 		margin: '0 auto',
 		width: '100%',
-		maxHeight: '320px',
+		maxHeight: '350px',
 		objectFit: 'cover',
 	},
 });

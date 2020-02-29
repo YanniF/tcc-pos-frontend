@@ -96,8 +96,8 @@ function Sidebar(props) {
 	return (
 		<aside>
 			<React.Fragment>
-				{courses.map((course) => (
-					<ExpansionPanel key={Math.random() * 1000}>
+				{courses.map((course, index) => (
+					<ExpansionPanel key={Math.random() * 1000} defaultExpanded={index === 0}>
 						<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
 							<Typography variant="h6" component="h4">
 								{course.title}
