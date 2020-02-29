@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,13 +11,10 @@ import Image1 from '../shared/components/SVG/Remotely';
 import Image2 from '../shared/components/SVG/Pair';
 import Logo from '../shared/components/Logo/Logo';
 
+let randomNumber = Math.floor(Math.random() * 2);
+
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
-	let randomNumber;
-
-	useEffect(() => {
-		randomNumber = Math.floor(Math.random() * 2);
-	});
 
 	if (props.isAuthenticatedEmployee) {
 		return <Redirect to="/courses" />;

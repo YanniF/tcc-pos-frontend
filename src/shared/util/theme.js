@@ -43,6 +43,7 @@ export default {
 			marginBottom: '5px',
 			color: primary.main,
 			textDecoration: 'none',
+			cursor: 'pointer',
 			zIndex: 1,
 
 			'&::after': {
@@ -51,7 +52,7 @@ export default {
 				bottom: '5px',
 				left: '-1px',
 				right: '-2px',
-				height: '5px',
+				height: '.3em',
 				backgroundColor: secondary.main,
 				borderRadius: '3px',
 				opacity: 0,
