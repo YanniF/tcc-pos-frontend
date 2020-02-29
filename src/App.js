@@ -8,6 +8,7 @@ import Auth from './Auth';
 import Navbar from './shared/components/NavBar';
 import Courses from './Courses';
 import CourseDetails from './Courses/CourseDetails';
+import ViewTutorial from './Courses/ViewTutorial';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -34,7 +35,8 @@ function App(props) {
 				<Navbar />
 				<Switch>
 					<Route path="/courses" exact component={Courses} />
-					<Route path="/courses/:id/details" exact component={CourseDetails} />
+					<Route path="/courses/:courseId/details" exact component={CourseDetails} />
+					<Route path="/courses/:courseId/tutorial" exact component={ViewTutorial} />
 					<Redirect to="/courses" />
 				</Switch>
 			</div>

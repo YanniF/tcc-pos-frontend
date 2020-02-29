@@ -3,7 +3,7 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import CourseCard from './CourseCard';
+import CourseCard from './components/CourseCard';
 
 import image1 from '../shared/assets/thumb1.jpg';
 import image2 from '../shared/assets/thumb2.jpg';

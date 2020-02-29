@@ -31,7 +31,7 @@ function CourseCard(props) {
 
 	return (
 		<Card>
-			<Link to={`/courses/${id}/details`}>
+			<Link to={`/courses/${id}/tutorial`}>
 				<CardMedia image={image} title={title} style={{ paddingTop: '56.25%', objectFit: 'cover' }} />
 			</Link>
 			<CardHeader
@@ -67,10 +67,12 @@ function CourseCard(props) {
 				)}
 			</Popper>
 			<CardContent>
-				<Typography variant="body1" color="textSecondary" component="p">
-					This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of
-					frozen peas along with the mussels, if you like.
-				</Typography>
+				<Link to={`/courses/${id}/details`} style={{ textDecoration: 'none' }}>
+					<Typography variant="body1" color="textSecondary" component="p">
+						This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup
+						of frozen peas along with the mussels, if you like.
+					</Typography>
+				</Link>
 				<div style={{ display: 'flex', marginTop: '1rem' }}>
 					<Rating value={rating.rating} precision={0.5} readOnly />
 					<Typography component="legend" color="textSecondary" style={{ marginLeft: '.5rem' }}>

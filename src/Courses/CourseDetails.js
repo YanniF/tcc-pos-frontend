@@ -6,7 +6,7 @@ import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
 import coursesStyles from './coursesStyles';
-import Ratings from './Ratings';
+import Ratings from './components/Ratings';
 import Image from '../shared/components/SVG/PressPlay';
 import courseImage from '../shared/assets/thumb2.jpg';
 
@@ -64,6 +64,7 @@ function CourseDetails(props) {
 				<Grid item sm={4}>
 					<Paper className={classes.paper}>
 						<Image height="200px" width="400px" />
+						{/* matricular ou ver aula */}
 						<Button
 							color="secondary"
 							variant="contained"
