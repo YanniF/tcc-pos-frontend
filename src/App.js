@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Auth from './Auth';
 import Navbar from './shared/components/NavBar';
 import Courses from './Courses';
+import CourseDetails from './Courses/CourseDetails';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -33,6 +34,7 @@ function App(props) {
 				<Navbar />
 				<Switch>
 					<Route path="/courses" exact component={Courses} />
+					<Route path="/courses/:id/details" exact component={CourseDetails} />
 					<Redirect to="/courses" />
 				</Switch>
 			</div>

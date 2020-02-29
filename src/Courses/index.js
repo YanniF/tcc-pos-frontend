@@ -10,9 +10,6 @@ import image2 from '../shared/assets/thumb2.jpg';
 
 const styles = (theme) => ({
 	...theme.properties,
-	main: {
-		margin: '7rem 0',
-	},
 	grid: {
 		marginBottom: '3rem',
 	},

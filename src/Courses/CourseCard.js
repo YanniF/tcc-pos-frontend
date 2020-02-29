@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+import withStyles from '@material-ui/core/styles/withStyles';
 import {
 	Card,
 	CardHeader,
@@ -18,13 +20,20 @@ import {
 import Rating from '@material-ui/lab/Rating';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+const styles = (theme) => ({
+	...theme.properties,
+});
+
 function CourseCard(props) {
 	const [ anchorEl, setAnchorEl ] = React.useState(null);
-	const { course: { title, teacher, image, rating }, isFinished } = props;
+	const { course: { id, title, teacher, image, rating }, isFinished } = props;
+	const { classes } = props;
 
 	return (
 		<Card>
-			<CardMedia image={image} title={title} style={{ paddingTop: '56.25%', objectFit: 'cover' }} />
+			<Link to={`/courses/${id}/details`}>
+				<CardMedia image={image} title={title} style={{ paddingTop: '56.25%', objectFit: 'cover' }} />
+			</Link>
 			<CardHeader
 				action={
 					isFinished && (
@@ -33,7 +42,11 @@ function CourseCard(props) {
 						</IconButton>
 					)
 				}
-				title={title}
+				title={
+					<Link to={`/courses/${id}/details`} className={classes.link}>
+						{title}
+					</Link>
+				}
 				subheader={teacher}
 			/>
 			<Popper open={!!anchorEl} anchorEl={anchorEl} transition disablePortal>
@@ -73,4 +86,4 @@ CourseCard.propTypes = {
 	course: PropTypes.object,
 };
 
-export default CourseCard;
+export default withStyles(styles)(CourseCard);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -7,11 +7,17 @@ import Grid from '@material-ui/core/Grid';
 import { auth } from '../store/actions';
 import Login from './Login';
 import Register from './Register';
-import Image from '../shared/components/SVG/illustrations/Remotely';
+import Image1 from '../shared/components/SVG/Remotely';
+import Image2 from '../shared/components/SVG/Pair';
 import Logo from '../shared/components/Logo/Logo';
 
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
+	let randomNumber;
+
+	useEffect(() => {
+		randomNumber = Math.floor(Math.random() * 2);
+	});
 
 	if (props.isAuthenticatedEmployee) {
 		return <Redirect to="/courses" />;
@@ -22,7 +28,7 @@ function Auth(props) {
 			<Logo />
 			<Grid container spacing={1}>
 				<Grid item sm={7}>
-					<Image width="50rem" />
+					{randomNumber % 2 === 0 ? <Image1 width="50rem" /> : <Image2 width="50rem" />}
 				</Grid>
 				<Grid item sm={5} style={{ display: 'flex', alignItems: 'center' }}>
 					{showLogin ? (
