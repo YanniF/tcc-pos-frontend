@@ -22,6 +22,15 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = (theme) => ({
 	...theme.properties,
+	image: {
+		paddingTop: '56.25%',
+		objectFit: 'cover',
+		transition: 'opacity .2s',
+
+		'&:hover': {
+			opacity: 0.9,
+		},
+	},
 });
 
 function CourseCard(props) {
@@ -32,7 +41,7 @@ function CourseCard(props) {
 	return (
 		<Card>
 			<Link to={`/courses/${id}/tutorial`}>
-				<CardMedia image={image} title={title} style={{ paddingTop: '56.25%', objectFit: 'cover' }} />
+				<CardMedia image={image} title={title} className={props.classes.image} />
 			</Link>
 			<CardHeader
 				action={
