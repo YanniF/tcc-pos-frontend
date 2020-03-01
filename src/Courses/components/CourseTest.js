@@ -1,8 +1,22 @@
 import React from 'react';
 
-import { Paper, Typography, FormControl, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Paper, Typography, FormControl, Radio, RadioGroup, FormControlLabel, Button } from '@material-ui/core';
 
-const CourseTest = () => {
+const styles = (theme) => ({
+	...theme.properties,
+	paper: {
+		marginBottom: '1.2rem',
+		padding: '1.8rem',
+	},
+	wrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+});
+
+const CourseTest = ({ classes }) => {
 	const questions = [
 		{
 			question: 'Mussum Ipsum, cacilds vidis litro abertis. Mauris nec dolor in eros commodo tempor',
@@ -84,28 +98,41 @@ const CourseTest = () => {
 		},
 	];
 
-	return questions.map((item) => (
-		<Paper key={Math.random()}>
-			<div>
-				<Typography variant="h6" component="h5" gutterBottom>
-					{item.question}
-				</Typography>
-				<span>0/{item.value}</span>
-			</div>
-			<FormControl fullWidth>
-				<RadioGroup name="answer">
-					{item.options.map((option) => (
-						<FormControlLabel
-							key={option.id}
-							value={`answer-${option.id}`}
-							control={<Radio color="primary" />}
-							label={option.answer}
-						/>
-					))}
-				</RadioGroup>
-			</FormControl>
-		</Paper>
-	));
+	return (
+		<form>
+			{questions.map((item) => (
+				<Paper key={Math.random()} className={classes.paper}>
+					<div className={classes.wrapper}>
+						<Typography variant="h6" component="h5" gutterBottom>
+							{item.question}
+						</Typography>
+						<span>0/{item.value} pontos</span>
+					</div>
+					<FormControl fullWidth>
+						<RadioGroup name="answer">
+							{item.options.map((option) => (
+								<FormControlLabel
+									key={option.id}
+									value={`answer-${option.id}`}
+									control={<Radio color="primary" />}
+									label={option.answer}
+								/>
+							))}
+						</RadioGroup>
+					</FormControl>
+				</Paper>
+			))}
+			<Button
+				style={{ float: 'right' }}
+				color="primary"
+				variant="contained"
+				className={classes.btnLarge}
+				onClick={() => console.log('click')}
+			>
+				Enviar respostas
+			</Button>
+		</form>
+	);
 };
 
-export default CourseTest;
+export default withStyles(styles)(CourseTest);

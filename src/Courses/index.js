@@ -1,10 +1,18 @@
 import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import CourseCard from './components/CourseCard';
+import {
+	Grid,
+	Typography,
+	FormControl,
+	InputLabel,
+	OutlinedInput,
+	InputAdornment,
+	IconButton,
+} from '@material-ui/core/';
+import SearchIcon from '@material-ui/icons/Search';
 
+import CourseCard from './components/CourseCard';
 import image1 from '../shared/assets/thumb1.jpg';
 import image2 from '../shared/assets/thumb2.jpg';
 
@@ -13,8 +21,14 @@ const styles = (theme) => ({
 	grid: {
 		marginBottom: '3rem',
 	},
-	title: {
+	wrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		marginBottom: '3rem',
+	},
+	title: {
+		margin: 0,
 		fontWeight: '300',
 		color: theme.palette.primary.main,
 
@@ -79,9 +93,27 @@ function Courses(props) {
 
 	return (
 		<main className={classes.main}>
-			<Typography variant="h3" component="h2" gutterBottom className={classes.title}>
-				<span>Meus</span> Cursos
-			</Typography>
+			<div className={classes.wrapper}>
+				<Typography variant="h3" component="h2" gutterBottom className={classes.title}>
+					<span>Meus</span> Cursos
+				</Typography>
+				<FormControl variant="outlined">
+					<InputLabel htmlFor="search">Pesquisar</InputLabel>
+					<OutlinedInput
+						type="text"
+						id="search"
+						name="search"
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton onClick={() => console.log('pesquisar')} edge="end">
+									<SearchIcon />
+								</IconButton>
+							</InputAdornment>
+						}
+						labelWidth={72}
+					/>
+				</FormControl>
+			</div>
 			<div>
 				<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
 					Em Andamento

@@ -4,8 +4,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Typography } from '@material-ui/core';
 
 import Sidebar from './components/Sidebar';
-// import Player from './components/Player';
-import Test from './components/CourseTest';
+import Player from './components/Player';
+// import Test from './components/CourseTest';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -26,8 +26,8 @@ function ViewTutorial(props) {
 			</Typography>
 			<Grid container spacing={10}>
 				<Grid item sm={8}>
-					{/* <Player /> */}
-					<Test />
+					<Player />
+					{/* <Test /> */}
 				</Grid>
 				<Grid item sm={4}>
 					<Sidebar />
