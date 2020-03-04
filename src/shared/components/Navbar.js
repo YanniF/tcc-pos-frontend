@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
-import Logo from '../Logo/Logo';
+import Logo from './Logo';
 
 const styles = (theme) => ({
 	...theme.properties,

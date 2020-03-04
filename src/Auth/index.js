@@ -9,7 +9,7 @@ import Login from './Login';
 import Register from './Register';
 import Image1 from '../shared/components/SVG/Remotely';
 import Image2 from '../shared/components/SVG/Pair';
-import Logo from '../shared/components/Logo/Logo';
+import Logo from '../shared/components/Logo';
 
 let randomNumber = Math.floor(Math.random() * 2);
 

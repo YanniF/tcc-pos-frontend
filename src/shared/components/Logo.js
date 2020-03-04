@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import logo from '../../assets/logo.png';
-import logoWhite from '../../assets/logoWhite.png';
+import logo from '../assets/logo.png';
+import logoWhite from '../assets/logoWhite.png';
 
 function Logo({ option = 'logo', width = '250px' }) {
 	return (

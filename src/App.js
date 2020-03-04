@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Auth from './Auth';
-import Navbar from './shared/components/NavBar';
+import Navbar from './shared/components/Navbar';
 import Courses from './Courses';
 import CourseDetails from './Courses/CourseDetails';
 import ViewTutorial from './Courses/ViewTutorial';
+import AdminCourses from './Courses/admin/Courses';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -42,12 +43,24 @@ function App(props) {
 			</div>
 		);
 	}
+	else if (props.isAuthenticatedAdmin) {
+		routes = (
+			<div className={props.classes.container}>
+				<Navbar />
+				<Switch>
+					<Route path="/admin/courses" exact component={AdminCourses} />
+					<Redirect to="/admin/courses" />
+				</Switch>
+			</div>
+		);
+	}
 
 	return <div>{routes}</div>;
 }
 
 const mapStateToProps = ({ auth }) => ({
-	isAuthenticatedEmployee: auth.token !== null,
+	// isAuthenticatedEmployee: auth.token !== null,
+	isAuthenticatedAdmin: auth.token !== null,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(App));

@@ -1,18 +1,10 @@
 import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import {
-	Grid,
-	Typography,
-	FormControl,
-	InputLabel,
-	OutlinedInput,
-	InputAdornment,
-	IconButton,
-} from '@material-ui/core/';
-import SearchIcon from '@material-ui/icons/Search';
+import { Grid, Typography } from '@material-ui/core/';
 
 import CourseCard from './components/CourseCard';
+import SearchInput from '../shared/components/SearchInput'
 import image1 from '../shared/assets/thumb1.jpg';
 import image2 from '../shared/assets/thumb2.jpg';
 
@@ -97,22 +89,7 @@ function Courses(props) {
 				<Typography variant="h3" component="h2" gutterBottom className={classes.title}>
 					<span>Meus</span> Cursos
 				</Typography>
-				<FormControl variant="outlined">
-					<InputLabel htmlFor="search">Pesquisar</InputLabel>
-					<OutlinedInput
-						type="text"
-						id="search"
-						name="search"
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton onClick={() => console.log('pesquisar')} edge="end">
-									<SearchIcon />
-								</IconButton>
-							</InputAdornment>
-						}
-						labelWidth={72}
-					/>
-				</FormControl>
+				<SearchInput onClick={() => console.log('click')} />
 			</div>
 			<div>
 				<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
