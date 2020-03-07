@@ -28,7 +28,7 @@ import authStyles from './authStyles';
 const styles = (theme) => ({
 	...theme.properties,
 	...authStyles,
-	InputSpacing: {
+	spacing: {
 		marginTop: 20,
 		marginBottom: 20,
 	},
@@ -60,7 +60,7 @@ function Login(props) {
 								name="email"
 								label="Email"
 								variant="outlined"
-								className={classes.InputSpacing}
+								className={classes.spacing}
 								fullWidth
 								required
 							/>
@@ -73,7 +73,7 @@ function Login(props) {
 									id="password"
 									name="password"
 									fullWidth
-									className={classes.InputSpacing}
+									className={classes.spacing}
 									endAdornment={
 										<InputAdornment position="end">
 											<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">

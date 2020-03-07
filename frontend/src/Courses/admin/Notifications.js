@@ -45,7 +45,7 @@ function Notifications(props) {
 			<Typography variant="h5" component="h3" className={classes.title}>
 				Notificações
 			</Typography>
-			{/* link para ver as notificacoes */}
+			{/* TODO: link para ver as notificacoes */}
 			{notifications.map((not, index) => (
 				<React.Fragment key={not.id}>
 					<div className={classes.notification}>

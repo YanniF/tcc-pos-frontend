@@ -10,6 +10,7 @@ import Courses from './Courses';
 import CourseDetails from './Courses/CourseDetails';
 import ViewTutorial from './Courses/ViewTutorial';
 import AdminCourses from './Courses/admin/Courses';
+import AdminDetails from './Courses/admin/Details';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -49,6 +50,7 @@ function App(props) {
 				<Navbar />
 				<Switch>
 					<Route path="/admin/courses" exact component={AdminCourses} />
+					<Route path="/admin/courses/:courseId/details/" exact component={AdminDetails} />
 					<Redirect to="/admin/courses" />
 				</Switch>
 			</div>

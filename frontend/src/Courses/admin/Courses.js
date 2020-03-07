@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
@@ -9,6 +9,7 @@ import coursesStyles from '../coursesStyles';
 import image1 from '../../shared/assets/thumb1.jpg';
 import image2 from '../../shared/assets/thumb2.jpg';
 import Notifications from './Notifications';
+import CourseModal from './CourseModal';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -21,6 +22,8 @@ const styles = (theme) => ({
 });
 
 function Courses(props) {
+	const [ open, setOpen ] = useState(false);
+
 	const courses = [
 		{
 			id: 1,
@@ -52,6 +55,15 @@ function Courses(props) {
 		},
 	];
 
+	const handleSetVisibility = (open) => {
+		setOpen(open);
+	};
+
+	const handleAddCourse = () => {
+		const id = 1;
+		props.history.push(`/admin/courses/${id}/details/`);
+	};
+
 	const { classes } = props;
 
 	return (
@@ -77,7 +89,7 @@ function Courses(props) {
 							color="secondary"
 							variant="contained"
 							className={classes.btnLarge}
-							onClick={() => console.log('matricular')}
+							onClick={() => handleSetVisibility(true)}
 						>
 							Adicionar Curso
 						</Button>
@@ -85,6 +97,7 @@ function Courses(props) {
 					<Notifications />
 				</Grid>
 			</Grid>
+			<CourseModal open={open} setVisibility={handleSetVisibility} addCourse={handleAddCourse} />
 		</main>
 	);
 }

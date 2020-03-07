@@ -6,4 +6,10 @@ export default {
 	group: {
 		marginTop: '2rem',
 	},
+
+	centered: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
 };

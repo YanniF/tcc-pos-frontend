@@ -27,10 +27,6 @@ import authStyles from './authStyles';
 const styles = (theme) => ({
 	...theme.properties,
 	...authStyles,
-	InputSpacing: {
-		marginTop: 15,
-		marginBottom: 15,
-	},
 	radioGroup: {
 		flexDirection: 'row',
 
@@ -65,7 +61,7 @@ function Register(props) {
 								name="name"
 								label="Nome completo"
 								variant="outlined"
-								className={classes.InputSpacing}
+								className={classes.inputSpacing}
 								fullWidth
 								required
 							/>
@@ -74,7 +70,7 @@ function Register(props) {
 								name="email"
 								label="Email"
 								variant="outlined"
-								className={classes.InputSpacing}
+								className={classes.inputSpacing}
 								fullWidth
 								required
 							/>
@@ -87,7 +83,7 @@ function Register(props) {
 									id="password"
 									name="password"
 									fullWidth
-									className={classes.InputSpacing}
+									className={classes.inputSpacing}
 									endAdornment={
 										<InputAdornment position="end">
 											<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
@@ -98,7 +94,7 @@ function Register(props) {
 									labelWidth={60}
 								/>
 							</FormControl>
-							<FormControl component="fieldset" className={classes.InputSpacing} fullWidth>
+							<FormControl component="fieldset" className={classes.inputSpacing} fullWidth>
 								<FormLabel component="legend">Você é:</FormLabel>
 								<RadioGroup
 									aria-label="user type"

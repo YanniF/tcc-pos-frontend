@@ -39,6 +39,10 @@ export default {
 		btnLarge: {
 			padding: '.8rem 1.8rem',
 		},
+		inputSpacing: {
+			marginTop: 15,
+			marginBottom: 15,
+		},
 		undecoratedLink: {
 			color: text.primary,
 			textDecoration: 'none',

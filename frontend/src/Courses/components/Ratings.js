@@ -85,7 +85,7 @@ function Ratings({ classes }) {
 					</div>
 				))}
 			</Paper>
-			<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth className={classes.dialog}>
+			<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
 				<DialogTitle>Titulo do curso</DialogTitle>
 				<DialogContent>
 					<Rating name="rating" precision={0.5} size="large" className={classes.mb} />
