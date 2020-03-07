@@ -12,16 +12,18 @@ const secondary = {
 	contrastText: '#fff',
 };
 
+const text = {
+	primary: 'rgba(51, 51, 51, 1)',
+	secondary: 'rgba(0, 0, 0, 0.54)',
+	disabled: 'rgba(0, 0, 0, 0.38)',
+	hint: 'rgba(0, 0, 0, 0.38)',
+};
+
 export default {
 	palette: {
 		primary,
 		secondary,
-		text: {
-			primary: 'rgba(51, 51, 51, 1)',
-			secondary: 'rgba(0, 0, 0, 0.54)',
-			disabled: 'rgba(0, 0, 0, 0.38)',
-			hint: 'rgba(0, 0, 0, 0.38)',
-		},
+		text,
 	},
 	/* typography: {
 		htmlFontSize: 10,
@@ -37,7 +39,11 @@ export default {
 		btnLarge: {
 			padding: '.8rem 1.8rem',
 		},
-		link: {
+		undecoratedLink: {
+			color: text.primary,
+			textDecoration: 'none',
+		},
+		decoratedLink: {
 			position: 'relative',
 			display: 'inline-block',
 			marginBottom: '5px',

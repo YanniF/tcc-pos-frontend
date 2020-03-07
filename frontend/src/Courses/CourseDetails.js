@@ -44,7 +44,7 @@ function CourseDetails(props) {
 							</Typography>
 							<Typography variant="body1" color="textSecondary">
 								<strong>Categoria: </strong>
-								<Link to="/" className={classes.link}>
+								<Link to="/" className={classes.decoratedLink}>
 									Front-end development
 								</Link>
 							</Typography>
