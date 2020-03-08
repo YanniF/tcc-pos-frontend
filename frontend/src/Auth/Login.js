@@ -35,11 +35,19 @@ const styles = (theme) => ({
 });
 
 function Login(props) {
+	const [ values, setValues ] = useState({ email: '', password: '' });
 	const [ rememberMe, setRememberMe ] = useState(true);
 	const [ showPassword, setShowPassword ] = useState(false);
 
-	const handleLogin = () => {
-		props.authStart();
+	const handleChange = (e) => {
+		const { value, name } = e.target;
+		setValues({ ...values, [name]: value });
+	};
+
+	const handleLogin = (e) => {
+		e.preventDefault();
+
+		props.login({ ...values });
 	};
 
 	const { classes, loading } = props;
@@ -47,7 +55,7 @@ function Login(props) {
 	// TODO: centralizar form
 	return (
 		<Paper className={classes.paperForm}>
-			<form>
+			<form onSubmit={handleLogin}>
 				<Fade in={props.showLogin}>
 					<React.Fragment>
 						<Typography variant="h4" component="h2" gutterBottom align="center">
@@ -60,6 +68,8 @@ function Login(props) {
 								name="email"
 								label="Email"
 								variant="outlined"
+								value={values.email}
+								onChange={handleChange}
 								className={classes.spacing}
 								fullWidth
 								required
@@ -72,6 +82,8 @@ function Login(props) {
 									type={showPassword ? 'text' : 'password'}
 									id="password"
 									name="password"
+									value={values.password}
+									onChange={handleChange}
 									fullWidth
 									className={classes.spacing}
 									endAdornment={
@@ -101,13 +113,7 @@ function Login(props) {
 							/>
 						</div>
 						<div className={classes.buttons}>
-							<Button
-								color="primary"
-								variant="contained"
-								onClick={handleLogin}
-								className={classes.btnLarge}
-								disabled={loading}
-							>
+							<Button type="submit" color="primary" variant="contained" className={classes.btnLarge} disabled={loading}>
 								{loading ? <CircularProgress size={24} color="primary" /> : 'Acessar Sistema'}
 							</Button>
 							<Button

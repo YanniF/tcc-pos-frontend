@@ -37,18 +37,26 @@ const styles = (theme) => ({
 });
 
 function Register(props) {
+	const [ values, setValues ] = useState({ name: '', email: '', password: '', code: '' });
 	const [ userType, setUserType ] = useState('student');
 	const [ showPassword, setShowPassword ] = useState(false);
 
-	const handleRegister = () => {
-		props.authStart();
+	const handleChange = (e) => {
+		const { value, name } = e.target;
+		setValues({ ...values, [name]: value });
+	};
+
+	const handleRegister = (e) => {
+		e.preventDefault();
+
+		props.signupUser({ ...values, userType });
 	};
 
 	const { classes, loading } = props;
 
 	return (
 		<Paper className={classes.paperForm}>
-			<form>
+			<form onSubmit={handleRegister}>
 				<Fade in={props.showRegister}>
 					<React.Fragment>
 						<Typography variant="h4" component="h2" gutterBottom align="center">
@@ -60,6 +68,8 @@ function Register(props) {
 								type="text"
 								name="name"
 								label="Nome completo"
+								value={values.name}
+								onChange={handleChange}
 								variant="outlined"
 								className={classes.inputSpacing}
 								fullWidth
@@ -69,6 +79,8 @@ function Register(props) {
 								type="email"
 								name="email"
 								label="Email"
+								value={values.email}
+								onChange={handleChange}
 								variant="outlined"
 								className={classes.inputSpacing}
 								fullWidth
@@ -82,6 +94,8 @@ function Register(props) {
 									type={showPassword ? 'text' : 'password'}
 									id="password"
 									name="password"
+									value={values.password}
+									onChange={handleChange}
 									fullWidth
 									className={classes.inputSpacing}
 									endAdornment={
@@ -99,6 +113,7 @@ function Register(props) {
 								<RadioGroup
 									aria-label="user type"
 									name="userType"
+									value={userType}
 									onChange={(e) => setUserType(e.target.value)}
 									className={classes.radioGroup}
 								>
@@ -107,17 +122,20 @@ function Register(props) {
 								</RadioGroup>
 							</FormControl>
 							{userType === 'supervisor' && (
-								<TextField type="text" name="code" label="Código" variant="outlined" fullWidth required />
+								<TextField
+									type="text"
+									name="code"
+									label="Código"
+									variant="outlined"
+									value={values.code}
+									onChange={handleChange}
+									fullWidth
+									required
+								/>
 							)}
 						</div>
 						<div className={classes.buttons}>
-							<Button
-								color="primary"
-								variant="contained"
-								onClick={handleRegister}
-								className={classes.btnLarge}
-								disabled={loading}
-							>
+							<Button type="submit" color="primary" variant="contained" className={classes.btnLarge} disabled={loading}>
 								{loading ? <CircularProgress size={24} color="primary" /> : 'Criar Conta'}
 							</Button>
 							<Button

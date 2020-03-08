@@ -33,14 +33,14 @@ function Auth(props) {
 							showLogin={showLogin}
 							changeForm={() => setShowLogin(false)}
 							loading={props.loading}
-							authStart={props.authStart}
+							login={props.login}
 						/>
 					) : (
 						<Register
 							showRegister={!showLogin}
 							changeForm={() => setShowLogin(true)}
 							loading={props.loading}
-							authStart={props.authStart}
+							signupUser={props.signupUser}
 						/>
 					)}
 				</Grid>
@@ -55,7 +55,8 @@ const mapStateToProps = ({ auth }) => ({
 });
 
 const mapDispatchToProps = {
-	authStart: auth.authStart,
+	login: auth.login,
+	signupUser: auth.signupUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

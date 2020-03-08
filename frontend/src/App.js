@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -20,6 +21,9 @@ const styles = (theme) => ({
 		marginBottom: '5rem',
 	},
 });
+
+// axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
+axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
 
 function App(props) {
 	let routes = (
