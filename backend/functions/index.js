@@ -12,5 +12,6 @@ const { signup, login } = require('./handlers/users');
 app.post('/signup', signup);
 app.post('/login', login);
 
+
 // https://baseurl.com/api/
 exports.api = functions.region('europe-west1').https.onRequest(app);

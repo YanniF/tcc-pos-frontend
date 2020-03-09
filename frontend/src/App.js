@@ -65,8 +65,8 @@ function App(props) {
 }
 
 const mapStateToProps = ({ auth }) => ({
-	// isAuthenticatedEmployee: auth.token !== null,
-	isAuthenticatedAdmin: auth.token !== null,
+	isAuthenticatedEmployee: auth.user && auth.user.token && !auth.user.admin,
+	isAuthenticatedAdmin: auth.user && auth.user.token && auth.user.admin,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(App));

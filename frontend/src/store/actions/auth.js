@@ -1,28 +1,29 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_SUCCESS } from '../types';
+import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,
 	payload,
 });
 
+const setAuthorizationHeader = (token) => {
+	const FBIdToken = `Bearer ${token}`;
+	localStorage.setItem('FBIdToken', FBIdToken);
+	axios.defaults.headers.common['Authorization'] = FBIdToken;
+};
+
 export const login = (user) => (dispatch) => {
 	dispatch(actionCreator(AUTH_START));
 	axios
 		.post('/login', user)
 		.then((res) => {
-			console.log(res.data);
-
-			// setAuthorizationHeader(res.data.token);
-			// dispatch(getUserData());
-			// dispatch({ type: CLEAR_ERRORS });
+			setAuthorizationHeader(res.data.loggedUser.token);
+			dispatch(actionCreator(AUTH_SUCCESS, res.data.loggedUser));
+			// dispatch(actionCreator(AUTH_CLEAR_ERRORS));
 			// history.push('/');
 		})
 		.catch((err) => {
-			/* dispatch({
-			type: SET_ERRORS,
-			payload: err.response.data,
-		}); */
+			dispatch(actionCreator(AUTH_FAILED, err.response.data))
 		});
 };
 

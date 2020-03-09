@@ -74,6 +74,7 @@ const signUpStudent = (newUser, res) => {
 				userId,
 				name: newUser.name,
 				email: newUser.email,
+				admin: false,
 				createdAt: new Date().toISOString(),
 			};
 
@@ -141,14 +142,28 @@ exports.login = (req, res) => {
 
 	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
 
+	const loggedUser = {}
+
 	firebase
 		.auth()
 		.signInWithEmailAndPassword(user.email, user.password)
 		.then((data) => {
+			loggedUser.uid = data.user.uid
 			return data.user.getIdToken();
 		})
 		.then((token) => {
-			return res.json({ token });
+			loggedUser.token = token
+
+			return db.collection("users")
+			.doc(loggedUser.uid)
+			.get()
+		})
+		.then(doc => {
+			loggedUser.email = doc.data().email
+			loggedUser.name = doc.data().name
+			loggedUser.admin = doc.data().admin
+
+			return res.json({ loggedUser })
 		})
 		.catch((error) => {
 			console.error(error);

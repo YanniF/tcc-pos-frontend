@@ -16,9 +16,9 @@ let randomNumber = Math.floor(Math.random() * 2);
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
 
-	if (props.isAuthenticatedEmployee) {
+	/* if (props.isAuthenticatedEmployee) {
 		return <Redirect to="/courses" />;
-	}
+	} */
 
 	return (
 		<div>

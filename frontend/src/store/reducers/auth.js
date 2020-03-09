@@ -1,8 +1,7 @@
 import { AUTH_START, AUTH_SUCCESS } from '../types';
 
 const initialState = {
-	token: null,
-	userId: null,
+	user: null,
 	error: null,
 	loading: false,
 };
@@ -17,7 +16,7 @@ const reducer = (state = initialState, action) => {
 		case AUTH_SUCCESS:
 			return {
 				...state,
-				token: '123',
+				user: action.payload,
 				loading: false,
 			};
 		default:
