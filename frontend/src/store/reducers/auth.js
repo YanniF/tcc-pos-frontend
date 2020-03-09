@@ -1,4 +1,4 @@
-import { AUTH_START, AUTH_SUCCESS } from '../types';
+import { AUTH_START, AUTH_SUCCESS, SET_UNAUTHENTICATED } from '../types';
 
 const initialState = {
 	user: null,
@@ -19,6 +19,8 @@ const reducer = (state = initialState, action) => {
 				user: action.payload,
 				loading: false,
 			};
+		case SET_UNAUTHENTICATED:
+			return initialState;
 		default:
 			return state;
 	}

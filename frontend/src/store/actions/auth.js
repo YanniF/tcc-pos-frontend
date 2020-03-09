@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
+import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,
@@ -23,7 +23,7 @@ export const login = (user) => (dispatch) => {
 			// history.push('/');
 		})
 		.catch((err) => {
-			dispatch(actionCreator(AUTH_FAILED, err.response.data))
+			dispatch(actionCreator(AUTH_FAILED, err.response.data));
 		});
 };
 
@@ -46,4 +46,12 @@ export const signupUser = (newUserData) => (dispatch) => {
 				payload: err.response.data,
 			}); */
 		});
+};
+
+export const logoutUser = () => (dispatch) => {
+	console.log('logout');
+	localStorage.removeItem('FBIdToken');
+	delete axios.defaults.headers.common['Authorization'];
+
+	dispatch({ type: SET_UNAUTHENTICATED });
 };

@@ -5,4 +5,4 @@ export const AUTH_CLEAR_ERRORS = 'AUTH_CLEAR_ERRORS';
 
 export const LOADING_USER = 'LOADING_USER';
 export const SET_USER = 'SET_USER';
-
+export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED';

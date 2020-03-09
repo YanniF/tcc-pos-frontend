@@ -6,6 +6,9 @@ import { TreeView, TreeItem } from '@material-ui/lab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 
 import Image from '../../shared/components/SVG/Professor';
 import ButtonIcon from '../../shared/components/ButtonIcon';
@@ -34,6 +37,14 @@ const styles = (theme) => ({
 		marginTop: '1rem',
 		padding: '.7rem',
 		width: '100%',
+	},
+	textIcon: {
+		display: 'flex',
+		alignItems: 'center',
+
+		'& svg': {
+			marginRight: '.5rem',
+		},
 	},
 });
 
@@ -81,7 +92,9 @@ function Details(props) {
 									nodeId="2"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Video 1</Typography>
+											<Typography className={classes.textIcon}>
+												<VideoLibraryIcon fontSize="small" /> Video 1
+											</Typography>
 											<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -92,7 +105,9 @@ function Details(props) {
 									nodeId="3"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Video 2</Typography>
+											<Typography className={classes.textIcon}>
+												<VideoLibraryIcon fontSize="small" /> Video 2
+											</Typography>
 											<ButtonIcon tip="Editar Vídeo">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -103,7 +118,9 @@ function Details(props) {
 									nodeId="4"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Video 3</Typography>
+											<Typography className={classes.textIcon}>
+												<VideoLibraryIcon fontSize="small" /> Video 3
+											</Typography>
 											<ButtonIcon tip="Editar Vídeo">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -128,7 +145,9 @@ function Details(props) {
 									nodeId="6"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Video 1</Typography>
+											<Typography className={classes.textIcon}>
+												<VideoLibraryIcon fontSize="small" /> Video 1
+											</Typography>
 											<ButtonIcon tip="Editar Vídeo">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -139,7 +158,9 @@ function Details(props) {
 									nodeId="7"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Video 2</Typography>
+											<Typography className={classes.textIcon}>
+												<VideoLibraryIcon fontSize="small" /> Video 2
+											</Typography>
 											<ButtonIcon tip="Editar Vídeo">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -150,7 +171,9 @@ function Details(props) {
 									nodeId="8"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Teste</Typography>
+											<Typography className={classes.textIcon}>
+												<SpeakerNotesIcon fontSize="small" /> Teste
+											</Typography>
 											<ButtonIcon tip="Editar Teste">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>
@@ -161,7 +184,9 @@ function Details(props) {
 									nodeId="9"
 									label={
 										<div className={classes.labelSubItem}>
-											<Typography>Documento</Typography>
+											<Typography className={classes.textIcon}>
+												<InsertDriveFileIcon fontSize="small" /> Documento
+											</Typography>
 											<ButtonIcon tip="Editar Material Complementar">
 												<EditIcon color="primary" fontSize="small" />
 											</ButtonIcon>

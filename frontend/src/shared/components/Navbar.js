@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
 import Logo from './Logo';
+import { logoutUser } from '../../store/actions/auth';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -19,7 +21,7 @@ const styles = (theme) => ({
 });
 // TODO: link para o relatorio
 function Navbar(props) {
-	const { classes } = props;
+	const { classes, logoutUser } = props;
 	return (
 		<AppBar>
 			<div className={classes.container}>
@@ -29,7 +31,7 @@ function Navbar(props) {
 						<Button color="inherit" component={NavLink} to="/courses" activeClassName={classes.activeLink}>
 							Cursos
 						</Button>
-						<Button color="inherit" component={NavLink} to="/logout" activeClassName={classes.activeLink}>
+						<Button color="inherit" onClick={logoutUser}>
 							Sair
 						</Button>
 					</div>
@@ -41,6 +43,7 @@ function Navbar(props) {
 
 Navbar.propTypes = {
 	classes: PropTypes.object,
+	logoutUser: PropTypes.func,
 };
 
-export default withStyles(styles)(Navbar);
+export default connect(null, { logoutUser })(withStyles(styles)(Navbar));

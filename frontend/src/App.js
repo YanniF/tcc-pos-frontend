@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -24,6 +25,23 @@ const styles = (theme) => ({
 
 // axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
 axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
+
+const token = localStorage.FBIdToken;
+
+if (token) {
+	const decodedToken = jwtDecode(token);
+	console.log(decodedToken);
+	if (decodedToken.exp * 1000 < Date.now()) {
+		// store.dispatch(logoutUser());
+		// window.location.href = '/login';
+	}
+	else {
+		// move to actions
+		// store.dispatch({ type: SET_AUTHENTICATED });
+		// axios.defaults.headers.common['Authorization'] = token;
+		// store.dispatch(getUserData());
+	}
+}
 
 function App(props) {
 	let routes = (
