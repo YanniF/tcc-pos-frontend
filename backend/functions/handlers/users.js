@@ -174,48 +174,4 @@ exports.getAuthenticatedUser = (req, res) => {
 			console.error(err);
 			return res.status(500).json({ error: err.code });
 		});
-}
-
-/* exports.login = (req, res) => {
-	const user = {
-		email: req.body.email,
-		password: req.body.password,
-	};
-
-	const { valid, errors } = validateLoginData(user);
-
-	if (!valid) {
-		return res.status(400).json(errors);
-	}
-
-	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
-
-	const loggedUser = {};
-
-	firebase
-		.auth()
-		.signInWithEmailAndPassword(user.email, user.password)
-		.then((data) => {
-			loggedUser.uid = data.user.uid;
-			return data.user.getIdToken();
-		})
-		.then((token) => {
-			loggedUser.token = token;
-
-			return db.collection('users').doc(loggedUser.uid).get();
-		})
-		.then((doc) => {
-			loggedUser.email = doc.data().email;
-			loggedUser.name = doc.data().name;
-			loggedUser.admin = doc.data().admin;
-
-			return res.json({ loggedUser });
-		})
-		.catch((error) => {
-			console.error(error);
-
-			return res.status(403).json({ general: 'Dados incorretos. Por favor, tente de novo' });
-		});
-}; */
-
-exports.getUserData = (req, res) => {};
+};

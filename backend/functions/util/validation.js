@@ -40,3 +40,16 @@ exports.validateLoginData = (data) => {
 		valid: Object.keys(errors).length === 0,
 	};
 };
+
+exports.validateCourseData = (data) => {
+	let errors = {};
+
+	if (isEmpty(data.title)) errors.title = 'Campo não pode ser vazio';
+	if (isEmpty(data.teacher)) errors.teacher = 'Campo não pode ser vazio';
+	if (isEmpty(data.category)) errors.category = 'Campo não pode ser vazio';
+
+	return {
+		errors,
+		valid: Object.keys(errors).length === 0,
+	};
+};
