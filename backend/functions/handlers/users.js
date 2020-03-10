@@ -142,6 +142,54 @@ exports.login = (req, res) => {
 
 	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
 
+	firebase
+		.auth()
+		.signInWithEmailAndPassword(user.email, user.password)
+		.then((data) => {
+			return data.user.getIdToken();
+		})
+		.then((token) => {
+			return res.json({ token });
+		})
+		.catch((error) => {
+			console.error(error);
+
+			return res.status(403).json({ general: 'Dados incorretos. Por favor, tente de novo' });
+		});
+};
+
+exports.getAuthenticatedUser = (req, res) => {
+	let userData = {};
+	db
+		.doc(`/users/${req.user.user_id}`)
+		.get()
+		.then((doc) => {
+			if (doc.exists) {
+				userData.credentials = doc.data();
+			}
+
+			return res.json(userData);
+		})
+		.catch((err) => {
+			console.error(err);
+			return res.status(500).json({ error: err.code });
+		});
+}
+
+/* exports.login = (req, res) => {
+	const user = {
+		email: req.body.email,
+		password: req.body.password,
+	};
+
+	const { valid, errors } = validateLoginData(user);
+
+	if (!valid) {
+		return res.status(400).json(errors);
+	}
+
+	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+
 	const loggedUser = {};
 
 	firebase
@@ -168,6 +216,6 @@ exports.login = (req, res) => {
 
 			return res.status(403).json({ general: 'Dados incorretos. Por favor, tente de novo' });
 		});
-};
+}; */
 
 exports.getUserData = (req, res) => {};

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
+import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,
@@ -12,13 +12,24 @@ const setAuthorizationHeader = (token) => {
 	axios.defaults.headers.common['Authorization'] = FBIdToken;
 };
 
+export const getUserData = () => (dispatch) => {
+	// dispatch({ type: LOADING_USER });
+	axios
+		.get('/user')
+		.then((res) => {
+			dispatch(actionCreator(SET_USER, res.data));
+		})
+		.catch((err) => console.log(err));
+};
+
 export const login = (user) => (dispatch) => {
 	dispatch(actionCreator(AUTH_START));
 	axios
 		.post('/login', user)
 		.then((res) => {
-			setAuthorizationHeader(res.data.loggedUser.token);
-			dispatch(actionCreator(AUTH_SUCCESS, res.data.loggedUser));
+			setAuthorizationHeader(res.data.token);
+			dispatch(getUserData());
+			// dispatch(actionCreator(AUTH_SUCCESS, res.data.loggedUser));
 			// dispatch(actionCreator(AUTH_CLEAR_ERRORS));
 			// history.push('/');
 		})
@@ -33,10 +44,8 @@ export const signupUser = (newUserData) => (dispatch) => {
 	axios
 		.post('/signup', newUserData)
 		.then((res) => {
-			console.log(res.data);
-
-			// setAuthorizationHeader(res.data.token);
-			// dispatch(getUserData());
+			setAuthorizationHeader(res.data.token);
+			dispatch(getUserData());
 			// dispatch({ type: CLEAR_ERRORS });
 			// history.push('/');
 		})
@@ -48,8 +57,7 @@ export const signupUser = (newUserData) => (dispatch) => {
 		});
 };
 
-export const logoutUser = () => (dispatch) => {
-	console.log('logout');
+export const logout = () => (dispatch) => {
 	localStorage.removeItem('FBIdToken');
 	delete axios.defaults.headers.common['Authorization'];
 

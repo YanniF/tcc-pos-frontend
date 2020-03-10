@@ -6,6 +6,8 @@ import jwtDecode from 'jwt-decode';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import { auth } from './store/actions';
+
 import Auth from './Auth';
 import Navbar from './shared/components/Navbar';
 import Courses from './Courses';
@@ -26,24 +28,23 @@ const styles = (theme) => ({
 // axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
 axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
 
-const token = localStorage.FBIdToken;
-
-if (token) {
-	const decodedToken = jwtDecode(token);
-	console.log(decodedToken);
-	if (decodedToken.exp * 1000 < Date.now()) {
-		// store.dispatch(logoutUser());
-		// window.location.href = '/login';
-	}
-	else {
-		// move to actions
-		// store.dispatch({ type: SET_AUTHENTICATED });
-		// axios.defaults.headers.common['Authorization'] = token;
-		// store.dispatch(getUserData());
-	}
-}
-
 function App(props) {
+	const token = localStorage.FBIdToken;
+
+	if (token) {
+		const decodedToken = jwtDecode(token);
+
+		if (decodedToken.exp * 1000 < Date.now()) {
+			props.logout()
+			window.location.href = '/login';
+		}
+		else {
+			// move to actions
+			axios.defaults.headers.common['Authorization'] = token;
+			props.getUserData()
+		}
+	}
+console.log(props)
 	let routes = (
 		<div className={props.classes.container}>
 			<Switch>
@@ -83,8 +84,13 @@ function App(props) {
 }
 
 const mapStateToProps = ({ auth }) => ({
-	isAuthenticatedEmployee: auth.user && auth.user.token && !auth.user.admin,
-	isAuthenticatedAdmin: auth.user && auth.user.token && auth.user.admin,
+	isAuthenticatedEmployee: auth.user && !auth.user.admin,
+	isAuthenticatedAdmin: auth.user && auth.user.admin,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(App));
+const mapDispatchToProps = {
+	logout: auth.logout,
+	getUserData: auth.getUserData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));

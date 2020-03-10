@@ -7,7 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
 import Logo from './Logo';
-import { logoutUser } from '../../store/actions/auth';
+import { logout } from '../../store/actions/auth';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -19,9 +19,10 @@ const styles = (theme) => ({
 		color: theme.palette.secondary.main,
 	},
 });
+
 // TODO: link para o relatorio
 function Navbar(props) {
-	const { classes, logoutUser } = props;
+	const { classes, logout } = props;
 	return (
 		<AppBar>
 			<div className={classes.container}>
@@ -31,7 +32,7 @@ function Navbar(props) {
 						<Button color="inherit" component={NavLink} to="/courses" activeClassName={classes.activeLink}>
 							Cursos
 						</Button>
-						<Button color="inherit" onClick={logoutUser}>
+						<Button color="inherit" onClick={logout}>
 							Sair
 						</Button>
 					</div>
@@ -43,7 +44,7 @@ function Navbar(props) {
 
 Navbar.propTypes = {
 	classes: PropTypes.object,
-	logoutUser: PropTypes.func,
+	logout: PropTypes.func,
 };
 
-export default connect(null, { logoutUser })(withStyles(styles)(Navbar));
+export default connect(null, { logout })(withStyles(styles)(Navbar));

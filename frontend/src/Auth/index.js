@@ -16,9 +16,14 @@ let randomNumber = Math.floor(Math.random() * 2);
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
 
-	/* if (props.isAuthenticatedEmployee) {
+/* 	if (props.isAuthenticatedEmployee) {
 		return <Redirect to="/courses" />;
-	} */
+	}
+*/
+	/* if (props.isAuthenticatedAdmin) {
+		console.log(props.isAuthenticatedAdmin)
+		return <Redirect to="/admin/courses" />;
+	}  */
 
 	return (
 		<div>
@@ -51,7 +56,8 @@ function Auth(props) {
 
 const mapStateToProps = ({ auth }) => ({
 	loading: auth.loading || false,
-	isAuthenticatedEmployee: auth.token !== null,
+	isAuthenticatedEmployee: auth.user && !auth.user.admin,
+	isAuthenticatedAdmin: auth.user && auth.user.admin,
 });
 
 const mapDispatchToProps = {
