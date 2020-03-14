@@ -11,6 +11,7 @@ const { getAllCoursesByUser, getCourse, addCourse, editCourse, deleteCourse } = 
 const { getAllModulesByCourse, getModule, addModule, editModule, deleteModule } = require('./handlers/modules');
 const { getAllVideosByModule, getVideo, addVideo, deleteVideo } = require('./handlers/videos');
 const { getAllDocumentsByModule, getDocument, addDocument, deleteDocument } = require('./handlers/documents');
+const { getAllRatingsByCourse, getRating, addRating, editRating, deleteRating } = require('./handlers/ratings');
 
 // Users routes
 app.post('/signup', signup);
@@ -51,11 +52,11 @@ app.delete('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', f
 // app.delete('/admin/courses/:courseId/modules/moduleId', fbAuth, deleteModule);
 
 // Rating routes
-// app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
-// app.post('/admin/courses/modules', fbAuth, addModule);
-// app.get('/admin/courses/:courseId/modules/moduleId', fbAuth, getModule);
-// app.put('/admin/courses/:courseId/modules/moduleId', fbAuth, editModule);
-// app.delete('/admin/courses/:courseId/modules/moduleId', fbAuth, deleteModule);
+app.get('/courses/:courseId/ratings', fbAuth, getAllRatingsByCourse);
+app.get('/courses/:courseId/ratings/:ratingId', fbAuth, getRating);
+app.post('/courses/:courseId/ratings', fbAuth, addRating);
+app.put('/courses/:courseId/ratings/:ratingId', fbAuth, editRating);
+app.delete('/courses/:courseId/ratings/:ratingId', fbAuth, deleteRating);
 
 // Report
 

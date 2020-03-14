@@ -1,21 +1,24 @@
 const { db } = require('../util/admin');
 
-exports.getAllModulesByCourse = (req, res) => {
+exports.getAllRatingsByCourse = (req, res) => {
 	db
-		.collection('modules')
+		.collection('ratings')
 		.where('courseId', '==', req.params.courseId)
 		.get()
 		.then((data) => {
-			let modules = [];
+			let ratings = [];
 
 			data.forEach((doc) => {
-				modules.push({
+				ratings.push({
 					id: doc.id,
-					title: doc.data().title,
+					rating: doc.data().rating,
+					comment: doc.data().comment,
+					createdBy: doc.data().createdBy,
+					cursoId: doc.data().cursoId,
 				});
 			});
 
-			return res.json(modules);
+			return res.json(ratings);
 		})
 		.catch((error) => {
 			res.status(500).json({ error: 'Something went wrong' });
@@ -23,18 +26,18 @@ exports.getAllModulesByCourse = (req, res) => {
 		});
 };
 
-exports.getModule = (req, res) => {
-	let module = {};
+exports.getRating = (req, res) => {
+	let rating = {};
 
 	db
-		.doc(`/modules/${req.params.moduleId}`)
+		.doc(`/ratings/${req.params.ratingId}`)
 		.get()
 		.then((doc) => {
 			if (doc.exists) {
-				module = doc.data();
+				rating = doc.data();
 			}
 
-			return res.json(module);
+			return res.json(rating);
 		})
 		.catch((err) => {
 			console.error(err);
@@ -42,12 +45,9 @@ exports.getModule = (req, res) => {
 		});
 };
 
-exports.addModule = (req, res) => {
-	if (req.body.title.trim() === '') {
-		return res.status(400).json({ title: 'Campo não pode ser vazio' });
-	}
-
-	let newModule = {};
+exports.addRating = (req, res) => {
+	// TODO - verificar se o aluno terminou o curso
+	let newRating = {};
 
 	db
 		.doc(`/courses/${req.params.courseId}`)
@@ -57,21 +57,22 @@ exports.addModule = (req, res) => {
 				res.status(404).json({ error: 'Curso não encontrado' });
 			}
 			else {
-				newModule = {
-					title: req.body.title,
+				newRating = {
+					rating: req.body.rating,
+					comment: req.body.comment,
 					courseId: req.params.courseId,
 					createdAt: new Date().toISOString(),
 					createdBy: req.user.user_id,
 				};
 
-				return db.collection('modules').add(newModule);
+				return db.collection('ratings').add(newRating);
 			}
 		})
 		.then((doc) => {
-			const resModule = newModule;
-			resModule.id = doc.id;
+			const resRating = newRating;
+			resRating.id = doc.id;
 
-			res.json(resModule);
+			res.json(resRating);
 		})
 		.catch((err) => {
 			console.error(err);
@@ -79,21 +80,22 @@ exports.addModule = (req, res) => {
 		});
 };
 
-exports.editModule = (req, res) => {
-	if (req.body.title.trim() === '') {
-		return res.status(400).json({ title: 'Campo não pode ser vazio' });
-	}
+exports.editRating = (req, res) => {
+	const rating = {
+		rating: req.body.rating,
+		comment: req.body.comment,
+	};
 
 	db
-		.doc(`/modules/${req.params.moduleId}`)
+		.doc(`/ratings/${req.params.ratingId}`)
 		.get()
 		.then((doc) => {
 			if (doc.exists && doc.data().createdBy === req.user.user_id) {
-				return db.doc(`/modules/${req.params.moduleId}`).update({ title: req.body.title });
+				return db.doc(`/ratings/${req.params.ratingId}`).update(rating);
 			}
 		})
 		.then(() => {
-			return res.json({ message: 'Módulo alterado com sucesso' });
+			return res.json({ message: 'Avaliação alterada com sucesso' });
 		})
 		.catch((err) => {
 			console.error(err);
@@ -101,14 +103,14 @@ exports.editModule = (req, res) => {
 		});
 };
 
-exports.deleteModule = (req, res) => {
-	const document = db.doc(`/modules/${req.params.moduleId}`);
+exports.deleteRating = (req, res) => {
+	const document = db.doc(`/ratings/${req.params.ratingId}`);
 
 	document
 		.get()
 		.then((doc) => {
 			if (!doc.exists) {
-				return res.status(404).json({ error: 'Módulo não encontrado' });
+				return res.status(404).json({ error: 'Avaliação não encontrada' });
 			}
 
 			if (doc.data().createdBy !== req.user.user_id) {
@@ -119,7 +121,7 @@ exports.deleteModule = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Módulo deletado com sucesso' });
+			res.json({ message: 'Avaliação deletada com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
