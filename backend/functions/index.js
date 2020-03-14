@@ -8,7 +8,7 @@ app.use(cors());
 
 const { signup, login, getAuthenticatedUser } = require('./handlers/users');
 const { getAllCoursesByUser, getCourse, addCourse, editCourse, deleteCourse } = require('./handlers/courses');
-// const { getAllModulesByCourse, addModule, getModule, editModule, deleteModule } = require('./handlers/modules');
+const { getAllModulesByCourse, addModule, getModule, editModule, deleteModule } = require('./handlers/modules');
 
 // Users routes
 app.post('/signup', signup);
@@ -23,11 +23,11 @@ app.put('/admin/courses/:courseId', fbAuth, editCourse);
 app.delete('/admin/courses/:courseId', fbAuth, deleteCourse);
 
 // Module routes
-// app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
-// app.post('/admin/courses/modules', fbAuth, addModule);
-// app.get('/admin/courses/:courseId/modules/moduleId', fbAuth, getModule);
-// app.put('/admin/courses/:courseId/modules/moduleId', fbAuth, editModule);
-// app.delete('/admin/courses/:courseId/modules/moduleId', fbAuth, deleteModule);
+app.get('/admin/courses/:courseId/modules', fbAuth, getAllModulesByCourse);
+app.post('/admin/courses/:courseId/modules', fbAuth, addModule);
+app.get('/admin/courses/:courseId/modules/:moduleId', fbAuth, getModule);
+app.put('/admin/courses/:courseId/modules/:moduleId', fbAuth, editModule);
+app.delete('/admin/courses/:courseId/modules/:moduleId', fbAuth, deleteModule);
 
 // Video routes
 // app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
