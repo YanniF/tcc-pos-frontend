@@ -10,6 +10,7 @@ const { signup, login, getAuthenticatedUser } = require('./handlers/users');
 const { getAllCoursesByUser, getCourse, addCourse, editCourse, deleteCourse } = require('./handlers/courses');
 const { getAllModulesByCourse, getModule, addModule, editModule, deleteModule } = require('./handlers/modules');
 const { getAllVideosByModule, getVideo, addVideo, deleteVideo } = require('./handlers/videos');
+const { getAllDocumentsByModule, getDocument, addDocument, deleteDocument } = require('./handlers/documents');
 
 // Users routes
 app.post('/signup', signup);
@@ -18,29 +19,29 @@ app.get('/user', fbAuth, getAuthenticatedUser);
 
 // Courses routes
 app.get('/admin/courses', fbAuth, getAllCoursesByUser);
-app.post('/admin/courses', fbAuth, addCourse);
 app.get('/admin/courses/:courseId', fbAuth, getCourse);
+app.post('/admin/courses', fbAuth, addCourse);
 app.put('/admin/courses/:courseId', fbAuth, editCourse);
 app.delete('/admin/courses/:courseId', fbAuth, deleteCourse);
 
 // Module routes
 app.get('/admin/courses/:courseId/modules', fbAuth, getAllModulesByCourse);
-app.post('/admin/courses/:courseId/modules', fbAuth, addModule);
 app.get('/admin/courses/:courseId/modules/:moduleId', fbAuth, getModule);
+app.post('/admin/courses/:courseId/modules', fbAuth, addModule);
 app.put('/admin/courses/:courseId/modules/:moduleId', fbAuth, editModule);
 app.delete('/admin/courses/:courseId/modules/:moduleId', fbAuth, deleteModule);
 
 // Video routes
 app.get('/admin/courses/:courseId/modules/:moduleId/videos', fbAuth, getAllVideosByModule);
-app.post('/admin/courses/:courseId/modules/:moduleId/videos', fbAuth, addVideo);
 app.get('/admin/courses/:courseId/modules/:moduleId/videos/:videoId', fbAuth, getVideo);
+app.post('/admin/courses/:courseId/modules/:moduleId/videos', fbAuth, addVideo);
 app.delete('/admin/courses/:courseId/modules/:moduleId/videos/:videoId', fbAuth, deleteVideo);
 
 // Document routes
-// app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
-// app.post('/admin/courses/modules', fbAuth, addModule);
-// app.get('/admin/courses/:courseId/modules/moduleId', fbAuth, getModule);
-// app.delete('/admin/courses/:courseId/modules/moduleId', fbAuth, deleteModule);
+app.get('/admin/courses/:courseId/modules/:moduleId/documents', fbAuth, getAllDocumentsByModule);
+app.get('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', fbAuth, getDocument);
+app.post('/admin/courses/:courseId/modules/:moduleId/documents', fbAuth, addDocument);
+app.delete('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', fbAuth, deleteDocument);
 
 // Tests routes
 // app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
