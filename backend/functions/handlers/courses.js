@@ -82,7 +82,7 @@ exports.addCourse = (req, res) => {
 		.add(newCourse)
 		.then((doc) => {
 			const resCourse = newCourse;
-			resCourse.courseId = doc.id;
+			resCourse.id = doc.id;
 
 			res.json(resCourse);
 		})

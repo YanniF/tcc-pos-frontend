@@ -69,7 +69,7 @@ exports.addModule = (req, res) => {
 		})
 		.then((doc) => {
 			const resModule = newModule;
-			resModule.moduleId = doc.id;
+			resModule.id = doc.id;
 
 			res.json(resModule);
 		})
