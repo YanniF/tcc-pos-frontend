@@ -91,6 +91,22 @@ exports.getCourse = (req, res) => {
 
 			course.documents = documents;
 
+			return db.collection('tests').where('moduleId', 'in', modulesIds).get();
+		})
+		.then((data) => {
+			let tests = [];
+
+			data.forEach((doc) => {
+				tests.push({
+					id: doc.id,
+					moduleId: doc.data().moduleId,
+					title: doc.data().title,
+					questions: doc.data().questions,
+				});
+			});
+
+			course.tests = tests;
+
 			return res.json(course);
 		})
 		.catch((err) => {
