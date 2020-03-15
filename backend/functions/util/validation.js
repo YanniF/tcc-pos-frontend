@@ -53,3 +53,20 @@ exports.validateCourseData = (data) => {
 		valid: Object.keys(errors).length === 0,
 	};
 };
+
+exports.validateTestData = (data) => {
+	let errors = {};
+
+	if (isEmpty(data.title)) errors.title = 'Campo não pode ser vazio';
+	if (data.questions.length === 0) errors.questions = 'Pelo menos uma questão deve ser adicionada';
+
+	/* data.questions.map(
+		(question) =>
+			(errors.options = question.options.length < 2 ? 'Pelo menos duas respostas devem ser adicionadas' : ''),
+	); */
+
+	return {
+		errors,
+		valid: Object.keys(errors).length === 0,
+	};
+};

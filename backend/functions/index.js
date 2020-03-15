@@ -12,6 +12,7 @@ const { getAllModulesByCourse, getModule, addModule, editModule, deleteModule } 
 const { getAllVideosByModule, getVideo, addVideo, deleteVideo } = require('./handlers/videos');
 const { getAllDocumentsByModule, getDocument, addDocument, deleteDocument } = require('./handlers/documents');
 const { getAllRatingsByCourse, getRating, addRating, editRating, deleteRating } = require('./handlers/ratings');
+const { getAllTestsByModule, getTest, addTest, editTest, deleteTest } = require('./handlers/tests');
 
 // Users routes
 app.post('/signup', signup);
@@ -45,11 +46,11 @@ app.post('/admin/courses/:courseId/modules/:moduleId/documents', fbAuth, addDocu
 app.delete('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', fbAuth, deleteDocument);
 
 // Tests routes
-// app.get('/admin/courses/modules', fbAuth, getAllModulesByCourse);
-// app.post('/admin/courses/modules', fbAuth, addModule);
-// app.get('/admin/courses/:courseId/modules/moduleId', fbAuth, getModule);
-// app.put('/admin/courses/:courseId/modules/moduleId', fbAuth, editModule);
-// app.delete('/admin/courses/:courseId/modules/moduleId', fbAuth, deleteModule);
+app.get('/admin/courses/:courseId/modules/:moduleId/tests', fbAuth, getAllTestsByModule);
+app.post('/admin/courses/:courseId/modules/:moduleId/tests', fbAuth, addTest);
+app.get('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, getTest);
+app.put('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, editTest);
+app.delete('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, deleteTest);
 
 // Rating routes
 app.get('/courses/:courseId/ratings', fbAuth, getAllRatingsByCourse);

@@ -10,7 +10,8 @@ exports.getAllVideosByModule = (req, res) => {
 
 			data.forEach((doc) => {
 				videos.push({
-					moduleId: doc.id,
+					id: doc.id,
+					moduleId: doc.data().moduleId,
 					title: doc.data().title,
 					link: doc.data().link,
 				});

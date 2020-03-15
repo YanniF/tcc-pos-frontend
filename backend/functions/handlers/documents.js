@@ -11,7 +11,8 @@ exports.getAllDocumentsByModule = (req, res) => {
 
 			data.forEach((doc) => {
 				documents.push({
-					moduleId: doc.id,
+					id: doc.id,
+					moduleId: doc.data().moduleId,
 					title: doc.data().title,
 					documentUrl: doc.data().documentUrl,
 				});

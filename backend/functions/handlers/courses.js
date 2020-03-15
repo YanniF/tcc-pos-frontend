@@ -33,6 +33,7 @@ exports.getAllCoursesByUser = (req, res) => {
 
 exports.getCourse = (req, res) => {
 	let course = {};
+	let modulesIds = [];
 
 	db
 		.doc(`/courses/${req.params.courseId}`)
@@ -40,7 +41,55 @@ exports.getCourse = (req, res) => {
 		.then((doc) => {
 			if (doc.exists) {
 				course = doc.data();
+
+				return db.collection('modules').where('courseId', '==', req.params.courseId).get();
 			}
+		})
+		.then((data) => {
+			let modules = [];
+
+			data.forEach((doc) => {
+				modules.push({
+					id: doc.id,
+					title: doc.data().title,
+				});
+			});
+
+			course.modules = modules;
+
+			modulesIds = modules.map((module) => module.id);
+
+			return db.collection('videos').where('moduleId', 'in', modulesIds).get();
+		})
+		.then((data) => {
+			let videos = [];
+
+			data.forEach((doc) => {
+				videos.push({
+					id: doc.id,
+					moduleId: doc.data().moduleId,
+					title: doc.data().title,
+					link: doc.data().link,
+				});
+			});
+
+			course.videos = videos;
+
+			return db.collection('documents').where('moduleId', 'in', modulesIds).get();
+		})
+		.then((data) => {
+			let documents = [];
+
+			data.forEach((doc) => {
+				documents.push({
+					id: doc.id,
+					moduleId: doc.data().moduleId,
+					title: doc.data().title,
+					documentUrl: doc.data().documentUrl,
+				});
+			});
+
+			course.documents = documents;
 
 			return res.json(course);
 		})
@@ -65,6 +114,7 @@ exports.addCourse = (req, res) => {
 		return res.status(400).json(errors);
 	}
 
+	// destructuring?
 	const newCourse = {
 		title: req.body.title,
 		teacher: req.body.teacher,
