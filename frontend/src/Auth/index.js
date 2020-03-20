@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +15,7 @@ let randomNumber = Math.floor(Math.random() * 2);
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
 
-/* 	if (props.isAuthenticatedEmployee) {
+	/* 	if (props.isAuthenticatedEmployee) {
 		return <Redirect to="/courses" />;
 	}
 */

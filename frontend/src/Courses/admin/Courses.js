@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Paper, Button, Typography } from '@material-ui/core';
@@ -6,10 +7,10 @@ import { Grid, Paper, Button, Typography } from '@material-ui/core';
 import SearchInput from '../../shared/components/SearchInput';
 import CourseCard from '../components/CourseCard';
 import coursesStyles from '../coursesStyles';
-import image1 from '../../shared/assets/thumb1.jpg';
-import image2 from '../../shared/assets/thumb2.jpg';
 import Notifications from './Notifications';
 import CourseModal from './CourseModal';
+
+import { courses } from '../../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -22,49 +23,25 @@ const styles = (theme) => ({
 });
 
 function Courses(props) {
-	const [ open, setOpen ] = useState(false);
+	const { open, setModalVisibility, courses, getAllCourses } = props;
 
-	const courses = [
-		{
-			id: 1,
-			title: 'Titulo do Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 5, numberOfRatings: 10 },
+	useEffect(
+		() => {
+			getAllCourses();
 		},
-		{
-			id: 2,
-			title: 'Titulo do Curso',
-			teacher: 'John Doe',
-			image: image2,
-			rating: { rating: 3.5, numberOfRatings: 8 },
-		},
-		{
-			id: 3,
-			title: 'Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 4, numberOfRatings: 90 },
-		},
-		{
-			id: 4,
-			title: 'Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 4, numberOfRatings: 90 },
-		},
-	];
+		[ getAllCourses ],
+	);
 
 	const handleSetVisibility = (open) => {
-		setOpen(open);
+		setModalVisibility(open);
 	};
 
-	const handleAddCourse = () => {
-		const id = 1;
-		props.history.push(`/admin/courses/${id}/details/`);
+	const handleAddCourse = (course) => {
+		const { history, addCourse } = props;
+		addCourse(course, history);
 	};
 
-	const { classes } = props;
+	const { classes, loading } = props;
 
 	return (
 		<main className={classes.main}>
@@ -97,9 +74,21 @@ function Courses(props) {
 					<Notifications />
 				</Grid>
 			</Grid>
-			<CourseModal open={open} setVisibility={handleSetVisibility} addCourse={handleAddCourse} />
+			<CourseModal open={open} setVisibility={handleSetVisibility} addCourse={handleAddCourse} loading={loading} />
 		</main>
 	);
 }
 
-export default withStyles(styles)(Courses);
+const mapStateToProps = ({ courses }) => ({
+	loading: courses.loading || false,
+	open: courses.courseModalOpen,
+	courses: courses.courses || [],
+});
+
+const mapDispatchToProps = {
+	setModalVisibility: courses.setModalVisibility,
+	addCourse: courses.addCourse,
+	getAllCourses: courses.getAllCourses,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Courses));

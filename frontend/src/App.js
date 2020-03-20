@@ -35,16 +35,16 @@ function App(props) {
 		const decodedToken = jwtDecode(token);
 
 		if (decodedToken.exp * 1000 < Date.now()) {
-			props.logout()
+			props.logout();
 			window.location.href = '/login';
 		}
 		else {
 			// move to actions
 			axios.defaults.headers.common['Authorization'] = token;
-			props.getUserData()
+			props.getUserData();
 		}
 	}
-console.log(props)
+
 	let routes = (
 		<div className={props.classes.container}>
 			<Switch>

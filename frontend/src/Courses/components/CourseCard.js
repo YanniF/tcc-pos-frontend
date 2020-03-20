@@ -23,6 +23,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import Assignment from '@material-ui/icons/Assignment';
 
+import image from '../../shared/assets/thumb1.jpg';
+
 const styles = (theme) => ({
 	...theme.properties,
 	image: {
@@ -50,13 +52,17 @@ const styles = (theme) => ({
 
 function CourseCard(props) {
 	const [ anchorEl, setAnchorEl ] = React.useState(null);
-	const { course: { id, title, teacher, image, rating }, isFinished, isAdmin } = props;
+	const {
+		course: { id, title, teacher, description, rating, numberOfRatings, enrolledCount, finishedCount },
+		isFinished,
+		isAdmin,
+	} = props;
 	const { classes } = props;
 
 	const isFinishedLinks = [ { id: 1, text: 'Avaliar', link: '/' }, { id: 2, text: 'Certificado', link: '/' } ];
 
 	const isAdminLinks = [
-		{ id: 1, text: 'Detalhes', link: '/' },
+		{ id: 1, text: 'Detalhes', link: `/admin/courses/${id}/details` },
 		{ id: 2, text: 'Editar', link: '/' },
 		{ id: 3, text: 'Excluir', link: '/' },
 	];
@@ -109,24 +115,23 @@ function CourseCard(props) {
 			<CardContent>
 				<Link to={`/courses/${id}/details`} style={{ textDecoration: 'none' }}>
 					<Typography variant="body1" color="textSecondary" component="p">
-						This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup
-						of frozen peas along with the mussels, if you like.
+						{description}
 					</Typography>
 				</Link>
 				<div style={{ display: 'flex', marginTop: '1rem' }}>
-					<Rating value={rating.rating} precision={0.5} readOnly />
+					<Rating value={rating} precision={0.5} readOnly />
 					<Typography component="legend" color="textSecondary" style={{ marginLeft: '.5rem' }}>
-						{rating.numberOfRatings} avaliações
+						{numberOfRatings} avaliações
 					</Typography>
 				</div>
 				{isAdmin && (
 					<React.Fragment>
 						<Divider className={classes.divider} />
 						<Typography variant="body1" color="textSecondary" component="div" className={classes.wrapper}>
-							<PeopleAlt /> Matriculados: 80 alunos
+							<PeopleAlt /> Matriculados: {enrolledCount} alunos
 						</Typography>
 						<Typography variant="body1" color="textSecondary" component="div" className={classes.wrapper}>
-							<Assignment /> Concluídos: 10 alunos
+							<Assignment /> Concluídos: {finishedCount} alunos
 						</Typography>
 					</React.Fragment>
 				)}
