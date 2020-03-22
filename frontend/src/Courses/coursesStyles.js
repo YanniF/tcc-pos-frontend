@@ -12,4 +12,10 @@ export default {
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
+	loaderWrapper: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '80vh',
+	},
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
@@ -25,7 +25,17 @@ const styles = (theme) => ({
 function CourseModal(props) {
 	const [ values, setValues ] = useState({ title: '', teacher: '', category: '', description: '' });
 	const [ fileName, seFileName ] = useState('');
-	const { classes, open, setVisibility, addCourse, loading } = props;
+	const { classes, open, setVisibility, addCourse, editCourse, loading, course } = props;
+
+	useEffect(
+		() => {
+			if (!!course) {
+				const { title, teacher, category, description } = course;
+				setValues({ id: course.id, title, teacher, category, description });
+			}
+		},
+		[ course ],
+	);
 
 	const handleUploadFile = (e) => {
 		const { files = [] } = e.target;
@@ -39,7 +49,25 @@ function CourseModal(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		addCourse(values);
+
+		if (!!course) {
+			editCourse(values);
+		}
+		else {
+			addCourse(values);
+		}
+	};
+
+	const handleCancel = () => {
+		setVisibility(false);
+
+		if (!!course) {
+			const { title, teacher, category, description } = course;
+			setValues({ id: course.id, title, teacher, category, description });
+		}
+		else {
+			setValues({ title: '', teacher: '', category: '', description: '' });
+		}
 	};
 
 	return (
@@ -108,11 +136,11 @@ function CourseModal(props) {
 					</label>
 				</DialogContent>
 				<DialogActions style={{ marginRight: '1rem' }}>
-					<Button onClick={() => setVisibility(false)} color="primary">
+					<Button onClick={handleCancel} color="primary" disabled={loading}>
 						Cancelar
 					</Button>
 					<Button type="submit" color="secondary">
-						{loading ? <CircularProgress size={24} color="primary" /> : 'Cadastrar Curso'}
+						{loading ? <CircularProgress size={24} color="primary" /> : 'Salvar'}
 					</Button>
 				</DialogActions>
 			</form>

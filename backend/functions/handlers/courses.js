@@ -12,7 +12,7 @@ exports.getAllCoursesByUser = (req, res) => {
 
 			data.forEach((doc) => {
 				courses.push({
-					courseId: doc.id,
+					id: doc.id,
 					title: doc.data().title,
 					teacher: doc.data().teacher,
 					category: doc.data().category,
@@ -20,6 +20,8 @@ exports.getAllCoursesByUser = (req, res) => {
 					// thumbnail: doc.data().thumbnail,
 					enrolledCount: doc.data().enrolledCount,
 					finishedCount: doc.data().finishedCount,
+					rating: doc.data().rating,
+					numberOfRatings: doc.data().numberOfRatings,
 				});
 			});
 
@@ -41,6 +43,7 @@ exports.getCourse = (req, res) => {
 		.then((doc) => {
 			if (doc.exists) {
 				course = doc.data();
+				course.id = doc.id;
 
 				return db.collection('modules').where('courseId', '==', req.params.courseId).get();
 			}
@@ -56,58 +59,69 @@ exports.getCourse = (req, res) => {
 			});
 
 			course.modules = modules;
+			if (modules.length > 0) {
+				modulesIds = modules.map((module) => module.id);
 
-			modulesIds = modules.map((module) => module.id);
+				db
+					.collection('videos')
+					.where('moduleId', 'in', modulesIds)
+					.get()
+					.then((data) => {
+						let videos = [];
 
-			return db.collection('videos').where('moduleId', 'in', modulesIds).get();
-		})
-		.then((data) => {
-			let videos = [];
+						data.forEach((doc) => {
+							videos.push({
+								id: doc.id,
+								moduleId: doc.data().moduleId,
+								title: doc.data().title,
+								link: doc.data().link,
+							});
+						});
 
-			data.forEach((doc) => {
-				videos.push({
-					id: doc.id,
-					moduleId: doc.data().moduleId,
-					title: doc.data().title,
-					link: doc.data().link,
-				});
-			});
+						course.videos = videos;
 
-			course.videos = videos;
+						return db.collection('documents').where('moduleId', 'in', modulesIds).get();
+					})
+					.then((data) => {
+						let documents = [];
 
-			return db.collection('documents').where('moduleId', 'in', modulesIds).get();
-		})
-		.then((data) => {
-			let documents = [];
+						data.forEach((doc) => {
+							documents.push({
+								id: doc.id,
+								moduleId: doc.data().moduleId,
+								title: doc.data().title,
+								documentUrl: doc.data().documentUrl,
+							});
+						});
 
-			data.forEach((doc) => {
-				documents.push({
-					id: doc.id,
-					moduleId: doc.data().moduleId,
-					title: doc.data().title,
-					documentUrl: doc.data().documentUrl,
-				});
-			});
+						course.documents = documents;
 
-			course.documents = documents;
+						return db.collection('tests').where('moduleId', 'in', modulesIds).get();
+					})
+					.then((data) => {
+						let tests = [];
 
-			return db.collection('tests').where('moduleId', 'in', modulesIds).get();
-		})
-		.then((data) => {
-			let tests = [];
+						data.forEach((doc) => {
+							tests.push({
+								id: doc.id,
+								moduleId: doc.data().moduleId,
+								title: doc.data().title,
+								questions: doc.data().questions,
+							});
+						});
 
-			data.forEach((doc) => {
-				tests.push({
-					id: doc.id,
-					moduleId: doc.data().moduleId,
-					title: doc.data().title,
-					questions: doc.data().questions,
-				});
-			});
+						course.tests = tests;
 
-			course.tests = tests;
+						return res.json(course);
+					});
+			}
+			else {
+				course.videos = [];
+				course.documents = [];
+				course.tests = [];
 
-			return res.json(course);
+				return res.json(course);
+			}
 		})
 		.catch((err) => {
 			console.error(err);
@@ -141,6 +155,8 @@ exports.addCourse = (req, res) => {
 		createdAt: new Date().toISOString(),
 		enrolledCount: 0,
 		finishedCount: 0,
+		rating: 0,
+		numberOfRatings: 0,
 	};
 
 	db

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
+import { AUTH_START, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED } from '../types';
+// import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,

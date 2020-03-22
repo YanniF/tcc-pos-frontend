@@ -56,22 +56,43 @@ function CourseCard(props) {
 		course: { id, title, teacher, description, rating, numberOfRatings, enrolledCount, finishedCount },
 		isFinished,
 		isAdmin,
+		classes,
+		setSelectedCourse,
+		setModalDeleteVisibility,
 	} = props;
-	const { classes } = props;
 
 	const isFinishedLinks = [ { id: 1, text: 'Avaliar', link: '/' }, { id: 2, text: 'Certificado', link: '/' } ];
 
 	const isAdminLinks = [
-		{ id: 1, text: 'Detalhes', link: `/admin/courses/${id}/details` },
-		{ id: 2, text: 'Editar', link: '/' },
-		{ id: 3, text: 'Excluir', link: '/' },
+		{ id: 1, text: 'Detalhes', link: '' },
+		{ id: 2, text: 'Editar', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
+		{
+			id: 3,
+			text: 'Excluir',
+			link: '',
+			disabled: enrolledCount !== 0,
+			onClick: () => setModalDeleteVisibility(true, id),
+		},
 	];
 
-	const menuLink = (id, text, link) => (
-		<Link to={link} key={id} className={classes.undecoratedLink}>
-			<MenuItem>{text}</MenuItem>
-		</Link>
-	);
+	const menuLink = ({ id, text, link, disabled, onClick }) => {
+		if (link) {
+			return (
+				<Link to={link} key={id} className={classes.undecoratedLink}>
+					<MenuItem disabled={disabled} onClick={onClick}>
+						{text}
+					</MenuItem>
+				</Link>
+			);
+		}
+		else {
+			return (
+				<MenuItem key={id} disabled={disabled} onClick={onClick}>
+					{text}
+				</MenuItem>
+			);
+		}
+	};
 
 	return (
 		<Card>
@@ -104,7 +125,7 @@ function CourseCard(props) {
 							<ClickAwayListener onClickAway={() => setAnchorEl(null)}>
 								<MenuList autoFocusItem={!!anchorEl} id="menu-list-grow">
 									{isFinished && isFinishedLinks.map(({ id, text, link }) => menuLink(id, text, link))}
-									{isAdmin && isAdminLinks.map(({ id, text, link }) => menuLink(id, text, link))}
+									{isAdmin && isAdminLinks.map((menu) => menuLink(menu))}
 								</MenuList>
 							</ClickAwayListener>
 						</Paper>
