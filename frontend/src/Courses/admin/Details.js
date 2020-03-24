@@ -100,125 +100,86 @@ function Details(props) {
 									</ButtonIcon>
 								</div>
 								<TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-									<TreeItem
-										nodeId="1"
-										label={
-											<div className={classes.labelItem}>
-												<Typography variant="h6" component="h4">
-													Módulo 1
-												</Typography>
-												<ButtonIcon tip="Editar Módulo" onClick={() => handleSetVisibilityContent(true)}>
-													<EditIcon color="primary" fontSize="small" />
-												</ButtonIcon>
-											</div>
-										}
-									>
+									{selectedCourse.modules.map((module) => (
 										<TreeItem
-											nodeId="2"
+											key={module.id}
+											nodeId={module.id}
 											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<VideoLibraryIcon fontSize="small" /> Video 1
+												<div className={classes.labelItem}>
+													<Typography variant="h6" component="h4">
+														{module.title}
 													</Typography>
-													<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
+													<ButtonIcon tip="Editar Módulo" onClick={() => handleSetVisibilityContent(true)}>
 														<EditIcon color="primary" fontSize="small" />
 													</ButtonIcon>
 												</div>
 											}
-										/>
-										<TreeItem
-											nodeId="3"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<VideoLibraryIcon fontSize="small" /> Video 2
-													</Typography>
-													<ButtonIcon tip="Editar Vídeo">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-										<TreeItem
-											nodeId="4"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<VideoLibraryIcon fontSize="small" /> Video 3
-													</Typography>
-													<ButtonIcon tip="Editar Vídeo">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-									</TreeItem>
-									<TreeItem
-										nodeId="5"
-										label={
-											<div className={classes.labelItem}>
-												<Typography variant="h6" component="h4">
-													Módulo 2
-												</Typography>
-												<ButtonIcon tip="Editar Módulo">
-													<EditIcon color="primary" fontSize="small" />
-												</ButtonIcon>
-											</div>
-										}
-									>
-										<TreeItem
-											nodeId="6"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<VideoLibraryIcon fontSize="small" /> Video 1
-													</Typography>
-													<ButtonIcon tip="Editar Vídeo">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-										<TreeItem
-											nodeId="7"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<VideoLibraryIcon fontSize="small" /> Video 2
-													</Typography>
-													<ButtonIcon tip="Editar Vídeo">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-										<TreeItem
-											nodeId="8"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<SpeakerNotesIcon fontSize="small" /> Teste
-													</Typography>
-													<ButtonIcon tip="Editar Teste">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-										<TreeItem
-											nodeId="9"
-											label={
-												<div className={classes.labelSubItem}>
-													<Typography className={classes.textIcon}>
-														<InsertDriveFileIcon fontSize="small" /> Documento
-													</Typography>
-													<ButtonIcon tip="Editar Material Complementar">
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										/>
-									</TreeItem>
+										>
+											{selectedCourse.videos.map(
+												(video) =>
+													video.moduleId === module.id ? (
+														<TreeItem
+															key={video.id}
+															nodeId={video.id}
+															label={
+																<div className={classes.labelSubItem}>
+																	<Typography className={classes.textIcon}>
+																		<VideoLibraryIcon fontSize="small" /> {video.title}
+																	</Typography>
+																	<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
+																		<EditIcon color="primary" fontSize="small" />
+																	</ButtonIcon>
+																</div>
+															}
+														/>
+													) : (
+														<span key={Math.random()} />
+													),
+											)}
+											{selectedCourse.documents.map(
+												(doc) =>
+													doc.moduleId === module.id ? (
+														<TreeItem
+															key={doc.id}
+															nodeId={doc.id}
+															label={
+																<div className={classes.labelSubItem}>
+																	<Typography className={classes.textIcon}>
+																		<InsertDriveFileIcon fontSize="small" /> {doc.title}
+																	</Typography>
+																	<ButtonIcon tip="Editar Material Complementar">
+																		<EditIcon color="primary" fontSize="small" />
+																	</ButtonIcon>
+																</div>
+															}
+														/>
+													) : (
+														<span key={Math.random()} />
+													),
+											)}
+											{selectedCourse.tests.map(
+												(test) =>
+													test.moduleId === module.id ? (
+														<TreeItem
+															key={test.id}
+															nodeId={test.id}
+															label={
+																<div className={classes.labelSubItem}>
+																	<Typography className={classes.textIcon}>
+																		<SpeakerNotesIcon fontSize="small" /> Teste
+																	</Typography>
+																	<ButtonIcon tip="Editar Teste">
+																		<EditIcon color="primary" fontSize="small" />
+																	</ButtonIcon>
+																</div>
+															}
+														/>
+													) : (
+														<span key={Math.random()} />
+													),
+											)}
+										</TreeItem>
+									))}
 								</TreeView>
 							</Paper>
 						</Grid>
@@ -229,7 +190,7 @@ function Details(props) {
 									color="secondary"
 									variant="contained"
 									className={classes.btnLarge}
-									onClick={() => console.log('matricular')}
+									onClick={() => handleSetVisibilityContent(true)}
 								>
 									Adicionar Conteúdo
 								</Button>

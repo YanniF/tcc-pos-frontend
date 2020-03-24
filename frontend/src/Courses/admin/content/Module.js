@@ -8,11 +8,21 @@ const styles = (theme) => ({
 });
 
 function Module(props) {
-	const { classes } = props;
+	const { classes, values, onChange } = props;
 
 	return (
 		<div>
-			<TextField id="title" label="Título" className={classes.inputSpacing} variant="outlined" fullWidth required />
+			<TextField
+				id="title"
+				name="title"
+				value={values.title}
+				label="Título"
+				onChange={(e) => onChange(e.target.name, e.target.value)}
+				className={classes.inputSpacing}
+				variant="outlined"
+				fullWidth
+				required
+			/>
 		</div>
 	);
 }

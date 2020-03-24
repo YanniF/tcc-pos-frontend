@@ -45,7 +45,7 @@ exports.getCourse = (req, res) => {
 				course = doc.data();
 				course.id = doc.id;
 
-				return db.collection('modules').where('courseId', '==', req.params.courseId).get();
+				return db.collection('modules').where('courseId', '==', req.params.courseId).orderBy('title', 'asc').get();
 			}
 		})
 		.then((data) => {
@@ -65,6 +65,7 @@ exports.getCourse = (req, res) => {
 				db
 					.collection('videos')
 					.where('moduleId', 'in', modulesIds)
+					.orderBy('title', 'asc')
 					.get()
 					.then((data) => {
 						let videos = [];
@@ -80,7 +81,7 @@ exports.getCourse = (req, res) => {
 
 						course.videos = videos;
 
-						return db.collection('documents').where('moduleId', 'in', modulesIds).get();
+						return db.collection('documents').where('moduleId', 'in', modulesIds).orderBy('title', 'asc').get();
 					})
 					.then((data) => {
 						let documents = [];
@@ -96,7 +97,7 @@ exports.getCourse = (req, res) => {
 
 						course.documents = documents;
 
-						return db.collection('tests').where('moduleId', 'in', modulesIds).get();
+						return db.collection('tests').where('moduleId', 'in', modulesIds).orderBy('title', 'asc').get();
 					})
 					.then((data) => {
 						let tests = [];

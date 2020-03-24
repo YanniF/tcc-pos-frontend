@@ -8,20 +8,49 @@ const styles = (theme) => ({
 });
 
 function Video(props) {
-	const { classes } = props;
+	const { classes, modules, values, onChange } = props;
 
 	return (
 		<div>
 			<FormControl variant="outlined" fullWidth className={classes.inputSpacing}>
 				<InputLabel id="module">Módulo</InputLabel>
-				<Select labelId="module" id="module" labelWidth={55}>
-					<MenuItem value={10}>Módulo 1</MenuItem>
-					<MenuItem value={20}>Módulo 2</MenuItem>
-					<MenuItem value={30}>Módulo 3</MenuItem>
+				<Select
+					labelId="module"
+					id="module"
+					name="module"
+					labelWidth={55}
+					value={values.module}
+					onChange={(e) => onChange(e.target.name, e.target.value)}
+				>
+					{modules.map((module) => (
+						<MenuItem key={module.id} value={module.id}>
+							{module.title}
+						</MenuItem>
+					))}
 				</Select>
 			</FormControl>
-			<TextField id="title" label="Título" className={classes.inputSpacing} variant="outlined" fullWidth required />
-			<TextField id="link" label="Link" className={classes.inputSpacing} variant="outlined" fullWidth required />
+			<TextField
+				id="title"
+				name="title"
+				value={values.title}
+				label="Título"
+				className={classes.inputSpacing}
+				variant="outlined"
+				onChange={(e) => onChange(e.target.name, e.target.value)}
+				fullWidth
+				required
+			/>
+			<TextField
+				id="link"
+				name="link"
+				value={values.link}
+				label="Link"
+				className={classes.inputSpacing}
+				variant="outlined"
+				onChange={(e) => onChange(e.target.name, e.target.value)}
+				fullWidth
+				required
+			/>
 		</div>
 	);
 }

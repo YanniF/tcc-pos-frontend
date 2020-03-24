@@ -18,6 +18,9 @@ import {
 	REQUEST_DELETE_COURSE,
 	SUCCESS_DELETE_COURSE,
 	FAILED_DELETE_COURSE,
+	REQUEST_ADD_CONTENT,
+	SUCCESS_ADD_CONTENT,
+	FAILED_ADD_CONTENT,
 } from '../types';
 
 const initialState = {
@@ -73,6 +76,7 @@ const reducer = (state = initialState, action) => {
 		case REQUEST_ADD_COURSE:
 		case REQUEST_EDIT_COURSE:
 		case REQUEST_DELETE_COURSE:
+		case REQUEST_ADD_CONTENT:
 			return {
 				...state,
 				loading: true,
@@ -97,11 +101,24 @@ const reducer = (state = initialState, action) => {
 				loading: false,
 				deleteModalOpen: false,
 			};
+		case SUCCESS_ADD_CONTENT: {
+			const { key, data } = action.payload;
+
+			return {
+				...state,
+				selectedCourse: {
+					...state.selectedCourse,
+					[key]: [ ...state.selectedCourse[key], data ],
+				},
+				loading: false,
+			};
+		}
 		case FAILED_GET_COURSES:
 		case FAILED_ADD_COURSE:
 		case FAILED_GET_COURSE:
 		case FAILED_EDIT_COURSE:
 		case FAILED_DELETE_COURSE:
+		case FAILED_ADD_CONTENT:
 			return {
 				error: action.payload,
 				loading: false,

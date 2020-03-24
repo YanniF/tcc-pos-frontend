@@ -20,6 +20,9 @@ import {
 	REQUEST_DELETE_COURSE,
 	SUCCESS_DELETE_COURSE,
 	FAILED_DELETE_COURSE,
+	REQUEST_ADD_CONTENT,
+	SUCCESS_ADD_CONTENT,
+	FAILED_ADD_CONTENT,
 } from '../types';
 
 const actionCreator = (type, payload) => ({
@@ -97,4 +100,24 @@ export const deleteCourse = (id) => (dispatch) => {
 			dispatch(actionCreator(SUCCESS_DELETE_COURSE, id));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_DELETE_COURSE, err)));
+};
+
+export const addContent = (type, courseId, content) => (dispatch) => {
+	dispatch(actionCreator(REQUEST_ADD_CONTENT));
+	let endpoint;
+	let moduleId = content.module || content.get('module');
+
+	if (type === 'modules') {
+		endpoint = `/admin/courses/${courseId}/${type}`;
+	}
+	else {
+		endpoint = `/admin/courses/${courseId}/modules/${moduleId}/${type}`;
+	}
+
+	axios
+		.post(endpoint, content)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_ADD_CONTENT, { key: type, data: res.data }));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_ADD_CONTENT, err)));
 };

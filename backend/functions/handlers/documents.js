@@ -54,13 +54,16 @@ exports.addDocument = (req, res) => {
 	const busboy = new BusBoy({ headers: req.headers });
 	let documentFileName,
 		documentToBeUploaded = {},
-		documentUrl;
+		documentUrl,
+		documentTitle,
+		newDocument = {};
 
 	busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 		// TODO - verificar se tem restricao de formato dos arquivos
 		/* if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
 			return res.status(400).json({ error: 'Wrong file type submitted' });
 		} */
+		documentTitle = fieldname;
 
 		const documentExtension = filename.split('.').pop();
 		documentFileName = Math.round(Math.random() * 10000000) + '.' + documentExtension;
@@ -85,34 +88,35 @@ exports.addDocument = (req, res) => {
 			.then(() => {
 				documentUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${documentFileName}?alt=media`;
 
-				if (req.body.title.trim() === '') {
-					return res.status(400).json({ title: 'Campo não pode ser vazio' });
+				if (documentTitle.trim() === '') {
+					res.status(400).json({ title: 'Campo não pode ser vazio' });
 				}
 
-				let newDocument = {};
+				db
+					.doc(`/modules/${req.params.moduleId}`)
+					.get()
+					.then((doc) => {
+						if (!doc.exists) {
+							return res.status(404).json({ error: 'Módulo não encontrado' });
+						}
+						else {
+							newDocument = {
+								title: documentTitle,
+								documentUrl,
+								moduleId: req.params.moduleId,
+								createdAt: new Date().toISOString(),
+								createdBy: req.user.user_id,
+							};
 
-				db.doc(`/modules/${req.params.moduleId}`).get().then((doc) => {
-					if (!doc.exists) {
-						res.status(404).json({ error: 'Módulo não encontrado' });
-					}
-					else {
-						newDocument = {
-							title: req.body.title,
-							documentUrl,
-							moduleId: req.params.moduleId,
-							createdAt: new Date().toISOString(),
-							createdBy: req.user.user_id,
-						};
+							return db.collection('documents').add(newDocument);
+						}
+					})
+					.then((doc) => {
+						const resDocument = newDocument;
+						resDocument.id = doc.id;
 
-						return db.collection('documents').add(newDocument);
-					}
-				});
-			})
-			.then((doc) => {
-				const resDocument = newDocument;
-				resDocument.id = doc.id;
-
-				res.json(resDocument);
+						return res.json(resDocument);
+					});
 			})
 			.catch((err) => {
 				console.error(err);
