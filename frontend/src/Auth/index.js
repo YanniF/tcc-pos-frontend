@@ -24,6 +24,11 @@ function Auth(props) {
 		return <Redirect to="/admin/courses" />;
 	}  */
 
+	const handleChangeForm = (value) => {
+		setShowLogin(value);
+		props.clearAuthErrors();
+	};
+
 	return (
 		<div>
 			<Logo />
@@ -35,16 +40,18 @@ function Auth(props) {
 					{showLogin ? (
 						<Login
 							showLogin={showLogin}
-							changeForm={() => setShowLogin(false)}
+							changeForm={() => handleChangeForm(false)}
 							loading={props.loading}
 							login={props.login}
+							errors={props.errors}
 						/>
 					) : (
 						<Register
 							showRegister={!showLogin}
-							changeForm={() => setShowLogin(true)}
+							changeForm={() => handleChangeForm(true)}
 							loading={props.loading}
 							signupUser={props.signupUser}
+							errors={props.errors}
 						/>
 					)}
 				</Grid>
@@ -57,11 +64,13 @@ const mapStateToProps = ({ auth }) => ({
 	loading: auth.loading || false,
 	isAuthenticatedEmployee: auth.user && !auth.user.admin,
 	isAuthenticatedAdmin: auth.user && auth.user.admin,
+	errors: auth.errors || {},
 });
 
 const mapDispatchToProps = {
 	login: auth.login,
 	signupUser: auth.signupUser,
+	clearAuthErrors: auth.clearAuthErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

@@ -16,14 +16,18 @@ import {
 	OutlinedInput,
 	IconButton,
 	InputAdornment,
+	Collapse,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import CloseIcon from '@material-ui/icons/Close';
 
 import authStyles from './authStyles';
+import { useEffect } from 'react';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -38,6 +42,18 @@ function Login(props) {
 	const [ values, setValues ] = useState({ email: '', password: '' });
 	const [ rememberMe, setRememberMe ] = useState(true);
 	const [ showPassword, setShowPassword ] = useState(false);
+	const [ showAlert, setShowAlert ] = useState(false);
+
+	useEffect(
+		() => {
+			const { errors } = props;
+
+			if (errors && errors.general) {
+				setShowAlert(true);
+			}
+		},
+		[ props ],
+	);
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -50,11 +66,23 @@ function Login(props) {
 		props.login({ ...values });
 	};
 
-	const { classes, loading } = props;
+	const { classes, loading, errors } = props;
 
-	// TODO: centralizar form
 	return (
 		<Paper className={classes.paperForm}>
+			<Collapse in={showAlert}>
+				<Alert
+					severity="error"
+					action={
+						<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+							<CloseIcon fontSize="inherit" />
+						</IconButton>
+					}
+					style={{ marginBottom: '20px' }}
+				>
+					{errors && errors.general}
+				</Alert>
+			</Collapse>
 			<form onSubmit={handleLogin}>
 				<Fade in={props.showLogin}>
 					<React.Fragment>
@@ -62,7 +90,6 @@ function Login(props) {
 							Bem-vindo(a)
 						</Typography>
 						<div>
-							{/* TODO - add errors */}
 							<TextField
 								type="email"
 								name="email"
@@ -71,6 +98,8 @@ function Login(props) {
 								value={values.email}
 								onChange={handleChange}
 								className={classes.spacing}
+								helperText={errors.email}
+								error={!!errors.email}
 								fullWidth
 								required
 							/>
@@ -86,6 +115,8 @@ function Login(props) {
 									onChange={handleChange}
 									fullWidth
 									className={classes.spacing}
+									helpertext={errors.password}
+									error={!!errors.password}
 									endAdornment={
 										<InputAdornment position="end">
 											<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">

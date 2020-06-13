@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -18,9 +18,13 @@ import {
 	RadioGroup,
 	FormControlLabel,
 	FormLabel,
+	Collapse,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import CloseIcon from '@material-ui/icons/Close';
 
 import authStyles from './authStyles';
 
@@ -40,6 +44,18 @@ function Register(props) {
 	const [ values, setValues ] = useState({ name: '', email: '', password: '', code: '' });
 	const [ userType, setUserType ] = useState('student');
 	const [ showPassword, setShowPassword ] = useState(false);
+	const [ showAlert, setShowAlert ] = useState(false);
+
+	useEffect(
+		() => {
+			const { errors } = props;
+
+			if (errors && errors.general) {
+				setShowAlert(true);
+			}
+		},
+		[ props ],
+	);
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -52,10 +68,23 @@ function Register(props) {
 		props.signupUser({ ...values, userType });
 	};
 
-	const { classes, loading } = props;
+	const { classes, loading, errors } = props;
 
 	return (
 		<Paper className={classes.paperForm}>
+			<Collapse in={showAlert}>
+				<Alert
+					severity="error"
+					action={
+						<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+							<CloseIcon fontSize="inherit" />
+						</IconButton>
+					}
+					style={{ marginBottom: '20px' }}
+				>
+					{errors && errors.general}
+				</Alert>
+			</Collapse>
 			<form onSubmit={handleRegister}>
 				<Fade in={props.showRegister}>
 					<React.Fragment>
@@ -63,7 +92,6 @@ function Register(props) {
 							Criar Conta
 						</Typography>
 						<div>
-							{/* TODO - add errors */}
 							<TextField
 								type="text"
 								name="name"
@@ -72,6 +100,8 @@ function Register(props) {
 								onChange={handleChange}
 								variant="outlined"
 								className={classes.inputSpacing}
+								helperText={errors.name}
+								error={!!errors.name}
 								fullWidth
 								required
 							/>
@@ -83,6 +113,8 @@ function Register(props) {
 								onChange={handleChange}
 								variant="outlined"
 								className={classes.inputSpacing}
+								helperText={errors.email}
+								error={!!errors.email}
 								fullWidth
 								required
 							/>
@@ -105,6 +137,8 @@ function Register(props) {
 											</IconButton>
 										</InputAdornment>
 									}
+									helpertext={errors.password}
+									error={!!errors.password}
 									labelWidth={60}
 								/>
 							</FormControl>
@@ -129,6 +163,8 @@ function Register(props) {
 									variant="outlined"
 									value={values.code}
 									onChange={handleChange}
+									helperText={errors.code}
+									error={!!errors.code}
 									fullWidth
 									required
 								/>

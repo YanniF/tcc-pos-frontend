@@ -48,8 +48,11 @@ const signUpSupervisor = (newUser, res) => {
 			if (error.code === 'auth/email-already-in-use') {
 				return res.status(400).json({ email: 'E-mail já cadastrado' });
 			}
+			else if (error.code === 'auth/weak-password') {
+				return res.status(400).json({ general: 'A senha deve conter pelo menos 6 caracteres' });
+			}
 			else {
-				return res.status(500).json({ general: 'Something went wrong, please try again' });
+				return res.status(500).json({ general: 'Não foi possível realizar o cadastro, por favor tente de novo' });
 			}
 		});
 };
@@ -89,8 +92,11 @@ const signUpStudent = (newUser, res) => {
 			if (error.code === 'auth/email-already-in-use') {
 				return res.status(400).json({ email: 'E-mail já cadastrado' });
 			}
+			else if (error.code === 'auth/weak-password') {
+				return res.status(400).json({ general: 'A senha deve conter pelo menos 6 caracteres' });
+			}
 			else {
-				return res.status(500).json({ general: 'Something went wrong, please try again' });
+				return res.status(500).json({ general: 'Não foi possível realizar o cadastro, por favor tente de novo' });
 			}
 		});
 };

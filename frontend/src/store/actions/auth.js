@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED } from '../types';
-// import { AUTH_START, AUTH_SUCCESS, AUTH_FAILED, SET_USER, SET_UNAUTHENTICATED, AUTH_CLEAR_ERRORS, LOADING_USER } from '../types';
+import { AUTH_START, AUTH_FAILED, AUTH_CLEAR_ERRORS, SET_USER, SET_UNAUTHENTICATED } from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,
@@ -23,6 +22,10 @@ export const getUserData = () => (dispatch) => {
 		.catch((err) => console.log(err));
 };
 
+export const clearAuthErrors = () => (dispatch) => {
+	dispatch(actionCreator(AUTH_CLEAR_ERRORS));
+};
+
 export const login = (user) => (dispatch) => {
 	dispatch(actionCreator(AUTH_START));
 	axios
@@ -30,8 +33,8 @@ export const login = (user) => (dispatch) => {
 		.then((res) => {
 			setAuthorizationHeader(res.data.token);
 			dispatch(getUserData());
+			dispatch(clearAuthErrors());
 			// dispatch(actionCreator(AUTH_SUCCESS, res.data.loggedUser));
-			// dispatch(actionCreator(AUTH_CLEAR_ERRORS));
 			// history.push('/');
 		})
 		.catch((err) => {
@@ -47,14 +50,11 @@ export const signupUser = (newUserData) => (dispatch) => {
 		.then((res) => {
 			setAuthorizationHeader(res.data.token);
 			dispatch(getUserData());
-			// dispatch({ type: CLEAR_ERRORS });
+			dispatch(clearAuthErrors());
 			// history.push('/');
 		})
 		.catch((err) => {
-			/* dispatch({
-				type: SET_ERRORS,
-				payload: err.response.data,
-			}); */
+			dispatch(actionCreator(AUTH_FAILED, err.response.data));
 		});
 };
 
