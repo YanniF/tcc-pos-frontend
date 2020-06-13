@@ -61,6 +61,7 @@ function Details(props) {
 		deleteCourse,
 		isRequestingCourses,
 		loading,
+		errors,
 		courseModalOpen,
 		deleteModalOpen,
 		setCourseModalVisibility,
@@ -99,88 +100,90 @@ function Details(props) {
 										<EditIcon color="primary" />
 									</ButtonIcon>
 								</div>
-								<TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-									{selectedCourse.modules.map((module) => (
-										<TreeItem
-											key={module.id}
-											nodeId={module.id}
-											label={
-												<div className={classes.labelItem}>
-													<Typography variant="h6" component="h4">
-														{module.title}
-													</Typography>
-													<ButtonIcon tip="Editar Módulo" onClick={() => handleSetVisibilityContent(true)}>
-														<EditIcon color="primary" fontSize="small" />
-													</ButtonIcon>
-												</div>
-											}
-										>
-											{selectedCourse.videos.map(
-												(video) =>
-													video.moduleId === module.id ? (
-														<TreeItem
-															key={video.id}
-															nodeId={video.id}
-															label={
-																<div className={classes.labelSubItem}>
-																	<Typography className={classes.textIcon}>
-																		<VideoLibraryIcon fontSize="small" /> {video.title}
-																	</Typography>
-																	<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
-																		<EditIcon color="primary" fontSize="small" />
-																	</ButtonIcon>
-																</div>
-															}
-														/>
-													) : (
-														<span key={Math.random()} />
-													),
-											)}
-											{selectedCourse.documents.map(
-												(doc) =>
-													doc.moduleId === module.id ? (
-														<TreeItem
-															key={doc.id}
-															nodeId={doc.id}
-															label={
-																<div className={classes.labelSubItem}>
-																	<Typography className={classes.textIcon}>
-																		<InsertDriveFileIcon fontSize="small" /> {doc.title}
-																	</Typography>
-																	<ButtonIcon tip="Editar Material Complementar">
-																		<EditIcon color="primary" fontSize="small" />
-																	</ButtonIcon>
-																</div>
-															}
-														/>
-													) : (
-														<span key={Math.random()} />
-													),
-											)}
-											{selectedCourse.tests.map(
-												(test) =>
-													test.moduleId === module.id ? (
-														<TreeItem
-															key={test.id}
-															nodeId={test.id}
-															label={
-																<div className={classes.labelSubItem}>
-																	<Typography className={classes.textIcon}>
-																		<SpeakerNotesIcon fontSize="small" /> Teste
-																	</Typography>
-																	<ButtonIcon tip="Editar Teste">
-																		<EditIcon color="primary" fontSize="small" />
-																	</ButtonIcon>
-																</div>
-															}
-														/>
-													) : (
-														<span key={Math.random()} />
-													),
-											)}
-										</TreeItem>
-									))}
-								</TreeView>
+								{selectedCourse.modules.length > 0 && (
+									<TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+										{selectedCourse.modules.map((module) => (
+											<TreeItem
+												key={module.id}
+												nodeId={module.id}
+												label={
+													<div className={classes.labelItem}>
+														<Typography variant="h6" component="h4">
+															{module.title}
+														</Typography>
+														<ButtonIcon tip="Editar Módulo" onClick={() => handleSetVisibilityContent(true)}>
+															<EditIcon color="primary" fontSize="small" />
+														</ButtonIcon>
+													</div>
+												}
+											>
+												{selectedCourse.videos.map(
+													(video) =>
+														video.moduleId === module.id ? (
+															<TreeItem
+																key={video.id}
+																nodeId={video.id}
+																label={
+																	<div className={classes.labelSubItem}>
+																		<Typography className={classes.textIcon}>
+																			<VideoLibraryIcon fontSize="small" /> {video.title}
+																		</Typography>
+																		<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
+																			<EditIcon color="primary" fontSize="small" />
+																		</ButtonIcon>
+																	</div>
+																}
+															/>
+														) : (
+															<span key={Math.random()} />
+														),
+												)}
+												{selectedCourse.documents.map(
+													(doc) =>
+														doc.moduleId === module.id ? (
+															<TreeItem
+																key={doc.id}
+																nodeId={doc.id}
+																label={
+																	<div className={classes.labelSubItem}>
+																		<Typography className={classes.textIcon}>
+																			<InsertDriveFileIcon fontSize="small" /> {doc.title}
+																		</Typography>
+																		<ButtonIcon tip="Editar Material Complementar">
+																			<EditIcon color="primary" fontSize="small" />
+																		</ButtonIcon>
+																	</div>
+																}
+															/>
+														) : (
+															<span key={Math.random()} />
+														),
+												)}
+												{selectedCourse.tests.map(
+													(test) =>
+														test.moduleId === module.id ? (
+															<TreeItem
+																key={test.id}
+																nodeId={test.id}
+																label={
+																	<div className={classes.labelSubItem}>
+																		<Typography className={classes.textIcon}>
+																			<SpeakerNotesIcon fontSize="small" /> Teste
+																		</Typography>
+																		<ButtonIcon tip="Editar Teste">
+																			<EditIcon color="primary" fontSize="small" />
+																		</ButtonIcon>
+																	</div>
+																}
+															/>
+														) : (
+															<span key={Math.random()} />
+														),
+												)}
+											</TreeItem>
+										))}
+									</TreeView>
+								)}
 							</Paper>
 						</Grid>
 						<Grid item sm={4}>
@@ -197,21 +200,26 @@ function Details(props) {
 							</Paper>
 						</Grid>
 					</Grid>
-					<CourseModal
-						open={courseModalOpen}
-						setVisibility={setCourseModalVisibility}
-						course={selectedCourse}
-						editCourse={editCourse}
-						loading={loading}
-					/>
-					<ContentModal open={openContent} setVisibility={handleSetVisibilityContent} />
-					<DeleteModal
-						open={deleteModalOpen}
-						setVisibility={setModalDeleteVisibility}
-						course={selectedCourse}
-						deleteCourse={() => deleteCourse(selectedCourse.id)}
-						loading={loading}
-					/>
+					{courseModalOpen && (
+						<CourseModal
+							open={courseModalOpen}
+							setVisibility={setCourseModalVisibility}
+							course={selectedCourse}
+							editCourse={editCourse}
+							loading={loading}
+							errors={errors}
+						/>
+					)}
+					{openContent && <ContentModal open={openContent} setVisibility={handleSetVisibilityContent} />}
+					{deleteModalOpen && (
+						<DeleteModal
+							open={deleteModalOpen}
+							setVisibility={setModalDeleteVisibility}
+							course={selectedCourse}
+							deleteCourse={() => deleteCourse(selectedCourse.id)}
+							loading={loading}
+						/>
+					)}
 				</React.Fragment>
 			)}
 		</main>
@@ -224,6 +232,7 @@ const mapStateToProps = ({ courses }) => ({
 	selectedCourse: courses.selectedCourse || {},
 	isRequestingCourses: courses.isRequestingCourses || false,
 	loading: courses.loading || false,
+	errors: courses.errors || {},
 });
 
 const mapDispatchToProps = {

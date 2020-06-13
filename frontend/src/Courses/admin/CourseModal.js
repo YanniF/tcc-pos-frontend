@@ -9,7 +9,11 @@ import {
 	Button,
 	TextField,
 	CircularProgress,
+	Collapse,
+	IconButton,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -25,7 +29,9 @@ const styles = (theme) => ({
 function CourseModal(props) {
 	const [ values, setValues ] = useState({ title: '', teacher: '', category: '', description: '' });
 	const [ fileName, seFileName ] = useState('');
-	const { classes, open, setVisibility, addCourse, editCourse, loading, course } = props;
+	const [ showAlert, setShowAlert ] = useState(false);
+
+	const { classes, open, setVisibility, addCourse, editCourse, loading, course, errors } = props;
 
 	useEffect(
 		() => {
@@ -69,10 +75,23 @@ function CourseModal(props) {
 			setValues({ title: '', teacher: '', category: '', description: '' });
 		}
 	};
-
+	console.log(props);
 	return (
 		<Dialog open={open} onClose={() => setVisibility(false)} maxWidth="md" fullWidth>
 			<DialogTitle>{values.title || 'Novo Curso'}</DialogTitle>
+			<Collapse in={showAlert}>
+				<Alert
+					severity="error"
+					action={
+						<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+							<CloseIcon fontSize="inherit" />
+						</IconButton>
+					}
+					style={{ marginBottom: '20px' }}
+				>
+					{errors && errors.error}
+				</Alert>
+			</Collapse>
 			<form onSubmit={handleSubmit}>
 				<DialogContent>
 					<TextField
@@ -84,6 +103,8 @@ function CourseModal(props) {
 						onChange={handleChange}
 						className={classes.inputSpacing}
 						fullWidth
+						helperText={errors.title}
+						error={!!errors.title}
 						required
 					/>
 					<TextField
@@ -95,6 +116,8 @@ function CourseModal(props) {
 						onChange={handleChange}
 						className={classes.inputSpacing}
 						fullWidth
+						helperText={errors.teacher}
+						error={!!errors.teacher}
 						required
 					/>
 					<TextField
@@ -105,6 +128,8 @@ function CourseModal(props) {
 						value={values.category}
 						onChange={handleChange}
 						className={classes.inputSpacing}
+						helperText={errors.category}
+						error={!!errors.category}
 						fullWidth
 						required
 					/>

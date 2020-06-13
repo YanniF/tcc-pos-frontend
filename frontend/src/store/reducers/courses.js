@@ -28,7 +28,7 @@ const initialState = {
 	selectedCourse: null,
 	courseModalOpen: false,
 	deleteModalOpen: false,
-	error: null,
+	errors: null,
 	loading: false,
 	isRequestingCourses: false,
 };
@@ -92,6 +92,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
+				courses: state.courses.map((course) => (course.id === action.payload.id ? action.payload : course)),
+				selectedCourse: {
+					...state.selectedCourse,
+					...action.payload,
+				},
 				courseModalOpen: false,
 			};
 		case SUCCESS_DELETE_COURSE:
@@ -120,7 +125,8 @@ const reducer = (state = initialState, action) => {
 		case FAILED_DELETE_COURSE:
 		case FAILED_ADD_CONTENT:
 			return {
-				error: action.payload,
+				...state,
+				errors: action.payload,
 				loading: false,
 				isRequestingCourses: false,
 			};

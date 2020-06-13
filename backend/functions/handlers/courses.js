@@ -28,7 +28,7 @@ exports.getAllCoursesByUser = (req, res) => {
 			return res.json(courses);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todos os cursos' });
 			console.error(error);
 		});
 };
@@ -170,7 +170,7 @@ exports.addCourse = (req, res) => {
 			res.json(resCourse);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Não foi possível cadastrar o curso. Por favor, tente novamente' });
 			console.error(error);
 		});
 };

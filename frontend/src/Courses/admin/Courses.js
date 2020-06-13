@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -10,6 +10,7 @@ import coursesStyles from '../coursesStyles';
 import Notifications from './Notifications';
 import CourseModal from './CourseModal';
 import DeleteModal from './DeleteModal';
+import NoData from '../../shared/components/SVG/NoData';
 
 import { courses } from '../../store/actions';
 
@@ -20,6 +21,9 @@ const styles = (theme) => ({
 		marginTop: '2rem',
 		padding: '.7rem',
 		width: '100%',
+	},
+	spacingTop: {
+		marginTop: '2rem',
 	},
 });
 
@@ -56,11 +60,10 @@ function Courses(props) {
 		addCourse(course, history);
 	};
 
-	const { classes, loading, getCourse } = props;
+	const { classes, loading, getCourse, errors } = props;
 
 	return (
 		<main className={classes.main}>
-			{/* TODO: mensagem para quando não tiver nenhum curso */}
 			<Typography variant="h4" component="h3" gutterBottom>
 				Meus Cursos
 			</Typography>
@@ -69,20 +72,36 @@ function Courses(props) {
 					<CircularProgress size={170} color="primary" />
 				</div>
 			) : (
-				<React.Fragment>
+				<Fragment>
 					<Grid container spacing={10}>
 						<Grid item sm={8}>
 							<Grid container spacing={10}>
-								{courses.map((course) => (
-									<Grid item sm={6} key={course.id}>
-										<CourseCard
-											course={course}
-											isAdmin
-											setSelectedCourse={getCourse}
-											setModalDeleteVisibility={handleModalDeleteVisibility}
-										/>
-									</Grid>
-								))}
+								{courses.length ? (
+									courses.map((course) => (
+										<Grid item sm={6} key={course.id}>
+											<CourseCard
+												course={course}
+												isAdmin
+												setSelectedCourse={getCourse}
+												setModalDeleteVisibility={handleModalDeleteVisibility}
+											/>
+										</Grid>
+									))
+								) : (
+									<Fragment>
+										<Grid item sm={1} className={classes.spacingTop}>
+											<NoData width="82px" height="78px" />
+										</Grid>
+										<Grid item sm={11} className={classes.spacingTop}>
+											<Typography variant="h6" component="h5">
+												Nenhum curso encontrado.
+											</Typography>
+											<Typography variant="body1" component="p">
+												Clique no botão "Adicionar Curso" para cadastrar um novo curso.
+											</Typography>
+										</Grid>
+									</Fragment>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item sm={4}>
@@ -100,15 +119,26 @@ function Courses(props) {
 							<Notifications />
 						</Grid>
 					</Grid>
-					<CourseModal open={open} setVisibility={handleSetVisibility} addCourse={handleAddCourse} loading={loading} />
-					<DeleteModal
-						open={deleteModalOpen}
-						setVisibility={setModalDeleteVisibility}
-						course={selectedCourse}
-						deleteCourse={() => deleteCourse(selectedCourse.id)}
-						loading={loading}
-					/>
-				</React.Fragment>
+					{open && (
+						<CourseModal
+							open={open}
+							setVisibility={handleSetVisibility}
+							addCourse={handleAddCourse}
+							loading={loading}
+							errors={errors}
+						/>
+					)}
+					{deleteModalOpen && (
+						<DeleteModal
+							open={deleteModalOpen}
+							setVisibility={setModalDeleteVisibility}
+							course={selectedCourse}
+							deleteCourse={() => deleteCourse(selectedCourse.id)}
+							loading={loading}
+							errors={errors}
+						/>
+					)}
+				</Fragment>
 			)}
 		</main>
 	);
@@ -121,6 +151,7 @@ const mapStateToProps = ({ courses }) => ({
 	selectedCourse: courses.selectedCourse || {},
 	open: courses.courseModalOpen || false,
 	deleteModalOpen: courses.deleteModalOpen || false,
+	errors: courses.errors || {},
 });
 
 const mapDispatchToProps = {

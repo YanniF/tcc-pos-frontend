@@ -39,9 +39,13 @@ function ContentModal(props) {
 
 	const [ type, setType ] = useState('module');
 	const [ moduleValues, setModuleValues ] = useState({ title: '' });
-	const [ videoValues, setVideoValues ] = useState({ module: selectedCourse.modules[0].id, title: '', link: '' });
+	const [ videoValues, setVideoValues ] = useState({
+		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+		title: '',
+		link: '',
+	});
 	const [ documentValues, setDocumentValues ] = useState({
-		module: selectedCourse.modules[0].id,
+		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
 		title: '',
 		file: {},
 	});
@@ -67,8 +71,8 @@ function ContentModal(props) {
 
 	const resetState = () => {
 		setModuleValues({ title: '' });
-		setVideoValues({ module: selectedCourse.modules[0].id, title: '', link: '' });
-		setDocumentValues({ module: selectedCourse.modules[0].id, title: '', file: {} });
+		setVideoValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', link: '' });
+		setDocumentValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', file: {} });
 	};
 
 	const handleSubmit = (e) => {
@@ -109,9 +113,21 @@ function ContentModal(props) {
 							className={classes.radioGroup}
 						>
 							<FormControlLabel value="module" control={<Radio color="primary" />} label="Módulo" />
-							<FormControlLabel value="video" control={<Radio color="primary" />} label="Vídeo" />
-							<FormControlLabel value="document" control={<Radio color="primary" />} label="Material Complementar" />
-							<FormControlLabel value="test" control={<Radio color="primary" />} label="Teste" />
+							<FormControlLabel
+								value="video"
+								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
+								label="Vídeo"
+							/>
+							<FormControlLabel
+								value="document"
+								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
+								label="Material Complementar"
+							/>
+							<FormControlLabel
+								value="test"
+								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
+								label="Teste"
+							/>
 						</RadioGroup>
 					</FormControl>
 					<Divider className={classes.divider} />

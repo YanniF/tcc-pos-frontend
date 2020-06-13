@@ -74,10 +74,10 @@ export const addCourse = (course, history) => (dispatch) => {
 		.post('/admin/courses', course)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_ADD_COURSE, res.data));
-			history.push(`/admin/courses/${res.data.id}/details`);
 			dispatch(getCourse(res.data.id));
+			history.push(`/admin/courses/${res.data.id}/details`);
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_ADD_COURSE, err)));
+		.catch((err) => dispatch(actionCreator(FAILED_ADD_COURSE, err.response.data)));
 };
 
 export const editCourse = (course) => (dispatch) => {
@@ -105,7 +105,8 @@ export const deleteCourse = (id) => (dispatch) => {
 export const addContent = (type, courseId, content) => (dispatch) => {
 	dispatch(actionCreator(REQUEST_ADD_CONTENT));
 	let endpoint;
-	let moduleId = content.module || content.get('module');
+	// let moduleId = content.module || content.get('module');
+	let moduleId = content.module;
 
 	if (type === 'modules') {
 		endpoint = `/admin/courses/${courseId}/${type}`;
