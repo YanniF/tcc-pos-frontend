@@ -1,6 +1,8 @@
 import {
 	SET_VISIBILITY_COURSE_MODAL,
 	SET_VISIBILITY_DELETE_MODAL,
+	SET_TOASTER_MESSAGE,
+	CLEAR_COURSE_ERRORS,
 	SELECT_COURSE,
 	UNSELECT_COURSE,
 	IS_REQUESTING_COURSES,
@@ -29,6 +31,7 @@ const initialState = {
 	courseModalOpen: false,
 	deleteModalOpen: false,
 	errors: null,
+	message: '',
 	loading: false,
 	isRequestingCourses: false,
 };
@@ -44,6 +47,16 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				deleteModalOpen: action.payload,
+			};
+		case SET_TOASTER_MESSAGE:
+			return {
+				...state,
+				message: action.payload,
+			};
+		case CLEAR_COURSE_ERRORS:
+			return {
+				...state,
+				errors: null,
 			};
 		case SELECT_COURSE:
 			return {

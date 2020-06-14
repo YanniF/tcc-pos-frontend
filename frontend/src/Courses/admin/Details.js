@@ -13,6 +13,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 
 import Image from '../../shared/components/SVG/Professor';
 import ButtonIcon from '../../shared/components/ButtonIcon';
+import SnackBar from '../../shared/components/SnackBar';
 import CourseModal from './CourseModal';
 import ContentModal from './ContentModal';
 import DeleteModal from './DeleteModal';
@@ -62,10 +63,12 @@ function Details(props) {
 		isRequestingCourses,
 		loading,
 		errors,
+		message,
 		courseModalOpen,
 		deleteModalOpen,
 		setCourseModalVisibility,
 		setModalDeleteVisibility,
+		setToasterMessage,
 	} = props;
 
 	useEffect(
@@ -218,10 +221,12 @@ function Details(props) {
 							course={selectedCourse}
 							deleteCourse={() => deleteCourse(selectedCourse.id)}
 							loading={loading}
+							errors={errors}
 						/>
 					)}
 				</React.Fragment>
 			)}
+			<SnackBar message={message} setToasterMessage={setToasterMessage} />
 		</main>
 	);
 }
@@ -233,6 +238,7 @@ const mapStateToProps = ({ courses }) => ({
 	isRequestingCourses: courses.isRequestingCourses || false,
 	loading: courses.loading || false,
 	errors: courses.errors || {},
+	message: courses.message,
 });
 
 const mapDispatchToProps = {
@@ -241,6 +247,7 @@ const mapDispatchToProps = {
 	unselectCourse: courses.unselectCourse,
 	editCourse: courses.editCourse,
 	deleteCourse: courses.deleteCourse,
+	setToasterMessage: courses.setToasterMessage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Details));

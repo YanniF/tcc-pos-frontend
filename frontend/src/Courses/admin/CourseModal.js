@@ -39,8 +39,12 @@ function CourseModal(props) {
 				const { title, teacher, category, description } = course;
 				setValues({ id: course.id, title, teacher, category, description });
 			}
+
+			if (errors && errors.error) {
+				setShowAlert(true);
+			}
 		},
-		[ course ],
+		[ course, errors ],
 	);
 
 	const handleUploadFile = (e) => {
@@ -75,25 +79,25 @@ function CourseModal(props) {
 			setValues({ title: '', teacher: '', category: '', description: '' });
 		}
 	};
-	console.log(props);
+
 	return (
 		<Dialog open={open} onClose={() => setVisibility(false)} maxWidth="md" fullWidth>
 			<DialogTitle>{values.title || 'Novo Curso'}</DialogTitle>
-			<Collapse in={showAlert}>
-				<Alert
-					severity="error"
-					action={
-						<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
-							<CloseIcon fontSize="inherit" />
-						</IconButton>
-					}
-					style={{ marginBottom: '20px' }}
-				>
-					{errors && errors.error}
-				</Alert>
-			</Collapse>
 			<form onSubmit={handleSubmit}>
 				<DialogContent>
+					<Collapse in={showAlert}>
+						<Alert
+							severity="error"
+							action={
+								<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+									<CloseIcon fontSize="inherit" />
+								</IconButton>
+							}
+							style={{ marginBottom: '20px' }}
+						>
+							{errors && errors.error}
+						</Alert>
+					</Collapse>
 					<TextField
 						id="title"
 						name="title"

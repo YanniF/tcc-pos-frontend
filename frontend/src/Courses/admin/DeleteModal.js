@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
@@ -9,19 +9,49 @@ import {
 	Button,
 	Typography,
 	CircularProgress,
+	Collapse,
+	IconButton,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+import { useEffect } from 'react';
 
 const styles = (theme) => ({
 	...theme.properties,
 });
 
 function DeleteModal(props) {
-	const { deleteCourse, open, setVisibility, loading, course: { title, id } } = props;
+	const [ showAlert, setShowAlert ] = useState(false);
+	const { deleteCourse, open, setVisibility, loading, course: { title, id }, errors } = props;
+
+	useEffect(
+		() => {
+			const { errors } = props;
+
+			if (errors && errors.error) {
+				setShowAlert(true);
+			}
+		},
+		[ props ],
+	);
 
 	return (
 		<Dialog open={open} onClose={() => setVisibility(false)} maxWidth="sm" fullWidth>
 			<DialogTitle>{title}</DialogTitle>
 			<DialogContent>
+				<Collapse in={showAlert}>
+					<Alert
+						severity="error"
+						action={
+							<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+								<CloseIcon fontSize="inherit" />
+							</IconButton>
+						}
+						style={{ marginBottom: '20px' }}
+					>
+						{errors && errors.error}
+					</Alert>
+				</Collapse>
 				<Typography variant="body1">Deseja realmente apagar este curso?</Typography>
 			</DialogContent>
 			<DialogActions style={{ marginRight: '1rem' }}>

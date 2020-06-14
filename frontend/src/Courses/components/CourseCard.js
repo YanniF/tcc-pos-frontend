@@ -93,7 +93,7 @@ function CourseCard(props) {
 			);
 		}
 	};
-
+	// TODO: fix card height
 	return (
 		<Card>
 			<Link to={`/courses/${id}/tutorial`}>

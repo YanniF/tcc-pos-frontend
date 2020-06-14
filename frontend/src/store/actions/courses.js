@@ -3,6 +3,8 @@ import axios from 'axios';
 import {
 	SET_VISIBILITY_COURSE_MODAL,
 	SET_VISIBILITY_DELETE_MODAL,
+	SET_TOASTER_MESSAGE,
+	CLEAR_COURSE_ERRORS,
 	SELECT_COURSE,
 	UNSELECT_COURSE,
 	IS_REQUESTING_COURSES,
@@ -39,6 +41,14 @@ export const setModalDeleteVisibility = (open, id) => (dispatch) => {
 		dispatch(actionCreator(SELECT_COURSE, id));
 	}
 	dispatch(actionCreator(SET_VISIBILITY_DELETE_MODAL, open));
+};
+
+export const setToasterMessage = (value) => (dispatch) => {
+	dispatch(actionCreator(SET_TOASTER_MESSAGE, value));
+};
+
+export const clearCourseErrors = () => (dispatch) => {
+	dispatch(actionCreator(CLEAR_COURSE_ERRORS));
 };
 
 export const unselectCourse = () => (dispatch) => {
@@ -87,8 +97,9 @@ export const editCourse = (course) => (dispatch) => {
 		.put(`/admin/courses/${course.id}`, course)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_EDIT_COURSE, course));
+			dispatch(setToasterMessage(res.data.message));
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_EDIT_COURSE, err)));
+		.catch((err) => dispatch(actionCreator(FAILED_EDIT_COURSE, err.response.data)));
 };
 
 export const deleteCourse = (id) => (dispatch) => {
@@ -96,10 +107,11 @@ export const deleteCourse = (id) => (dispatch) => {
 
 	axios
 		.delete(`/admin/courses/${id}`)
-		.then(() => {
+		.then((res) => {
 			dispatch(actionCreator(SUCCESS_DELETE_COURSE, id));
+			dispatch(setToasterMessage(res.data.message));
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_DELETE_COURSE, err)));
+		.catch((err) => dispatch(actionCreator(FAILED_DELETE_COURSE, err.response.data)));
 };
 
 export const addContent = (type, courseId, content) => (dispatch) => {

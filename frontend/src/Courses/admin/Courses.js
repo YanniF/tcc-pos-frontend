@@ -1,10 +1,11 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
 
 import SearchInput from '../../shared/components/SearchInput';
+import SnackBar from '../../shared/components/SnackBar';
 import CourseCard from '../components/CourseCard';
 import coursesStyles from '../coursesStyles';
 import Notifications from './Notifications';
@@ -28,6 +29,7 @@ const styles = (theme) => ({
 });
 
 function Courses(props) {
+	const [ searchTerm, setSearchTerm ] = useState('');
 	const {
 		open,
 		setModalVisibility,
@@ -38,6 +40,7 @@ function Courses(props) {
 		deleteCourse,
 		selectedCourse,
 		deleteModalOpen,
+		clearCourseErrors,
 	} = props;
 
 	useEffect(
@@ -48,6 +51,7 @@ function Courses(props) {
 	);
 
 	const handleSetVisibility = (open) => {
+		clearCourseErrors();
 		setModalVisibility(open);
 	};
 
@@ -60,7 +64,12 @@ function Courses(props) {
 		addCourse(course, history);
 	};
 
-	const { classes, loading, getCourse, errors } = props;
+	const handleSearchCourse = (search = '') => {
+		setSearchTerm(search);
+	};
+
+	const { classes, loading, getCourse, errors, message, setToasterMessage } = props;
+	const filteredCourses = courses.filter((course) => course.title.toLowerCase().includes(searchTerm));
 
 	return (
 		<main className={classes.main}>
@@ -76,8 +85,8 @@ function Courses(props) {
 					<Grid container spacing={10}>
 						<Grid item sm={8}>
 							<Grid container spacing={10}>
-								{courses.length ? (
-									courses.map((course) => (
+								{filteredCourses.length ? (
+									filteredCourses.map((course) => (
 										<Grid item sm={6} key={course.id}>
 											<CourseCard
 												course={course}
@@ -96,9 +105,15 @@ function Courses(props) {
 											<Typography variant="h6" component="h5">
 												Nenhum curso encontrado.
 											</Typography>
-											<Typography variant="body1" component="p">
-												Clique no botão "Adicionar Curso" para cadastrar um novo curso.
-											</Typography>
+											{courses.length > 0 && !searchTerm ? (
+												<Typography variant="body1" component="p">
+													Clique no botão "Adicionar Curso" para cadastrar um novo curso.
+												</Typography>
+											) : (
+												<Typography variant="body1" component="p">
+													Tente pesquisar por outro curso.
+												</Typography>
+											)}
 										</Grid>
 									</Fragment>
 								)}
@@ -106,7 +121,7 @@ function Courses(props) {
 						</Grid>
 						<Grid item sm={4}>
 							<Paper className={classes.paper}>
-								<SearchInput fullWidth onClick={() => console.log('click')} />
+								<SearchInput fullWidth onChange={handleSearchCourse} />
 								<Button
 									color="secondary"
 									variant="contained"
@@ -140,6 +155,7 @@ function Courses(props) {
 					)}
 				</Fragment>
 			)}
+			<SnackBar message={message} setToasterMessage={setToasterMessage} />
 		</main>
 	);
 }
@@ -152,6 +168,7 @@ const mapStateToProps = ({ courses }) => ({
 	open: courses.courseModalOpen || false,
 	deleteModalOpen: courses.deleteModalOpen || false,
 	errors: courses.errors || {},
+	message: courses.message,
 });
 
 const mapDispatchToProps = {
@@ -161,6 +178,8 @@ const mapDispatchToProps = {
 	getCourse: courses.getCourse,
 	addCourse: courses.addCourse,
 	deleteCourse: courses.deleteCourse,
+	setToasterMessage: courses.setToasterMessage,
+	clearCourseErrors: courses.clearCourseErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Courses));
