@@ -170,7 +170,7 @@ exports.addCourse = (req, res) => {
 			res.json(resCourse);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Não foi possível cadastrar o curso. Por favor, tente novamente' });
+			res.status(500).json({ error: 'Não foi possível cadastrar o curso.' });
 			console.error(error);
 		});
 };
@@ -203,7 +203,7 @@ exports.editCourse = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível editar o curso.' });
 		});
 };
 
@@ -228,10 +228,10 @@ exports.deleteCourse = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Curso deletado com sucesso' });
+			res.json({ message: 'Curso apagado com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o curso.' });
 		});
 };

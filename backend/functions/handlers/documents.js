@@ -21,7 +21,7 @@ exports.getAllDocumentsByModule = (req, res) => {
 			return res.json(documents);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todos os documentos' });
 			console.error(error);
 		});
 };
@@ -120,7 +120,7 @@ exports.addDocument = (req, res) => {
 			})
 			.catch((err) => {
 				console.error(err);
-				return res.status(500).json({ error: err.code });
+				return res.status(500).json({ error: 'Não foi possível cadastrar o documento.' });
 			});
 	});
 
@@ -145,10 +145,10 @@ exports.deleteDocument = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Material complementar deletado com sucesso' });
+			res.json({ message: 'Material complementar apagado com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o documento.' });
 		});
 };

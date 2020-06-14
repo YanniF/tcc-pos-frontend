@@ -25,6 +25,9 @@ import {
 	REQUEST_ADD_CONTENT,
 	SUCCESS_ADD_CONTENT,
 	FAILED_ADD_CONTENT,
+	REQUEST_DELETE_CONTENT,
+	SUCCESS_DELETE_CONTENT,
+	FAILED_DELETE_CONTENT,
 } from '../types';
 
 const actionCreator = (type, payload) => ({
@@ -63,7 +66,7 @@ export const getAllCourses = () => (dispatch) => {
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_COURSES, res.data));
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSES, err)));
+		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSES, err.response.data)));
 };
 
 export const getCourse = (id) => (dispatch) => {
@@ -74,7 +77,7 @@ export const getCourse = (id) => (dispatch) => {
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_COURSE, res.data));
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE, err.message)));
+		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE, err.response.data)));
 };
 
 export const addCourse = (course, history) => (dispatch) => {
@@ -110,6 +113,7 @@ export const deleteCourse = (id) => (dispatch) => {
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_DELETE_COURSE, id));
 			dispatch(setToasterMessage(res.data.message));
+			dispatch(unselectCourse());
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_DELETE_COURSE, err.response.data)));
 };
@@ -117,13 +121,12 @@ export const deleteCourse = (id) => (dispatch) => {
 export const addContent = (type, courseId, content) => (dispatch) => {
 	dispatch(actionCreator(REQUEST_ADD_CONTENT));
 	let endpoint;
-	// let moduleId = content.module || content.get('module');
-	let moduleId = content.module;
 
 	if (type === 'modules') {
 		endpoint = `/admin/courses/${courseId}/${type}`;
 	}
 	else {
+		let moduleId = content.module || content.get('module');
 		endpoint = `/admin/courses/${courseId}/modules/${moduleId}/${type}`;
 	}
 
@@ -131,6 +134,20 @@ export const addContent = (type, courseId, content) => (dispatch) => {
 		.post(endpoint, content)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_ADD_CONTENT, { key: type, data: res.data }));
+			dispatch(setToasterMessage('Cadastro realizado'));
 		})
-		.catch((err) => dispatch(actionCreator(FAILED_ADD_CONTENT, err)));
+		.catch((err) => dispatch(actionCreator(FAILED_ADD_CONTENT, err.response.data)));
+};
+
+export const deleteContent = (courseId, id, type) => (dispatch) => {
+	dispatch(actionCreator(REQUEST_DELETE_CONTENT));
+
+	axios
+		.delete(`/admin/courses/${courseId}/${type}/${id}`)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_DELETE_CONTENT, { id, key: type }));
+			dispatch(setToasterMessage(res.data.message));
+			dispatch(setModalDeleteVisibility(false));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_DELETE_CONTENT, err.response.data)));
 };

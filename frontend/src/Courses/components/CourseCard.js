@@ -64,7 +64,7 @@ function CourseCard(props) {
 	const isFinishedLinks = [ { id: 1, text: 'Avaliar', link: '/' }, { id: 2, text: 'Certificado', link: '/' } ];
 
 	const isAdminLinks = [
-		{ id: 1, text: 'Detalhes', link: '' },
+		{ id: 1, text: 'Detalhes', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
 		{ id: 2, text: 'Editar', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
 		{
 			id: 3,

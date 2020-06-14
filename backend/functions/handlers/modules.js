@@ -18,7 +18,7 @@ exports.getAllModulesByCourse = (req, res) => {
 			return res.json(modules);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todos os módulos' });
 			console.error(error);
 		});
 };
@@ -75,7 +75,7 @@ exports.addModule = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível cadastrar o módulo.' });
 		});
 };
 
@@ -97,7 +97,7 @@ exports.editModule = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível editar o módulo.' });
 		});
 };
 
@@ -119,10 +119,10 @@ exports.deleteModule = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Módulo deletado com sucesso' });
+			res.json({ message: 'Módulo apagado com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o módulo.' });
 		});
 };

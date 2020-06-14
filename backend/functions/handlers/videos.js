@@ -20,7 +20,7 @@ exports.getAllVideosByModule = (req, res) => {
 			return res.json(videos);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todos os vídeos' });
 			console.error(error);
 		});
 };
@@ -82,7 +82,7 @@ exports.addVideo = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível cadastrar o vídeo.' });
 		});
 };
 
@@ -104,10 +104,10 @@ exports.deleteVideo = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Vídeo deletado com sucesso' });
+			res.json({ message: 'Vídeo apagado com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o vídeo.' });
 		});
 };

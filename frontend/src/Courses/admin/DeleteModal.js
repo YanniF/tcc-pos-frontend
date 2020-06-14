@@ -22,7 +22,7 @@ const styles = (theme) => ({
 
 function DeleteModal(props) {
 	const [ showAlert, setShowAlert ] = useState(false);
-	const { deleteCourse, open, setVisibility, loading, course: { title, id }, errors } = props;
+	const { handleDelete, open, setVisibility, loading, item: { id, title, type = 'item' }, errors } = props;
 
 	useEffect(
 		() => {
@@ -52,13 +52,13 @@ function DeleteModal(props) {
 						{errors && errors.error}
 					</Alert>
 				</Collapse>
-				<Typography variant="body1">Deseja realmente apagar este curso?</Typography>
+				<Typography variant="body1">Deseja realmente apagar este {type}?</Typography>
 			</DialogContent>
 			<DialogActions style={{ marginRight: '1rem' }}>
 				<Button onClick={() => setVisibility(false)} color="primary">
 					Cancelar
 				</Button>
-				<Button onClick={() => deleteCourse(id)} color="secondary">
+				<Button onClick={() => handleDelete(id)} color="secondary">
 					{loading ? <CircularProgress size={24} color="primary" /> : 'Apagar'}
 				</Button>
 			</DialogActions>

@@ -147,8 +147,8 @@ function Courses(props) {
 						<DeleteModal
 							open={deleteModalOpen}
 							setVisibility={setModalDeleteVisibility}
-							course={selectedCourse}
-							deleteCourse={() => deleteCourse(selectedCourse.id)}
+							item={{ id: selectedCourse.id, title: selectedCourse.title, type: 'curso' }}
+							handleDelete={() => deleteCourse(selectedCourse.id)}
 							loading={loading}
 							errors={errors}
 						/>

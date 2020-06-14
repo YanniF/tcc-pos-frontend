@@ -8,7 +8,7 @@ const styles = (theme) => ({
 });
 
 function Module(props) {
-	const { classes, values, onChange } = props;
+	const { classes, values, onChange, errors } = props;
 
 	return (
 		<div>
@@ -17,9 +17,11 @@ function Module(props) {
 				name="title"
 				value={values.title}
 				label="Título"
-				onChange={(e) => onChange(e.target.name, e.target.value)}
+				onChange={({ target }) => onChange(target.name, target.value)}
 				className={classes.inputSpacing}
 				variant="outlined"
+				helperText={errors.title}
+				error={!!errors.title}
 				fullWidth
 				required
 			/>

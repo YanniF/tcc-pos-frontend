@@ -37,13 +37,13 @@ app.delete('/admin/courses/:courseId/modules/:moduleId', fbAuth, deleteModule);
 app.get('/admin/courses/:courseId/modules/:moduleId/videos', fbAuth, getAllVideosByModule);
 app.get('/admin/courses/:courseId/modules/:moduleId/videos/:videoId', fbAuth, getVideo);
 app.post('/admin/courses/:courseId/modules/:moduleId/videos', fbAuth, addVideo);
-app.delete('/admin/courses/:courseId/modules/:moduleId/videos/:videoId', fbAuth, deleteVideo);
+app.delete('/admin/courses/:courseId/videos/:videoId', fbAuth, deleteVideo);
 
 // Document routes
 app.get('/admin/courses/:courseId/modules/:moduleId/documents', fbAuth, getAllDocumentsByModule);
 app.get('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', fbAuth, getDocument);
 app.post('/admin/courses/:courseId/modules/:moduleId/documents', fbAuth, addDocument);
-app.delete('/admin/courses/:courseId/modules/:moduleId/documents/:documentId', fbAuth, deleteDocument);
+app.delete('/admin/courses/:courseId/documents/:documentId', fbAuth, deleteDocument);
 
 // Tests routes
 app.get('/admin/courses/:courseId/modules/:moduleId/tests', fbAuth, getAllTestsByModule);

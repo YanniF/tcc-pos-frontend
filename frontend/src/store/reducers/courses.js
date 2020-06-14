@@ -23,6 +23,9 @@ import {
 	REQUEST_ADD_CONTENT,
 	SUCCESS_ADD_CONTENT,
 	FAILED_ADD_CONTENT,
+	REQUEST_DELETE_CONTENT,
+	SUCCESS_DELETE_CONTENT,
+	FAILED_DELETE_CONTENT,
 } from '../types';
 
 const initialState = {
@@ -90,6 +93,7 @@ const reducer = (state = initialState, action) => {
 		case REQUEST_EDIT_COURSE:
 		case REQUEST_DELETE_COURSE:
 		case REQUEST_ADD_CONTENT:
+		case REQUEST_DELETE_CONTENT:
 			return {
 				...state,
 				loading: true,
@@ -131,12 +135,26 @@ const reducer = (state = initialState, action) => {
 				loading: false,
 			};
 		}
+		case SUCCESS_DELETE_CONTENT: {
+			const { key, id } = action.payload;
+
+			return {
+				...state,
+				selectedCourse: {
+					...state.selectedCourse,
+					[key]: state.selectedCourse[key].filter((item) => item.id !== id),
+				},
+				loading: false,
+				deleteModalOpen: false,
+			};
+		}
 		case FAILED_GET_COURSES:
 		case FAILED_ADD_COURSE:
 		case FAILED_GET_COURSE:
 		case FAILED_EDIT_COURSE:
 		case FAILED_DELETE_COURSE:
 		case FAILED_ADD_CONTENT:
+		case FAILED_DELETE_CONTENT:
 			return {
 				...state,
 				errors: action.payload,

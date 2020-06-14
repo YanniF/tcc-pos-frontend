@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -15,7 +15,11 @@ import {
 	Radio,
 	Divider,
 	CircularProgress,
+	Collapse,
+	IconButton,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { courses } from '../../store/actions';
 import Module from './content/Module';
@@ -35,7 +39,7 @@ const styles = (theme) => ({
 });
 
 function ContentModal(props) {
-	const { classes, open, setVisibility, loading, selectedCourse, addContent } = props;
+	const { classes, open, setVisibility, loading, selectedCourse, addContent, errors } = props;
 
 	const [ type, setType ] = useState('module');
 	const [ moduleValues, setModuleValues ] = useState({ title: '' });
@@ -49,13 +53,28 @@ function ContentModal(props) {
 		title: '',
 		file: {},
 	});
+	const [ showAlert, setShowAlert ] = useState(false);
+
+	useEffect(
+		() => {
+			const { errors } = props;
+
+			if (errors && errors.error) {
+				setShowAlert(true);
+			}
+		},
+		[ props ],
+	);
 
 	const typeFields = {
-		module: <Module values={moduleValues} onChange={(name, value) => setModuleValues({ [name]: value })} />,
+		module: (
+			<Module values={moduleValues} errors={errors} onChange={(name, value) => setModuleValues({ [name]: value })} />
+		),
 		video: (
 			<Video
 				modules={selectedCourse.modules}
 				values={videoValues}
+				errors={errors}
 				onChange={(name, value) => setVideoValues({ ...videoValues, [name]: value })}
 			/>
 		),
@@ -63,6 +82,7 @@ function ContentModal(props) {
 			<Document
 				modules={selectedCourse.modules}
 				values={documentValues}
+				errors={errors}
 				onChange={(name, value) => setDocumentValues({ ...documentValues, [name]: value })}
 			/>
 		),
@@ -99,16 +119,35 @@ function ContentModal(props) {
 		resetState();
 	};
 
+	const handleSetType = (value) => {
+		props.clearCourseErrors();
+		setShowAlert(false);
+		setType(value);
+	};
+
 	return (
 		<Dialog open={open} onClose={() => setVisibility(false)} maxWidth="md" fullWidth>
 			<DialogTitle>{selectedCourse.title}</DialogTitle>
 			<form onSubmit={handleSubmit}>
 				<DialogContent>
+					<Collapse in={showAlert}>
+						<Alert
+							severity="error"
+							action={
+								<IconButton aria-label="close" color="inherit" size="small" onClick={() => setShowAlert(false)}>
+									<CloseIcon fontSize="inherit" />
+								</IconButton>
+							}
+							style={{ marginBottom: '20px' }}
+						>
+							{errors && errors.error}
+						</Alert>
+					</Collapse>
 					<FormControl component="fieldset" fullWidth>
 						<FormLabel component="legend">Você deseja adicionar um:</FormLabel>
 						<RadioGroup
 							name="type"
-							onChange={(e) => setType(e.target.value)}
+							onChange={(e) => handleSetType(e.target.value)}
 							value={type}
 							className={classes.radioGroup}
 						>
@@ -149,10 +188,12 @@ function ContentModal(props) {
 const mapStateToProps = ({ courses }) => ({
 	selectedCourse: courses.selectedCourse || {},
 	loading: courses.loading || false,
+	errors: courses.errors || {},
 });
 
 const mapDispatchToProps = {
 	addContent: courses.addContent,
+	clearCourseErrors: courses.clearCourseErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ContentModal));

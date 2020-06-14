@@ -17,7 +17,7 @@ const styles = (theme) => ({
 function Document(props) {
 	const [ fileName, seFileName ] = useState('');
 
-	const { classes, modules, values, onChange } = props;
+	const { classes, modules, values, onChange, errors } = props;
 
 	const handleUploadFile = (e) => {
 		const file = e.target.files[0];
@@ -56,6 +56,8 @@ function Document(props) {
 				className={classes.inputSpacing}
 				variant="outlined"
 				onChange={(e) => onChange(e.target.name, e.target.value)}
+				helperText={errors.title}
+				error={!!errors.title}
 				fullWidth
 				required
 			/>

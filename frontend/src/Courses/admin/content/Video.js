@@ -8,7 +8,7 @@ const styles = (theme) => ({
 });
 
 function Video(props) {
-	const { classes, modules, values, onChange } = props;
+	const { classes, modules, values, onChange, errors } = props;
 
 	return (
 		<div>
@@ -37,6 +37,8 @@ function Video(props) {
 				className={classes.inputSpacing}
 				variant="outlined"
 				onChange={(e) => onChange(e.target.name, e.target.value)}
+				helperText={errors.title}
+				error={!!errors.title}
 				fullWidth
 				required
 			/>
@@ -48,6 +50,8 @@ function Video(props) {
 				className={classes.inputSpacing}
 				variant="outlined"
 				onChange={(e) => onChange(e.target.name, e.target.value)}
+				helperText={errors.link}
+				error={!!errors.link}
 				fullWidth
 				required
 			/>

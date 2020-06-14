@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Image from '../../shared/components/SVG/Professor';
 import ButtonIcon from '../../shared/components/ButtonIcon';
@@ -42,6 +43,9 @@ const styles = (theme) => ({
 		padding: '.7rem',
 		width: '100%',
 	},
+	btnDisabled: {
+		opacity: 0.4,
+	},
 	textIcon: {
 		display: 'flex',
 		alignItems: 'center',
@@ -53,13 +57,11 @@ const styles = (theme) => ({
 });
 
 function Details(props) {
-	const [ openContent, setOpenContent ] = useState(false);
 	const {
 		classes,
 		selectedCourse,
 		unselectCourse,
 		editCourse,
-		deleteCourse,
 		isRequestingCourses,
 		loading,
 		errors,
@@ -71,6 +73,9 @@ function Details(props) {
 		setToasterMessage,
 	} = props;
 
+	const [ openContent, setOpenContent ] = useState(false);
+	const [ detailsDelete, setDetailsDelete ] = useState({});
+
 	useEffect(
 		() => {
 			return () => {
@@ -81,7 +86,24 @@ function Details(props) {
 	);
 
 	const handleSetVisibilityContent = (open) => {
+		props.clearCourseErrors();
 		setOpenContent(open);
+	};
+
+	const handleSetVisibilityDelete = (open, { id, title, type }) => {
+		setDetailsDelete({ id, title, type });
+		props.clearCourseErrors();
+		setModalDeleteVisibility(open);
+	};
+
+	const handleDelete = () => {
+		const type = {
+			módulo: 'modules',
+			'material complementar': 'documents',
+			vídeo: 'videos',
+			teste: 'tests',
+		};
+		props.deleteContent(selectedCourse.id, detailsDelete.id, type[detailsDelete.type]);
 	};
 
 	return (
@@ -99,11 +121,27 @@ function Details(props) {
 									<Typography variant="h4" component="h3">
 										{selectedCourse.title}
 									</Typography>
-									<ButtonIcon tip="Editar Curso" onClick={() => setCourseModalVisibility(true)}>
-										<EditIcon color="primary" />
-									</ButtonIcon>
+									<span>
+										<ButtonIcon tip="Editar Curso" onClick={() => setCourseModalVisibility(true)}>
+											<EditIcon color="primary" />
+										</ButtonIcon>
+										{/* <ButtonIcon
+											tip="Apagar Curso"
+											disabled={selectedCourse.enrolledCount !== 0}
+											btnClassName={selectedCourse.enrolledCount !== 0 ? classes.btnDisabled : ''}
+											onClick={() =>
+												handleSetVisibilityDelete(true, {
+													id: selectedCourse.id,
+													title: selectedCourse.title,
+													type: 'curso',
+												})}
+										>
+											<DeleteIcon color="primary" />
+										</ButtonIcon> */}
+									</span>
 								</div>
-								{selectedCourse.modules.length > 0 && (
+								{selectedCourse.modules &&
+								selectedCourse.modules.length > 0 && (
 									<TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
 										{selectedCourse.modules.map((module) => (
 											<TreeItem
@@ -114,9 +152,30 @@ function Details(props) {
 														<Typography variant="h6" component="h4">
 															{module.title}
 														</Typography>
-														<ButtonIcon tip="Editar Módulo" onClick={() => handleSetVisibilityContent(true)}>
-															<EditIcon color="primary" fontSize="small" />
-														</ButtonIcon>
+														<span>
+															<ButtonIcon
+																tip="Editar Módulo"
+																onClick={(e) => {
+																	handleSetVisibilityContent(true);
+																	e.stopPropagation();
+																}}
+															>
+																<EditIcon color="primary" fontSize="small" />
+															</ButtonIcon>
+															<ButtonIcon
+																tip="Apagar Módulo"
+																onClick={(e) => {
+																	handleSetVisibilityDelete(true, {
+																		id: module.id,
+																		title: module.title,
+																		type: 'módulo',
+																	});
+																	e.stopPropagation();
+																}}
+															>
+																<DeleteIcon color="primary" />
+															</ButtonIcon>
+														</span>
 													</div>
 												}
 											>
@@ -131,8 +190,18 @@ function Details(props) {
 																		<Typography className={classes.textIcon}>
 																			<VideoLibraryIcon fontSize="small" /> {video.title}
 																		</Typography>
-																		<ButtonIcon tip="Editar Vídeo" onClick={() => handleSetVisibilityContent(true)}>
-																			<EditIcon color="primary" fontSize="small" />
+																		<ButtonIcon
+																			tip="Apagar Vídeo"
+																			onClick={(e) => {
+																				handleSetVisibilityDelete(true, {
+																					id: video.id,
+																					title: video.title,
+																					type: 'vídeo',
+																				});
+																				e.stopPropagation();
+																			}}
+																		>
+																			<DeleteIcon color="primary" />
 																		</ButtonIcon>
 																	</div>
 																}
@@ -152,8 +221,18 @@ function Details(props) {
 																		<Typography className={classes.textIcon}>
 																			<InsertDriveFileIcon fontSize="small" /> {doc.title}
 																		</Typography>
-																		<ButtonIcon tip="Editar Material Complementar">
-																			<EditIcon color="primary" fontSize="small" />
+																		<ButtonIcon
+																			tip="Apagar Material Complementar"
+																			onClick={(e) => {
+																				handleSetVisibilityDelete(true, {
+																					id: doc.id,
+																					title: doc.title,
+																					type: 'material complementar',
+																				});
+																				e.stopPropagation();
+																			}}
+																		>
+																			<DeleteIcon color="primary" />
 																		</ButtonIcon>
 																	</div>
 																}
@@ -173,9 +252,30 @@ function Details(props) {
 																		<Typography className={classes.textIcon}>
 																			<SpeakerNotesIcon fontSize="small" /> Teste
 																		</Typography>
-																		<ButtonIcon tip="Editar Teste">
-																			<EditIcon color="primary" fontSize="small" />
-																		</ButtonIcon>
+																		<span>
+																			<ButtonIcon
+																				tip="Editar Teste"
+																				onClick={(e) => {
+																					handleSetVisibilityContent(true);
+																					e.stopPropagation();
+																				}}
+																			>
+																				<EditIcon color="primary" fontSize="small" />
+																			</ButtonIcon>
+																			<ButtonIcon
+																				tip="Apagar Teste"
+																				onClick={(e) => {
+																					handleSetVisibilityDelete(true, {
+																						id: test.id,
+																						title: test.title,
+																						type: 'teste',
+																					});
+																					e.stopPropagation();
+																				}}
+																			>
+																				<DeleteIcon color="primary" />
+																			</ButtonIcon>
+																		</span>
 																	</div>
 																}
 															/>
@@ -218,8 +318,8 @@ function Details(props) {
 						<DeleteModal
 							open={deleteModalOpen}
 							setVisibility={setModalDeleteVisibility}
-							course={selectedCourse}
-							deleteCourse={() => deleteCourse(selectedCourse.id)}
+							item={detailsDelete}
+							handleDelete={handleDelete}
 							loading={loading}
 							errors={errors}
 						/>
@@ -245,9 +345,10 @@ const mapDispatchToProps = {
 	setCourseModalVisibility: courses.setModalVisibility,
 	setModalDeleteVisibility: courses.setModalDeleteVisibility,
 	unselectCourse: courses.unselectCourse,
-	editCourse: courses.editCourse,
-	deleteCourse: courses.deleteCourse,
+	clearCourseErrors: courses.clearCourseErrors,
 	setToasterMessage: courses.setToasterMessage,
+	editCourse: courses.editCourse,
+	deleteContent: courses.deleteContent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Details));
