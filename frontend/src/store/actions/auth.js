@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { AUTH_START, AUTH_FAILED, AUTH_CLEAR_ERRORS, SET_USER, SET_UNAUTHENTICATED } from '../types';
+import {
+	AUTH_START,
+	AUTH_FAILED,
+	AUTH_CLEAR_ERRORS,
+	SET_USER,
+	SET_UNAUTHENTICATED,
+	SET_ADDITIONAL_DATA_USER,
+} from '../types';
 
 const actionCreator = (type, payload) => ({
 	type,
@@ -12,14 +19,22 @@ const setAuthorizationHeader = (token) => {
 	axios.defaults.headers.common['Authorization'] = FBIdToken;
 };
 
-export const getUserData = () => (dispatch) => {
-	// dispatch({ type: LOADING_USER });
+export const setUserData = ({ user_id: userId, admin, email }) => (dispatch) => {
+	const data = {
+		userId,
+		admin,
+		email,
+	};
+	dispatch(actionCreator(SET_USER, data));
+};
+
+export const getUserAdditionalData = () => (dispatch) => {
 	axios
 		.get('/user')
 		.then((res) => {
-			dispatch(actionCreator(SET_USER, res.data));
+			dispatch(actionCreator(SET_ADDITIONAL_DATA_USER, res.data.credentials));
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => err.response.data);
 };
 
 export const clearAuthErrors = () => (dispatch) => {
@@ -32,7 +47,8 @@ export const login = (user) => (dispatch) => {
 		.post('/login', user)
 		.then((res) => {
 			setAuthorizationHeader(res.data.token);
-			dispatch(getUserData());
+			dispatch(setUserData(res.data.token));
+			dispatch(getUserAdditionalData());
 			dispatch(clearAuthErrors());
 			// dispatch(actionCreator(AUTH_SUCCESS, res.data.loggedUser));
 			// history.push('/');
@@ -49,7 +65,8 @@ export const signupUser = (newUserData) => (dispatch) => {
 		.post('/signup', newUserData)
 		.then((res) => {
 			setAuthorizationHeader(res.data.token);
-			dispatch(getUserData());
+			dispatch(setUserData(res.data.token));
+			dispatch(getUserAdditionalData());
 			dispatch(clearAuthErrors());
 			// history.push('/');
 		})

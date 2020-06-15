@@ -8,7 +8,7 @@ import Rating from '@material-ui/lab/Rating';
 import coursesStyles from './coursesStyles';
 import Ratings from './components/Ratings';
 import Image from '../shared/components/SVG/PressPlay';
-import courseImage from '../shared/assets/thumb2.jpg';
+import courseImage from '../shared/assets/thumb1.jpg';
 
 const styles = (theme) => ({
 	...theme.properties,

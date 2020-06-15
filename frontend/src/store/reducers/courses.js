@@ -23,6 +23,9 @@ import {
 	REQUEST_ADD_CONTENT,
 	SUCCESS_ADD_CONTENT,
 	FAILED_ADD_CONTENT,
+	REQUEST_EDIT_CONTENT,
+	SUCCESS_EDIT_CONTENT,
+	FAILED_EDIT_CONTENT,
 	REQUEST_DELETE_CONTENT,
 	SUCCESS_DELETE_CONTENT,
 	FAILED_DELETE_CONTENT,
@@ -93,6 +96,7 @@ const reducer = (state = initialState, action) => {
 		case REQUEST_EDIT_COURSE:
 		case REQUEST_DELETE_COURSE:
 		case REQUEST_ADD_CONTENT:
+		case REQUEST_EDIT_CONTENT:
 		case REQUEST_DELETE_CONTENT:
 			return {
 				...state,
@@ -135,6 +139,18 @@ const reducer = (state = initialState, action) => {
 				loading: false,
 			};
 		}
+		case SUCCESS_EDIT_CONTENT: {
+			const { key, data } = action.payload;
+
+			return {
+				...state,
+				loading: false,
+				selectedCourse: {
+					...state.selectedCourse,
+					[key]: state.selectedCourse[key].map((item) => (item.id === data.id ? data : item)),
+				},
+			};
+		}
 		case SUCCESS_DELETE_CONTENT: {
 			const { key, id } = action.payload;
 
@@ -154,6 +170,7 @@ const reducer = (state = initialState, action) => {
 		case FAILED_EDIT_COURSE:
 		case FAILED_DELETE_COURSE:
 		case FAILED_ADD_CONTENT:
+		case FAILED_EDIT_CONTENT:
 		case FAILED_DELETE_CONTENT:
 			return {
 				...state,

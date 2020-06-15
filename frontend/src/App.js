@@ -39,9 +39,9 @@ function App(props) {
 			window.location.href = '/login';
 		}
 		else {
-			// move to actions
 			axios.defaults.headers.common['Authorization'] = token;
-			props.getUserData();
+			props.setUserData(decodedToken);
+			props.getUserAdditionalData();
 		}
 	}
 
@@ -90,7 +90,8 @@ const mapStateToProps = ({ auth }) => ({
 
 const mapDispatchToProps = {
 	logout: auth.logout,
-	getUserData: auth.getUserData,
+	setUserData: auth.setUserData,
+	getUserAdditionalData: auth.getUserAdditionalData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));

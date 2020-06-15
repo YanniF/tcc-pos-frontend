@@ -17,7 +17,7 @@ exports.getAllCoursesByUser = (req, res) => {
 					teacher: doc.data().teacher,
 					category: doc.data().category,
 					description: doc.data().description,
-					// thumbnail: doc.data().thumbnail,
+					thumbnail: doc.data().thumbnail,
 					enrolledCount: doc.data().enrolledCount,
 					finishedCount: doc.data().finishedCount,
 					rating: doc.data().rating,

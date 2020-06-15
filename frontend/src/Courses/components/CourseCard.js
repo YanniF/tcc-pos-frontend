@@ -24,10 +24,12 @@ import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import Assignment from '@material-ui/icons/Assignment';
 
 import image from '../../shared/assets/thumb1.jpg';
+import placeholder from '../../shared/assets/placeholder.jpg';
 
 const styles = (theme) => ({
 	...theme.properties,
 	image: {
+		position: 'relative',
 		paddingTop: '56.25%',
 		objectFit: 'cover',
 		transition: 'opacity .2s',
@@ -35,6 +37,15 @@ const styles = (theme) => ({
 		'&:hover': {
 			opacity: 0.9,
 		},
+	},
+	placeholderText: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		fontSize: '2em',
+		color: '#fff',
+		textAlign: 'center',
 	},
 	wrapper: {
 		display: 'flex',
@@ -53,7 +64,7 @@ const styles = (theme) => ({
 function CourseCard(props) {
 	const [ anchorEl, setAnchorEl ] = React.useState(null);
 	const {
-		course: { id, title, teacher, description, rating, numberOfRatings, enrolledCount, finishedCount },
+		course: { id, title, teacher, description, thumbnail, rating, numberOfRatings, enrolledCount, finishedCount },
 		isFinished,
 		isAdmin,
 		classes,
@@ -97,7 +108,13 @@ function CourseCard(props) {
 	return (
 		<Card>
 			<Link to={`/courses/${id}/tutorial`}>
-				<CardMedia image={image} title={title} className={classes.image} />
+				{thumbnail ? (
+					<CardMedia image={image} title={title} className={classes.image} />
+				) : (
+					<div style={{ backgroundImage: `url(${placeholder})` }} className={classes.image}>
+						<span className={classes.placeholderText}>{title}</span>
+					</div>
+				)}
 			</Link>
 			<CardHeader
 				action={

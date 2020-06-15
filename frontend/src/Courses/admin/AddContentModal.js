@@ -38,7 +38,7 @@ const styles = (theme) => ({
 	},
 });
 
-function ContentModal(props) {
+function AddContentModal(props) {
 	const { classes, open, setVisibility, loading, selectedCourse, addContent, errors } = props;
 
 	const [ type, setType ] = useState('module');
@@ -157,11 +157,13 @@ function ContentModal(props) {
 								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
 								label="Vídeo"
 							/>
+
 							<FormControlLabel
 								value="document"
 								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
 								label="Material Complementar"
 							/>
+
 							<FormControlLabel
 								value="test"
 								control={<Radio color="primary" disabled={!selectedCourse.modules.length} />}
@@ -196,4 +198,4 @@ const mapDispatchToProps = {
 	clearCourseErrors: courses.clearCourseErrors,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ContentModal));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddContentModal));

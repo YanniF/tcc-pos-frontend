@@ -25,6 +25,9 @@ import {
 	REQUEST_ADD_CONTENT,
 	SUCCESS_ADD_CONTENT,
 	FAILED_ADD_CONTENT,
+	REQUEST_EDIT_CONTENT,
+	SUCCESS_EDIT_CONTENT,
+	FAILED_EDIT_CONTENT,
 	REQUEST_DELETE_CONTENT,
 	SUCCESS_DELETE_CONTENT,
 	FAILED_DELETE_CONTENT,
@@ -137,6 +140,27 @@ export const addContent = (type, courseId, content) => (dispatch) => {
 			dispatch(setToasterMessage('Cadastro realizado'));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_ADD_CONTENT, err.response.data)));
+};
+
+export const editContent = (type, courseId, content) => (dispatch) => {
+	dispatch(actionCreator(REQUEST_EDIT_CONTENT));
+	console.log(content);
+	let endpoint;
+
+	if (type === 'modules') {
+		endpoint = `/admin/courses/${courseId}/modules/${content.id}`;
+	}
+	else {
+		let moduleId = content.module;
+		endpoint = `/admin/courses/${courseId}/modules/${moduleId}/${type}/${content.id}`;
+	}
+	axios
+		.put(endpoint, content)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_EDIT_CONTENT, { key: type, data: content }));
+			dispatch(setToasterMessage(res.data.message));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_EDIT_CONTENT, err.response.data)));
 };
 
 export const deleteContent = (courseId, id, type) => (dispatch) => {

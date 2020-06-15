@@ -16,7 +16,8 @@ import Image from '../../shared/components/SVG/Professor';
 import ButtonIcon from '../../shared/components/ButtonIcon';
 import SnackBar from '../../shared/components/SnackBar';
 import CourseModal from './CourseModal';
-import ContentModal from './ContentModal';
+import AddContentModal from './AddContentModal';
+import EditContentModal from './EditContentModal';
 import DeleteModal from './DeleteModal';
 import coursesStyles from '../coursesStyles';
 import { courses } from '../../store/actions';
@@ -73,8 +74,10 @@ function Details(props) {
 		setToasterMessage,
 	} = props;
 
-	const [ openContent, setOpenContent ] = useState(false);
+	const [ openAddContent, setOpenAddContent ] = useState(false);
+	const [ openEditContent, setOpenEditContent ] = useState(false);
 	const [ detailsDelete, setDetailsDelete ] = useState({});
+	const [ detailsEdit, setDetailsEdit ] = useState(null);
 
 	useEffect(
 		() => {
@@ -85,9 +88,17 @@ function Details(props) {
 		[ unselectCourse ],
 	);
 
-	const handleSetVisibilityContent = (open) => {
+	const handleSetVisibilityAddContent = (open) => {
 		props.clearCourseErrors();
-		setOpenContent(open);
+		setOpenAddContent(open);
+	};
+
+	const handleSetVisibilityEditContent = (open, id, type) => {
+		// TODO: test after creating a course
+		const content = selectedCourse[type + 's'] && selectedCourse[type + 's'].find((item) => item.id === id);
+		setDetailsEdit({ content, type });
+		props.clearCourseErrors();
+		setOpenEditContent(open);
 	};
 
 	const handleSetVisibilityDelete = (open, { id, title, type }) => {
@@ -156,7 +167,7 @@ function Details(props) {
 															<ButtonIcon
 																tip="Editar Módulo"
 																onClick={(e) => {
-																	handleSetVisibilityContent(true);
+																	handleSetVisibilityEditContent(true, module.id, 'module');
 																	e.stopPropagation();
 																}}
 															>
@@ -256,7 +267,7 @@ function Details(props) {
 																			<ButtonIcon
 																				tip="Editar Teste"
 																				onClick={(e) => {
-																					handleSetVisibilityContent(true);
+																					handleSetVisibilityEditContent(true, test.id, 'test');
 																					e.stopPropagation();
 																				}}
 																			>
@@ -296,7 +307,7 @@ function Details(props) {
 									color="secondary"
 									variant="contained"
 									className={classes.btnLarge}
-									onClick={() => handleSetVisibilityContent(true)}
+									onClick={() => handleSetVisibilityAddContent(true)}
 								>
 									Adicionar Conteúdo
 								</Button>
@@ -313,7 +324,14 @@ function Details(props) {
 							errors={errors}
 						/>
 					)}
-					{openContent && <ContentModal open={openContent} setVisibility={handleSetVisibilityContent} />}
+					{openAddContent && <AddContentModal open={openAddContent} setVisibility={handleSetVisibilityAddContent} />}
+					{openEditContent && (
+						<EditContentModal
+							open={openEditContent}
+							item={detailsEdit}
+							setVisibility={handleSetVisibilityEditContent}
+						/>
+					)}
 					{deleteModalOpen && (
 						<DeleteModal
 							open={deleteModalOpen}

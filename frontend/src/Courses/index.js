@@ -4,9 +4,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Typography } from '@material-ui/core/';
 
 import CourseCard from './components/CourseCard';
-import SearchInput from '../shared/components/SearchInput'
+import SearchInput from '../shared/components/SearchInput';
 import image1 from '../shared/assets/thumb1.jpg';
-import image2 from '../shared/assets/thumb2.jpg';
+import image2 from '../shared/assets/placeholder.jpg';
 
 const styles = (theme) => ({
 	...theme.properties,
