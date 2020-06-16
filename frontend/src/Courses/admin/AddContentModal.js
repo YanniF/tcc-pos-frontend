@@ -53,6 +53,11 @@ function AddContentModal(props) {
 		title: '',
 		file: {},
 	});
+	const [ testValues, setTestValues ] = useState({
+		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+		title: '',
+		questions: [],
+	});
 	const [ showAlert, setShowAlert ] = useState(false);
 
 	useEffect(
@@ -86,7 +91,14 @@ function AddContentModal(props) {
 				onChange={(name, value) => setDocumentValues({ ...documentValues, [name]: value })}
 			/>
 		),
-		test: <Test />,
+		test: (
+			<Test
+				modules={selectedCourse.modules}
+				values={testValues}
+				errors={errors}
+				onChange={(name, value) => setTestValues({ ...videoValues, [name]: value })}
+			/>
+		),
 	};
 
 	const resetState = () => {
