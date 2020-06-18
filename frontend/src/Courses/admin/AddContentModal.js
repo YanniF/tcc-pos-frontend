@@ -56,7 +56,14 @@ function AddContentModal(props) {
 	const [ testValues, setTestValues ] = useState({
 		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
 		title: '',
-		questions: [],
+		questions: [
+			{
+				question: '',
+				options: [ { title: '' } ],
+				points: 0,
+				answer: null,
+			},
+		],
 	});
 	const [ showAlert, setShowAlert ] = useState(false);
 
@@ -96,11 +103,11 @@ function AddContentModal(props) {
 				modules={selectedCourse.modules}
 				values={testValues}
 				errors={errors}
-				onChange={(name, value) => setTestValues({ ...videoValues, [name]: value })}
+				onChange={(name, value) => setTestValues({ ...testValues, [name]: value })}
 			/>
 		),
 	};
-
+	console.log(testValues); /////////////////
 	const resetState = () => {
 		setModuleValues({ title: '' });
 		setVideoValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', link: '' });
