@@ -59,9 +59,9 @@ function AddContentModal(props) {
 		questions: [
 			{
 				question: '',
-				options: [ { title: '' } ],
-				points: 0,
-				answer: null,
+				options: [ { id: '', title: '' } ],
+				points: '',
+				answer: '',
 			},
 		],
 	});
@@ -107,11 +107,23 @@ function AddContentModal(props) {
 			/>
 		),
 	};
-	console.log(testValues); /////////////////
+
 	const resetState = () => {
 		setModuleValues({ title: '' });
 		setVideoValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', link: '' });
 		setDocumentValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', file: {} });
+		setTestValues({
+			module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+			title: '',
+			questions: [
+				{
+					question: '',
+					options: [ { id: '', title: '' } ],
+					points: '',
+					answer: '',
+				},
+			],
+		});
 	};
 
 	const handleSubmit = (e) => {
@@ -129,6 +141,9 @@ function AddContentModal(props) {
 			formData.append('module', documentValues.module);
 
 			addContent('documents', selectedCourse.id, formData);
+		}
+		else if (type === 'test') {
+			addContent('tests', selectedCourse.id, testValues);
 		}
 		resetState();
 	};

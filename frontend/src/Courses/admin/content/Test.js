@@ -2,8 +2,7 @@ import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { TextField, Divider, FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { numbersToLetters } from '../../../shared/util/utility';
 import ButtonIcon from '../../../shared/components/ButtonIcon';
@@ -44,10 +43,17 @@ function Test(props) {
 
 		questions.push({
 			question: '',
-			options: [ { title: '' } ],
-			points: 0,
-			answer: null,
+			options: [ { id: '', title: '' } ],
+			points: '',
+			answer: '',
 		});
+
+		onChange('questions', questions);
+	};
+
+	const removeQuestion = (index) => {
+		const questions = [ ...values.questions ];
+		questions.splice(index, 1);
 
 		onChange('questions', questions);
 	};
@@ -62,6 +68,22 @@ function Test(props) {
 	const removeAnswer = (indexQuestion, indexAnswer) => {
 		const questions = [ ...values.questions ];
 		questions[indexQuestion].options.splice(indexAnswer, 1);
+
+		onChange('questions', questions);
+	};
+
+	const handleOnChange = (name, value, indexQuestion, indexAnswer) => {
+		const questions = [ ...values.questions ];
+
+		if (indexAnswer || indexAnswer === 0) {
+			questions[indexQuestion].options[indexAnswer] = {
+				id: indexAnswer,
+				title: value,
+			};
+		}
+		else {
+			questions[indexQuestion][name] = value;
+		}
 
 		onChange('questions', questions);
 	};
@@ -104,72 +126,84 @@ function Test(props) {
 					<div className={classes.questionGroup}>
 						<span className={classes.questionNumber}>{index + 1}</span>
 						<TextField
-							name="title"
+							name="question"
 							value={question.question}
 							label="Pergunta"
-							onChange={({ target }) => onChange(target.name, target.value)}
+							onChange={({ target }) => handleOnChange(target.name, target.value, index)}
 							className={classes.inputSpacing}
 							variant="outlined"
-							helperText={errors.question}
-							error={!!errors.question}
 							fullWidth
 							required
 						/>
-						<ButtonIcon tip="Adicionar Resposta" onClick={() => addAnswer(index)}>
-							<AddIcon color="primary" />
+						<ButtonIcon tip="Remover Pergunta" onClick={() => removeQuestion(index)}>
+							<DeleteIcon color="primary" />
 						</ButtonIcon>
 					</div>
-					{question.options.map((q, idx) => (
+					{question.options.map((answer, idx) => (
 						<div className={classes.questionGroup} key={idx}>
 							<span className={classes.answerNumber}>{numbersToLetters(idx + 1)}</span>
 							<TextField
 								name="title"
-								value={values.title}
+								value={answer.title}
 								label="Resposta"
-								onChange={({ target }) => onChange(target.name, target.value)}
+								onChange={({ target }) => handleOnChange(target.name, target.value, index, idx)}
 								className={classes.inputSpacing}
 								variant="outlined"
 								fullWidth
 								required
 							/>
 							<ButtonIcon tip="Remover Resposta" onClick={() => removeAnswer(index, idx)}>
-								<RemoveIcon color="primary" />
+								<DeleteIcon color="primary" />
 							</ButtonIcon>
 						</div>
 					))}
 					<div className={classes.bottomGroup}>
-						<FormControl variant="outlined" className={classes.inputSpacing} style={{ width: '45%' }}>
+						<FormControl variant="outlined" className={classes.inputSpacing} style={{ width: '30%' }}>
 							<InputLabel id="module">Resposta Correta</InputLabel>
 							<Select
-								labelId="module"
-								id="module"
-								name="module"
+								labelId="answer"
+								id="answer"
+								name="answer"
 								labelWidth={127}
-								value={values.module}
-								onChange={(e) => onChange(e.target.name, e.target.value)}
+								value={question.answer}
+								onChange={(e) => handleOnChange(e.target.name, e.target.value, index)}
 							>
 								{Array.from({ length: question.options.length }, (item, i) => (
-									<MenuItem key={i}>{numbersToLetters(i + 1)}</MenuItem>
+									<MenuItem key={i} value={i}>
+										{numbersToLetters(i + 1)}
+									</MenuItem>
 								))}
 							</Select>
 						</FormControl>
 						<TextField
-							name="title"
+							name="points"
 							type="number"
-							value={values.title}
+							value={question.points}
 							label="Pontos"
-							onChange={({ target }) => onChange(target.name, target.value)}
+							onChange={({ target }) => handleOnChange(target.name, target.value, index)}
 							className={classes.inputSpacing}
 							variant="outlined"
-							helperText={errors.title}
-							error={!!errors.title}
-							style={{ width: '45%' }}
+							style={{ width: '30%' }}
 							required
 						/>
+						<Button
+							color="primary"
+							variant="contained"
+							className={classes.inputSpacing}
+							onClick={() => addAnswer(index)}
+						>
+							Adicionar Resposta
+						</Button>
 					</div>
 				</React.Fragment>
 			))}
-			<Button color="secondary" variant="contained" className={classes.btnLarge} onClick={addQuestion}>
+			<Button
+				color="secondary"
+				variant="contained"
+				className={classes.btnLarge}
+				style={{ margin: '20px 0 0 50px' }}
+				onClick={addQuestion}
+			>
 				Adicionar Pergunta
 			</Button>
 		</div>

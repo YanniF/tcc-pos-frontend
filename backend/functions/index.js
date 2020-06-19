@@ -50,7 +50,7 @@ app.get('/admin/courses/:courseId/modules/:moduleId/tests', fbAuth, getAllTestsB
 app.post('/admin/courses/:courseId/modules/:moduleId/tests', fbAuth, addTest);
 app.get('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, getTest);
 app.put('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, editTest);
-app.delete('/admin/courses/:courseId/modules/:moduleId/tests/:testId', fbAuth, deleteTest);
+app.delete('/admin/courses/:courseId/tests/:testId', fbAuth, deleteTest);
 
 // Rating routes
 app.get('/courses/:courseId/ratings', fbAuth, getAllRatingsByCourse);
