@@ -129,7 +129,7 @@ export const addContent = (type, courseId, content) => (dispatch) => {
 		endpoint = `/admin/courses/${courseId}/${type}`;
 	}
 	else {
-		let moduleId = content.module || content.get('module');
+		let moduleId = content.moduleId || content.get('moduleId');
 		endpoint = `/admin/courses/${courseId}/modules/${moduleId}/${type}`;
 	}
 
@@ -144,14 +144,14 @@ export const addContent = (type, courseId, content) => (dispatch) => {
 
 export const editContent = (type, courseId, content) => (dispatch) => {
 	dispatch(actionCreator(REQUEST_EDIT_CONTENT));
-	console.log(content);
+
 	let endpoint;
 
 	if (type === 'modules') {
 		endpoint = `/admin/courses/${courseId}/modules/${content.id}`;
 	}
 	else {
-		let moduleId = content.module;
+		let moduleId = content.moduleId;
 		endpoint = `/admin/courses/${courseId}/modules/${moduleId}/${type}/${content.id}`;
 	}
 	axios

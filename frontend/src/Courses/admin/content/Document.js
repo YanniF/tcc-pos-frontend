@@ -36,9 +36,9 @@ function Document(props) {
 				<Select
 					labelId="module"
 					id="module"
-					name="module"
+					name="moduleId"
 					labelWidth={55}
-					value={values.module}
+					value={values.moduleId}
 					onChange={(e) => onChange(e.target.name, e.target.value)}
 				>
 					{modules.map((module) => (

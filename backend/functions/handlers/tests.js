@@ -22,7 +22,7 @@ exports.getAllTestsByModule = (req, res) => {
 			return res.json(tests);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todos os testes' });
 			console.error(error);
 		});
 };
@@ -87,7 +87,7 @@ exports.addTest = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível cadastrar o teste.' });
 		});
 };
 
@@ -116,7 +116,7 @@ exports.editTest = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível editar o teste.' });
 		});
 };
 
@@ -138,10 +138,10 @@ exports.deleteTest = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Teste deletado com sucesso' });
+			res.json({ message: 'Teste apagado com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o teste.' });
 		});
 };

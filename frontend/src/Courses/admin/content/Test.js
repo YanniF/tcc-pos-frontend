@@ -36,7 +36,7 @@ const styles = (theme) => ({
 });
 
 function Test(props) {
-	const { classes, modules, values, onChange, errors } = props;
+	const { classes, modules, values, onChange, errors, isEditing } = props;
 
 	const addQuestion = () => {
 		const questions = [ ...values.questions ];
@@ -90,23 +90,25 @@ function Test(props) {
 
 	return (
 		<div>
-			<FormControl variant="outlined" fullWidth className={classes.inputSpacing}>
-				<InputLabel id="module">Módulo</InputLabel>
-				<Select
-					labelId="module"
-					id="module"
-					name="module"
-					labelWidth={55}
-					value={values.module}
-					onChange={(e) => onChange(e.target.name, e.target.value)}
-				>
-					{modules.map((module) => (
-						<MenuItem key={module.id} value={module.id}>
-							{module.title}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
+			{!isEditing && (
+				<FormControl variant="outlined" fullWidth className={classes.inputSpacing}>
+					<InputLabel id="module">Módulo</InputLabel>
+					<Select
+						labelId="module"
+						id="module"
+						name="moduleId"
+						labelWidth={55}
+						value={values.moduleId}
+						onChange={(e) => onChange(e.target.name, e.target.value)}
+					>
+						{modules.map((module) => (
+							<MenuItem key={module.id} value={module.id}>
+								{module.title}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+			)}
 			<TextField
 				name="title"
 				value={values.title}
@@ -159,7 +161,7 @@ function Test(props) {
 					))}
 					<div className={classes.bottomGroup}>
 						<FormControl variant="outlined" className={classes.inputSpacing} style={{ width: '30%' }}>
-							<InputLabel id="module">Resposta Correta</InputLabel>
+							<InputLabel id="answer">Resposta Correta</InputLabel>
 							<Select
 								labelId="answer"
 								id="answer"

@@ -44,17 +44,17 @@ function AddContentModal(props) {
 	const [ type, setType ] = useState('module');
 	const [ moduleValues, setModuleValues ] = useState({ title: '' });
 	const [ videoValues, setVideoValues ] = useState({
-		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+		moduleId: selectedCourse.modules.length && selectedCourse.modules[0].id,
 		title: '',
 		link: '',
 	});
 	const [ documentValues, setDocumentValues ] = useState({
-		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+		moduleId: selectedCourse.modules.length && selectedCourse.modules[0].id,
 		title: '',
 		file: {},
 	});
 	const [ testValues, setTestValues ] = useState({
-		module: selectedCourse.modules.length && selectedCourse.modules[0].id,
+		moduleId: selectedCourse.modules.length && selectedCourse.modules[0].id,
 		title: '',
 		questions: [
 			{
@@ -110,8 +110,8 @@ function AddContentModal(props) {
 
 	const resetState = () => {
 		setModuleValues({ title: '' });
-		setVideoValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', link: '' });
-		setDocumentValues({ module: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', file: {} });
+		setVideoValues({ moduleId: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', link: '' });
+		setDocumentValues({ moduleId: selectedCourse.modules.length && selectedCourse.modules[0].id, title: '', file: {} });
 		setTestValues({
 			module: selectedCourse.modules.length && selectedCourse.modules[0].id,
 			title: '',
@@ -138,7 +138,7 @@ function AddContentModal(props) {
 		else if (type === 'document') {
 			const formData = new FormData();
 			formData.append(documentValues.title, documentValues.file, documentValues.file.name);
-			formData.append('module', documentValues.module);
+			formData.append('moduleId', documentValues.module);
 
 			addContent('documents', selectedCourse.id, formData);
 		}

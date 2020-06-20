@@ -53,24 +53,24 @@ let db = {
 					question: 'Which of the following is not considered a JavaScript operator?',
 					options: [
 						{
-							id: 'a',
+							id: '0',
 							title: 'new',
 						},
 						{
-							id: 'b',
+							id: '1',
 							title: 'this',
 						},
 						{
-							id: 'c',
+							id: '2',
 							title: 'delete',
 						},
 						{
-							id: 'd',
+							id: '3',
 							title: 'typeof',
 						},
 					],
 					points: '2',
-					answer: 'b',
+					answer: '1',
 				},
 			],
 		},

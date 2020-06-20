@@ -27,6 +27,7 @@ function EditContentModal(props) {
 	const { open, setVisibility, loading, selectedCourse, editContent, errors, item: { content, type } } = props;
 
 	const [ moduleValues, setModuleValues ] = useState({ title: content.title || '' });
+	const [ testValues, setTestsValues ] = useState({ title: content.title || '', questions: content.questions || [] });
 	const [ showAlert, setShowAlert ] = useState(false);
 
 	useEffect(
@@ -44,11 +45,19 @@ function EditContentModal(props) {
 		module: (
 			<Module values={moduleValues} errors={errors} onChange={(name, value) => setModuleValues({ [name]: value })} />
 		),
-		test: <Test />,
+		test: (
+			<Test
+				values={testValues}
+				errors={errors}
+				isEditing
+				onChange={(name, value) => setTestsValues({ ...testValues, [name]: value })}
+			/>
+		),
 	};
 
 	const resetState = () => {
 		setModuleValues({ title: '' });
+		setTestsValues({ title: content.title || '', questions: content.questions || [] });
 		// clearCourseErrors()
 	};
 
@@ -57,6 +66,9 @@ function EditContentModal(props) {
 
 		if (type === 'module') {
 			editContent('modules', selectedCourse.id, { id: content.id, ...moduleValues });
+		}
+		else if (type === 'test') {
+			editContent('tests', selectedCourse.id, { id: content.id, moduleId: content.moduleId, ...testValues });
 		}
 		// TODO: move to redux store
 		setVisibility(false);

@@ -261,7 +261,7 @@ function Details(props) {
 																label={
 																	<div className={classes.labelSubItem}>
 																		<Typography className={classes.textIcon}>
-																			<SpeakerNotesIcon fontSize="small" /> Teste
+																			<SpeakerNotesIcon fontSize="small" /> {test.title}
 																		</Typography>
 																		<span>
 																			<ButtonIcon
