@@ -11,6 +11,7 @@ import Ratings from './components/Ratings';
 import Image from '../shared/components/SVG/PressPlay';
 import courseImage from '../shared/assets/thumb1.jpg';
 import placeholder from '../shared/assets/placeholder.jpg';
+import { coursesUser } from '../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -46,7 +47,7 @@ const styles = (theme) => ({
 });
 
 function CourseDetails(props) {
-	const { classes, isRequestingCourseDetails, selectedCourse } = props;
+	const { classes, isRequestingCourseDetails, selectedCourse, enrollInCourse, isRequestingEnrollCourse } = props;
 
 	return (
 		<main className={classes.main}>
@@ -93,9 +94,16 @@ function CourseDetails(props) {
 									color="secondary"
 									variant="contained"
 									className={classes.btnLarge}
-									onClick={() => console.log('matricular')}
+									disabled={isRequestingEnrollCourse}
+									onClick={selectedCourse.isEnrolled ? () => console.log('oi') : enrollInCourse}
 								>
-									Matricular
+									{isRequestingEnrollCourse ? (
+										<CircularProgress size={24} color="primary" />
+									) : selectedCourse.isEnrolled ? (
+										'Assitir aulas'
+									) : (
+										'Matricular'
+									)}
 								</Button>
 								<div className={classes.group}>
 									<Typography variant="body1" color="primary" component="p">
@@ -109,7 +117,7 @@ function CourseDetails(props) {
 									<Typography variant="body1" color="primary" component="p">
 										Avaliações
 									</Typography>
-									<Rating value={selectedCourse.rating} precision={0.5} size="large" readOnly />
+									<Rating value={+selectedCourse.rating} precision={0.5} size="large" readOnly />
 								</div>
 							</Paper>
 						</Grid>
@@ -127,7 +135,8 @@ function CourseDetails(props) {
 
 const mapStateToProps = ({ coursesUser }) => ({
 	isRequestingCourseDetails: coursesUser.isRequestingCourseDetails,
+	isRequestingEnrollCourse: coursesUser.isRequestingEnrollCourse,
 	selectedCourse: coursesUser.selectedCourse || {},
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(CourseDetails));
+export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(CourseDetails));

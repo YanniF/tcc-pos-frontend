@@ -12,10 +12,15 @@ import {
 	REQUEST_COURSE_RATINGS,
 	SUCCESS_GET_COURSE_RATINGS,
 	FAILED_GET_COURSE_RATINGS,
+	REQUEST_ENROLL_COURSE,
+	SUCCESS_ENROLL_COURSE,
+	FAILED_ENROLL_COURSE,
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
 } from '../types';
+
+import { calcRatingValue } from '../../shared/util/utility';
 
 const actionCreator = (type, payload) => ({
 	type,
@@ -45,7 +50,7 @@ export const getCourseDetails = (id) => (dispatch) => {
 	dispatch(actionCreator(REQUEST_COURSE_DETAILS, { key: 'isRequestingCourseDetails' }));
 
 	axios
-		.get(`/course/${id}/details`)
+		.get(`/courses/${id}/details`)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_COURSE_DETAILS, res.data));
 			dispatch(getAllRatingsByCourse(id));
@@ -64,11 +69,35 @@ export const getAllRatingsByCourse = (id) => (dispatch) => {
 		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE_RATINGS, err.response.data)));
 };
 
-export const addRating = (courseId, rating) => (dispatch) => {
-	dispatch(actionCreator(REQUEST_ADD_RATING, { key: 'isRequestingRatings' }));
+export const enrollInCourse = () => (dispatch, getState) => {
+	dispatch(actionCreator(REQUEST_ENROLL_COURSE, { key: 'isRequestingEnrollCourse' }));
+
+	const { coursesUser: { selectedCourse = {} } } = getState();
 
 	axios
-		.post(`/courses/${courseId}/ratings`, rating)
+		.post(`/courses/${selectedCourse.id}/enroll`)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_ENROLL_COURSE, res.data));
+			dispatch(setToasterMessage('Matrícula realizada'));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_ENROLL_COURSE, err.response.data)));
+};
+
+export const addRating = (courseId, rating) => (dispatch, getState) => {
+	dispatch(actionCreator(REQUEST_ADD_RATING, { key: 'isRequestingRatings' }));
+
+	const { coursesUser: { selectedCourse = {} } } = getState();
+
+	const newRating = {
+		...rating,
+		courseRating:
+			selectedCourse.ratings.length === 0
+				? rating.rating
+				: calcRatingValue(selectedCourse.ratings.map((r) => r.rating)),
+	};
+
+	axios
+		.post(`/courses/${courseId}/ratings`, newRating)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_ADD_RATING, res.data));
 			dispatch(setToasterMessage('Cadastro realizado'));

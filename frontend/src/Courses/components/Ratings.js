@@ -113,7 +113,7 @@ function Ratings({
 				) : ratings.length > 0 ? (
 					ratings.map((rat, index) => (
 						<div className={index === ratings.length - 1 ? classes.groupLast : classes.group} key={rat.id}>
-							<Rating value={rat.rating} precision={0.5} size="large" readOnly />
+							<Rating value={+rat.rating} precision={0.5} size="large" readOnly />
 							<Typography variant="body1" component="p" className={classes.comment}>
 								{rat.comment}
 							</Typography>
@@ -146,7 +146,6 @@ function Ratings({
 					</Collapse>
 					<Rating
 						name="rating"
-						precision={0.5}
 						size="large"
 						onChange={({ target }) => setRating(target.value)}
 						className={classes.mb}

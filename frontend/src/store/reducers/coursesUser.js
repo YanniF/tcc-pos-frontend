@@ -10,26 +10,29 @@ import {
 	REQUEST_COURSE_RATINGS,
 	SUCCESS_GET_COURSE_RATINGS,
 	FAILED_GET_COURSE_RATINGS,
+	REQUEST_ENROLL_COURSE,
+	SUCCESS_ENROLL_COURSE,
+	FAILED_ENROLL_COURSE,
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
 } from '../types';
 
 import { calcRatingValue } from '../../shared/util/utility';
-// console.log(calcRatingValue([ 5, 0, 0, 2, 0 ])); ///////////////////////////////// TODO
 
 const initialState = {
 	courses: [],
 	selectedCourse: null,
+	myCourses: [],
 	isOpenRatingsModal: false,
 	isRequestingNewCourses: true,
 	isRequestingCourseDetails: false,
+	isRequestingEnrollCourse: false,
 	isRequestingRatings: false,
 	message: '',
 	errors: null,
 };
 
-// console.log(calcRatingValue(state.selectedCourse.ratings.map((r) => r.rating)));
 const coursesUser = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_VISIBILITY_RATINGS_MODAL:
@@ -46,6 +49,7 @@ const coursesUser = (state = initialState, action) => {
 		case REQUEST_COURSE_DETAILS:
 		case REQUEST_COURSE_RATINGS:
 		case REQUEST_ADD_RATING:
+		case REQUEST_ENROLL_COURSE:
 			return {
 				...state,
 				[action.payload.key]: true,
@@ -65,11 +69,21 @@ const coursesUser = (state = initialState, action) => {
 				},
 				isRequestingCourseDetails: false,
 			};
+		case SUCCESS_ENROLL_COURSE:
+			return {
+				...state,
+				selectedCourse: {
+					...state.selectedCourse,
+					isEnrolled: true,
+				},
+				isRequestingEnrollCourse: false,
+			};
 		case SUCCESS_GET_COURSE_RATINGS:
 			return {
 				...state,
 				selectedCourse: {
 					...state.selectedCourse,
+					rating: calcRatingValue(action.payload.map((r) => r.rating)),
 					ratings: action.payload,
 				},
 				isRequestingRatings: false,
@@ -79,12 +93,22 @@ const coursesUser = (state = initialState, action) => {
 			const newRatings = [ ...state.selectedCourse.ratings ];
 			newRatings.push(action.payload);
 
+			const newCourseRating = calcRatingValue(newRatings.map((r) => r.rating));
+
+			const newCourses = state.courses.map(
+				(course) =>
+					course.id === state.selectedCourse.id
+						? { ...course, rating: newCourseRating, numberOfRatings: newNumberOfRatings }
+						: course,
+			);
+
 			return {
 				...state,
+				courses: newCourses,
 				selectedCourse: {
 					...state.selectedCourse,
 					numberOfRatings: newNumberOfRatings,
-					rating: (state.selectedCourse.rating + action.payload.rating) / newNumberOfRatings,
+					rating: newCourseRating,
 					ratings: newRatings,
 				},
 				isOpenRatingsModal: false,
@@ -95,11 +119,13 @@ const coursesUser = (state = initialState, action) => {
 		case FAILED_GET_COURSE_DETAILS:
 		case FAILED_GET_COURSE_RATINGS:
 		case FAILED_ADD_RATING:
+		case FAILED_ENROLL_COURSE:
 			return {
 				...state,
 				errors: action.payload,
 				isRequestingNewCourses: false,
 				isRequestingCourseDetails: false,
+				isRequestingEnrollCourse: false,
 				isRequestingRatings: false,
 			};
 		default:

@@ -65,7 +65,7 @@ const styles = (theme) => ({
 function CourseCard(props) {
 	const [ anchorEl, setAnchorEl ] = React.useState(null);
 	const {
-		course: { id, title, teacher, description, thumbnail, rating, numberOfRatings, enrolledCount, finishedCount },
+		course: { id, title, category, description, thumbnail, rating, numberOfRatings, enrolledCount, finishedCount },
 		isFinished,
 		isAdmin,
 		classes,
@@ -133,7 +133,7 @@ function CourseCard(props) {
 						{title}
 					</Link>
 				}
-				subheader={teacher}
+				subheader={category}
 			/>
 
 			<Popper open={!!anchorEl} anchorEl={anchorEl} transition disablePortal>
@@ -161,7 +161,7 @@ function CourseCard(props) {
 					</Typography>
 				</Link>
 				<div style={{ display: 'flex', marginTop: '1rem' }}>
-					<Rating value={rating} precision={0.5} readOnly />
+					<Rating value={+rating} precision={0.5} readOnly />
 					<Typography component="legend" color="textSecondary" style={{ marginLeft: '.5rem' }}>
 						{numberOfRatings} avaliações
 					</Typography>

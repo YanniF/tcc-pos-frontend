@@ -12,15 +12,19 @@ export function truncateLongText(text = '', limit) {
 	return text.length > limit ? text.substr(0, limit - 1) + '...' : text;
 }
 
-export const calcRatingValue = (ratings) => {
+const orderRatingArray = (arr) => {
 	let counts = {};
 
-	for (let i = 0; i < ratings.length; i++) {
-		let num = ratings[i];
+	for (let i = 0; i < arr.length; i++) {
+		let num = arr[i];
 		counts[num] = counts[num] ? counts[num] + 1 : 1;
 	}
 
-	const newRatings = [ counts[5] || 0, counts[4] || 0, counts[3] || 0, counts[2] || 0, counts[1] || 0 ];
+	return [ counts[5] || 0, counts[4] || 0, counts[3] || 0, counts[2] || 0, counts[1] || 0 ];
+};
+
+export const calcRatingValue = (ratings) => {
+	const newRatings = orderRatingArray(ratings);
 
 	let weight = 5;
 	let v = 0;
