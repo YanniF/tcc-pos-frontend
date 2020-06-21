@@ -1,6 +1,6 @@
-const { db } = require('../util/admin');
+const { db } = require('../../util/admin');
 
-const { validateTestData } = require('../util/validation');
+const { validateTestData } = require('../../util/validation');
 
 exports.getAllTestsByModule = (req, res) => {
 	db

@@ -1,4 +1,4 @@
-const { db } = require('../util/admin');
+const { db } = require('../../util/admin');
 
 exports.getAllRatingsByCourse = (req, res) => {
 	db
@@ -21,7 +21,7 @@ exports.getAllRatingsByCourse = (req, res) => {
 			return res.json(ratings);
 		})
 		.catch((error) => {
-			res.status(500).json({ error: 'Something went wrong' });
+			res.status(500).json({ error: 'Erro ao buscar todas as avaliações' });
 			console.error(error);
 		});
 };
@@ -46,7 +46,12 @@ exports.getRating = (req, res) => {
 };
 
 exports.addRating = (req, res) => {
-	// TODO - verificar se o aluno terminou o curso
+	// TODO: verificar se o aluno terminou o curso
+	// TODO: adicionar avaliacao no curso
+	if (!req.body.rating) {
+		return res.status(400).json({ error: 'Por favor, dê uma nota para o curso' });
+	}
+
 	let newRating = {};
 
 	db
@@ -76,7 +81,7 @@ exports.addRating = (req, res) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			return res.status(500).json({ error: err.code });
+			return res.status(500).json({ error: 'Não foi possível cadastrar a avaliação.' });
 		});
 };
 
@@ -121,10 +126,10 @@ exports.deleteRating = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: 'Avaliação deletada com sucesso' });
+			res.json({ message: 'Avaliação apagada com sucesso' });
 		})
 		.catch((error) => {
 			console.error(error);
-			res.status(500).json({ error: error.code });
+			res.status(500).json({ error: 'Não foi possível apagar o módulo.' });
 		});
 };

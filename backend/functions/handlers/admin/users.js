@@ -1,10 +1,10 @@
-const { db, admin } = require('../util/admin');
+const { db, admin } = require('../../util/admin');
 
-const config = require('../keys/firebaseConfig');
+const config = require('../../keys/firebaseConfig');
 const firebase = require('firebase');
 firebase.initializeApp(config);
 
-const { validateSignupData, validateLoginData } = require('../util/validation');
+const { validateSignupData, validateLoginData } = require('../../util/validation');
 
 const signUpSupervisor = (newUser, res) => {
 	let token, userId;

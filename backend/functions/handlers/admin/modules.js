@@ -1,4 +1,4 @@
-const { db } = require('../util/admin');
+const { db } = require('../../util/admin');
 
 exports.getAllModulesByCourse = (req, res) => {
 	db

@@ -1,6 +1,6 @@
-const { db } = require('../util/admin');
+const { db } = require('../../util/admin');
 
-const { validateCourseData } = require('../util/validation');
+const { validateCourseData } = require('../../util/validation');
 
 exports.getAllCoursesByUser = (req, res) => {
 	db
@@ -33,6 +33,7 @@ exports.getAllCoursesByUser = (req, res) => {
 		});
 };
 
+// TODO: move method to a more generic file
 exports.getCourse = (req, res) => {
 	let course = {};
 	let modulesIds = [];

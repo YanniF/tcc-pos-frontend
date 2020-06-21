@@ -1,5 +1,5 @@
-const { db, admin } = require('../util/admin');
-const config = require('../keys/firebaseConfig');
+const { db, admin } = require('../../util/admin');
+const config = require('../../keys/firebaseConfig');
 
 exports.getAllDocumentsByModule = (req, res) => {
 	db

@@ -20,11 +20,16 @@ module.exports = (req, res, next) => {
 			return db.collection('users').where('userId', '==', req.user.user_id).limit(1).get();
 		})
 		.then((data) => {
-			req.user.name = data.docs[0].data().name;
-			req.user.email = data.docs[0].data().email;
-			req.user.admin = data.docs[0].data().admin;
+			if (req.user.admin) {
+				req.user.name = data.docs[0].data().name;
+				req.user.email = data.docs[0].data().email;
+				req.user.admin = data.docs[0].data().admin;
 
-			return next();
+				return next();
+			}
+			else {
+				return res.status(401).json('Acesso negado');
+			}
 		})
 		.catch((error) => {
 			console.error('Erro na verificação do token', error);
