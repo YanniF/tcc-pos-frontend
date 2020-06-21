@@ -23,6 +23,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import Assignment from '@material-ui/icons/Assignment';
 
+import { truncateLongText } from '../../shared/util/utility';
 import image from '../../shared/assets/thumb1.jpg';
 import placeholder from '../../shared/assets/placeholder.jpg';
 
@@ -68,6 +69,7 @@ function CourseCard(props) {
 		isFinished,
 		isAdmin,
 		classes,
+		isEnrolled,
 		setSelectedCourse,
 		setModalDeleteVisibility,
 	} = props;
@@ -85,6 +87,8 @@ function CourseCard(props) {
 			onClick: () => setModalDeleteVisibility(true, id),
 		},
 	];
+
+	const linkCourse = isEnrolled ? `/courses/${id}/tutorial` : `/courses/${id}/details`;
 
 	const menuLink = ({ id, text, link, disabled, onClick }) => {
 		if (link) {
@@ -107,7 +111,7 @@ function CourseCard(props) {
 	// TODO: fix card height
 	return (
 		<Card>
-			<Link to={`/courses/${id}/tutorial`}>
+			<Link to={linkCourse} onClick={() => setSelectedCourse(id)}>
 				{thumbnail ? (
 					<CardMedia image={image} title={title} className={classes.image} />
 				) : (
@@ -125,7 +129,7 @@ function CourseCard(props) {
 					)
 				}
 				title={
-					<Link to={`/courses/${id}/details`} className={classes.decoratedLink}>
+					<Link to={linkCourse} className={classes.decoratedLink} onClick={() => setSelectedCourse(id)}>
 						{title}
 					</Link>
 				}
@@ -151,9 +155,9 @@ function CourseCard(props) {
 			</Popper>
 
 			<CardContent>
-				<Link to={`/courses/${id}/details`} style={{ textDecoration: 'none' }}>
+				<Link to={linkCourse} style={{ textDecoration: 'none' }} onClick={() => setSelectedCourse(id)}>
 					<Typography variant="body1" color="textSecondary" component="p">
-						{description}
+						{truncateLongText(description, 250)}
 					</Typography>
 				</Link>
 				<div style={{ display: 'flex', marginTop: '1rem' }}>

@@ -20,7 +20,7 @@ import AddContentModal from './AddContentModal';
 import EditContentModal from './EditContentModal';
 import DeleteModal from './DeleteModal';
 import coursesStyles from '../coursesStyles';
-import { courses } from '../../store/actions';
+import { coursesAdmin } from '../../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -349,24 +349,24 @@ function Details(props) {
 	);
 }
 
-const mapStateToProps = ({ courses }) => ({
-	courseModalOpen: courses.courseModalOpen || false,
-	deleteModalOpen: courses.deleteModalOpen || false,
-	selectedCourse: courses.selectedCourse || {},
-	isRequestingCourses: courses.isRequestingCourses || false,
-	loading: courses.loading || false,
-	errors: courses.errors || {},
-	message: courses.message,
+const mapStateToProps = ({ coursesAdmin }) => ({
+	courseModalOpen: coursesAdmin.courseModalOpen || false,
+	deleteModalOpen: coursesAdmin.deleteModalOpen || false,
+	selectedCourse: coursesAdmin.selectedCourse || {},
+	isRequestingCourses: coursesAdmin.isRequestingCourses || false,
+	loading: coursesAdmin.loading || false,
+	errors: coursesAdmin.errors || {},
+	message: coursesAdmin.message,
 });
 
 const mapDispatchToProps = {
-	setCourseModalVisibility: courses.setModalVisibility,
-	setModalDeleteVisibility: courses.setModalDeleteVisibility,
-	unselectCourse: courses.unselectCourse,
-	clearCourseErrors: courses.clearCourseErrors,
-	setToasterMessage: courses.setToasterMessage,
-	editCourse: courses.editCourse,
-	deleteContent: courses.deleteContent,
+	setCourseModalVisibility: coursesAdmin.setModalVisibility,
+	setModalDeleteVisibility: coursesAdmin.setModalDeleteVisibility,
+	unselectCourse: coursesAdmin.unselectCourse,
+	clearCourseErrors: coursesAdmin.clearCourseErrors,
+	setToasterMessage: coursesAdmin.setToasterMessage,
+	editCourse: coursesAdmin.editCourse,
+	deleteContent: coursesAdmin.deleteContent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Details));

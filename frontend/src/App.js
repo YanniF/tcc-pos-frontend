@@ -10,7 +10,8 @@ import { auth } from './store/actions';
 
 import Auth from './Auth';
 import Navbar from './shared/components/Navbar';
-import Courses from './Courses';
+import MyCourses from './Courses/MyCourses';
+import Home from './Courses/Home';
 import CourseDetails from './Courses/CourseDetails';
 import ViewTutorial from './Courses/ViewTutorial';
 import AdminCourses from './Courses/admin/Courses';
@@ -45,42 +46,45 @@ function App(props) {
 		}
 	}
 
-	let routes = (
-		<div className={props.classes.container}>
-			<Switch>
-				<Route path="/" exact component={Auth} />
-				<Redirect to="/" />
-			</Switch>
-		</div>
-	);
+	let routes;
 
 	if (props.isAuthenticatedEmployee) {
 		routes = (
-			<div className={props.classes.container}>
-				<Navbar />
-				<Switch>
-					<Route path="/courses" exact component={Courses} />
-					<Route path="/courses/:courseId/details" exact component={CourseDetails} />
-					<Route path="/courses/:courseId/tutorial" exact component={ViewTutorial} />
-					<Redirect to="/courses" />
-				</Switch>
-			</div>
+			<Switch>
+				<Route path="/" exact component={Home} />
+				<Route path="/courses" exact component={MyCourses} />
+				<Route path="/courses/:courseId/details" exact component={CourseDetails} />
+				<Route path="/courses/:courseId/tutorial" exact component={ViewTutorial} />
+				<Redirect to="/" />
+			</Switch>
 		);
 	}
 	else if (props.isAuthenticatedAdmin) {
 		routes = (
+			<Switch>
+				<Route path="/admin/courses" exact component={AdminCourses} />
+				<Route path="/admin/courses/:courseId/details/" exact component={AdminDetails} />
+				<Redirect to="/admin/courses" />
+			</Switch>
+		);
+	}
+	else {
+		return (
 			<div className={props.classes.container}>
-				<Navbar />
 				<Switch>
-					<Route path="/admin/courses" exact component={AdminCourses} />
-					<Route path="/admin/courses/:courseId/details/" exact component={AdminDetails} />
-					<Redirect to="/admin/courses" />
+					<Route path="/auth" exact component={Auth} />
+					<Redirect to="/auth" />
 				</Switch>
 			</div>
 		);
 	}
 
-	return <div>{routes}</div>;
+	return (
+		<div className={props.classes.container}>
+			<Navbar isAdmin={props.isAuthenticatedAdmin} />
+			{routes}
+		</div>
+	);
 }
 
 const mapStateToProps = ({ auth }) => ({

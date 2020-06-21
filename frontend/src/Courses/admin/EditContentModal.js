@@ -15,7 +15,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { courses } from '../../store/actions';
+import { coursesAdmin } from '../../store/actions';
 import Module from './content/Module';
 import Test from './content/Test';
 
@@ -113,15 +113,15 @@ function EditContentModal(props) {
 	);
 }
 
-const mapStateToProps = ({ courses }) => ({
-	selectedCourse: courses.selectedCourse || {},
-	loading: courses.loading || false,
-	errors: courses.errors || {},
+const mapStateToProps = ({ coursesAdmin }) => ({
+	selectedCourse: coursesAdmin.selectedCourse || {},
+	loading: coursesAdmin.loading || false,
+	errors: coursesAdmin.errors || {},
 });
 
 const mapDispatchToProps = {
-	editContent: courses.editContent,
-	clearCourseErrors: courses.clearCourseErrors,
+	editContent: coursesAdmin.editContent,
+	clearCourseErrors: coursesAdmin.clearCourseErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditContentModal));

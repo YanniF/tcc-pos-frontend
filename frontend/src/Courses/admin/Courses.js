@@ -13,7 +13,7 @@ import CourseModal from './CourseModal';
 import DeleteModal from './DeleteModal';
 import NoData from '../../shared/components/SVG/NoData';
 
-import { courses } from '../../store/actions';
+import { coursesAdmin } from '../../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -160,26 +160,26 @@ function Courses(props) {
 	);
 }
 
-const mapStateToProps = ({ courses }) => ({
-	loading: courses.loading || false,
-	isRequestingCourses: courses.isRequestingCourses || false,
-	courses: courses.courses || [],
-	selectedCourse: courses.selectedCourse || {},
-	open: courses.courseModalOpen || false,
-	deleteModalOpen: courses.deleteModalOpen || false,
-	errors: courses.errors || {},
-	message: courses.message,
+const mapStateToProps = ({ coursesAdmin }) => ({
+	loading: coursesAdmin.loading || false,
+	isRequestingCourses: coursesAdmin.isRequestingCourses || false,
+	courses: coursesAdmin.courses || [],
+	selectedCourse: coursesAdmin.selectedCourse || {},
+	open: coursesAdmin.courseModalOpen || false,
+	deleteModalOpen: coursesAdmin.deleteModalOpen || false,
+	errors: coursesAdmin.errors || {},
+	message: coursesAdmin.message,
 });
 
 const mapDispatchToProps = {
-	setModalVisibility: courses.setModalVisibility,
-	setModalDeleteVisibility: courses.setModalDeleteVisibility,
-	getAllCourses: courses.getAllCourses,
-	getCourse: courses.getCourse,
-	addCourse: courses.addCourse,
-	deleteCourse: courses.deleteCourse,
-	setToasterMessage: courses.setToasterMessage,
-	clearCourseErrors: courses.clearCourseErrors,
+	setModalVisibility: coursesAdmin.setModalVisibility,
+	setModalDeleteVisibility: coursesAdmin.setModalDeleteVisibility,
+	getAllCourses: coursesAdmin.getAllCourses,
+	getCourse: coursesAdmin.getCourse,
+	addCourse: coursesAdmin.addCourse,
+	deleteCourse: coursesAdmin.deleteCourse,
+	setToasterMessage: coursesAdmin.setToasterMessage,
+	clearCourseErrors: coursesAdmin.clearCourseErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Courses));

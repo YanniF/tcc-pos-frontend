@@ -22,16 +22,27 @@ const styles = (theme) => ({
 
 // TODO: link para o relatorio
 function Navbar(props) {
-	const { classes, logout } = props;
+	const { classes, logout, isAdmin } = props;
 	return (
 		<AppBar>
 			<div className={classes.container}>
 				<Toolbar className={classes.toolbar}>
 					<Logo option="logoWhite" width="250px" />
 					<div>
-						<Button color="inherit" component={NavLink} to="/courses" activeClassName={classes.activeLink}>
-							Cursos
-						</Button>
+						{isAdmin ? (
+							<Button color="inherit" component={NavLink} to="/admin/courses" activeClassName={classes.activeLink}>
+								Cursos
+							</Button>
+						) : (
+							<React.Fragment>
+								<Button color="inherit" exact component={NavLink} to="/" activeClassName={classes.activeLink}>
+									Home
+								</Button>
+								<Button color="inherit" exact component={NavLink} to="/courses" activeClassName={classes.activeLink}>
+									Meus Cursos
+								</Button>
+							</React.Fragment>
+						)}
 						<Button color="inherit" onClick={logout}>
 							Sair
 						</Button>

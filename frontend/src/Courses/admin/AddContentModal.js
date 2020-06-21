@@ -21,7 +21,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { courses } from '../../store/actions';
+import { coursesAdmin } from '../../store/actions';
 import Module from './content/Module';
 import Video from './content/Video';
 import Document from './content/Document';
@@ -221,15 +221,15 @@ function AddContentModal(props) {
 	);
 }
 
-const mapStateToProps = ({ courses }) => ({
-	selectedCourse: courses.selectedCourse || {},
-	loading: courses.loading || false,
-	errors: courses.errors || {},
+const mapStateToProps = ({ coursesAdmin }) => ({
+	selectedCourse: coursesAdmin.selectedCourse || {},
+	loading: coursesAdmin.loading || false,
+	errors: coursesAdmin.errors || {},
 });
 
 const mapDispatchToProps = {
-	addContent: courses.addContent,
-	clearCourseErrors: courses.clearCourseErrors,
+	addContent: coursesAdmin.addContent,
+	clearCourseErrors: coursesAdmin.clearCourseErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddContentModal));

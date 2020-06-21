@@ -42,7 +42,7 @@ const initialState = {
 	isRequestingCourses: false,
 };
 
-const reducer = (state = initialState, action) => {
+const coursesAdmin = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_VISIBILITY_COURSE_MODAL:
 			return {
@@ -183,4 +183,4 @@ const reducer = (state = initialState, action) => {
 	}
 };
 
-export default reducer;
+export default coursesAdmin;

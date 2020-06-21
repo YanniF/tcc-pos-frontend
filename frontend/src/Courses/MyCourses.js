@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Typography } from '@material-ui/core/';
@@ -32,7 +32,15 @@ const styles = (theme) => ({
 		fontWeight: '300',
 	},
 });
-function Courses(props) {
+
+function MyCourses(props) {
+	// useEffect(
+	// 	() => {
+	// 		// pegar cursos
+	// 	},
+	// 	[  ],
+	// );
+
 	const ongoing = [
 		{
 			id: 1,
@@ -119,4 +127,4 @@ function Courses(props) {
 	);
 }
 
-export default withStyles(styles)(Courses);
+export default withStyles(styles)(MyCourses);

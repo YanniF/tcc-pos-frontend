@@ -1,4 +1,5 @@
 import * as auth from './auth';
-import * as courses from './courses';
+import * as coursesAdmin from './coursesAdmin';
+import * as coursesUser from './coursesUser';
 
-export { auth, courses };
+export { auth, coursesAdmin, coursesUser };
