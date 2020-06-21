@@ -1,4 +1,4 @@
-let db = {
+const admin = {
 	courses: [
 		{
 			id: 'XppRiWmBrVFmBJrCSXVR',
@@ -73,6 +73,19 @@ let db = {
 					answer: '1',
 				},
 			],
+		},
+	],
+};
+
+const user = {
+	studentCourse: [
+		{
+			courseId: 'XppRiWmBrVFmBJrCSXVR',
+			userId: 'QXVbNGhbr0TbgGyOBoXWwIDz3yr2',
+			hasFinishedCourse: false,
+			finishedVideos: [ { id: 'HcA7kw6KnPj0qjHAxbKv', moduleId: 'ACVEEIcm0NigtQBqUk78' } ],
+			finishedTests: [],
+			createdAt: '2020-06-21T20:58:57.278Z',
 		},
 	],
 };

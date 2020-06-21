@@ -14,7 +14,7 @@ const { getAllVideosByModule, getVideo, addVideo, deleteVideo } = require('./han
 const { getAllDocumentsByModule, getDocument, addDocument, deleteDocument } = require('./handlers/admin/documents');
 const { getAllTestsByModule, getTest, addTest, editTest, deleteTest } = require('./handlers/admin/tests');
 
-const { getLatestCourses } = require('./handlers/user/courses');
+const { getLatestCourses, enrollInCourse } = require('./handlers/user/courses');
 const { getAllRatingsByCourse, getRating, addRating, editRating, deleteRating } = require('./handlers/user/ratings');
 
 // Users routes
@@ -59,7 +59,8 @@ app.delete('/admin/courses/:courseId/tests/:testId', fbAuthAdmin, deleteTest);
 // USER
 // Courses
 app.get('/newcourses', fbAuth, getLatestCourses);
-app.get('/course/:courseId/details', fbAuth, getCourse);
+app.get('/courses/:courseId/details', fbAuth, getCourse);
+app.post('/courses/:courseId/enroll', fbAuth, enrollInCourse);
 
 // Rating routes
 app.get('/courses/:courseId/ratings', fbAuth, getAllRatingsByCourse);

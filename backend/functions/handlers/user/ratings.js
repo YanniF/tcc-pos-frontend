@@ -47,7 +47,6 @@ exports.getRating = (req, res) => {
 
 exports.addRating = (req, res) => {
 	// TODO: verificar se o aluno terminou o curso
-	// TODO: adicionar avaliacao no curso
 	if (!req.body.rating) {
 		return res.status(400).json({ error: 'Por favor, dê uma nota para o curso' });
 	}
@@ -62,16 +61,22 @@ exports.addRating = (req, res) => {
 				res.status(404).json({ error: 'Curso não encontrado' });
 			}
 			else {
-				newRating = {
-					rating: req.body.rating,
-					comment: req.body.comment,
-					courseId: req.params.courseId,
-					createdAt: new Date().toISOString(),
-					createdBy: req.user.user_id,
-				};
+				const numRatings = doc.data().numberOfRatings;
+				const rating = req.body.courseRating;
 
-				return db.collection('ratings').add(newRating);
+				return db.doc(`/courses/${req.params.courseId}`).update({ numberOfRatings: numRatings + 1, rating });
 			}
+		})
+		.then(() => {
+			newRating = {
+				rating: req.body.rating,
+				comment: req.body.comment,
+				courseId: req.params.courseId,
+				createdAt: new Date().toISOString(),
+				createdBy: req.user.user_id,
+			};
+
+			return db.collection('ratings').add(newRating);
 		})
 		.then((doc) => {
 			const resRating = newRating;
