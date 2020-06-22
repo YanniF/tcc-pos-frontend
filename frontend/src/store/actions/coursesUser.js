@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
 	SET_VISIBILITY_RATINGS_MODAL,
 	SET_TOASTER_MESSAGE_USER,
+	SET_SELECTED_COURSE,
 	REQUEST_NEW_COURSES,
 	SUCCESS_GET_NEW_COURSES,
 	FAILED_GET_NEW_COURSES,
@@ -15,6 +16,9 @@ import {
 	REQUEST_ENROLL_COURSE,
 	SUCCESS_ENROLL_COURSE,
 	FAILED_ENROLL_COURSE,
+	REQUEST_GET_ENROLLED_COURSES,
+	SUCCESS_GET_ENROLLED_COURSES,
+	FAILED_GET_ENROLLED_COURSES,
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
@@ -35,6 +39,10 @@ export const setToasterMessage = (value) => (dispatch) => {
 	dispatch(actionCreator(SET_TOASTER_MESSAGE_USER, value));
 };
 
+export const setSelectedCourse = (id) => (dispatch) => {
+	dispatch(actionCreator(SET_SELECTED_COURSE, id));
+};
+
 export const getNewCourses = () => (dispatch) => {
 	dispatch(actionCreator(REQUEST_NEW_COURSES, { key: 'isRequestingNewCourses' }));
 
@@ -42,6 +50,7 @@ export const getNewCourses = () => (dispatch) => {
 		.get('/newcourses')
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_NEW_COURSES, res.data));
+			dispatch(getAllEnrolledCourses())
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_GET_NEW_COURSES, err.response.data)));
 };
@@ -81,6 +90,17 @@ export const enrollInCourse = () => (dispatch, getState) => {
 			dispatch(setToasterMessage('Matrícula realizada'));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_ENROLL_COURSE, err.response.data)));
+};
+
+export const getAllEnrolledCourses = () => (dispatch) => {
+	dispatch(actionCreator(REQUEST_GET_ENROLLED_COURSES, { key: 'isRequestingEnrolledCourses' }));
+
+	axios
+		.get(`/mycourses`)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_GET_ENROLLED_COURSES, res.data));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_GET_ENROLLED_COURSES, err.response.data)));
 };
 
 export const addRating = (courseId, rating) => (dispatch, getState) => {

@@ -65,3 +65,29 @@ exports.enrollInCourse = (req, res) => {
 			return res.status(500).json({ error: 'Não foi realizar a matrícula no curso.' });
 		});
 };
+
+exports.getAllEnrolledCourses = (req, res) => {
+	db
+		.collection('studentCourse')
+		.where('userId', '==', req.user.user_id)
+		.get()
+		.then((data) => {
+			let courses = [];
+
+			data.forEach((doc) => {
+				courses.push({
+					id: doc.data().id,
+					courseId: doc.data().courseId,
+					finishedVideos: doc.data().finishedVideos,
+					finishedTests: doc.data().finishedTests,
+					hasFinishedCourse: doc.data().hasFinishedCourse,
+				});
+			});
+
+			return res.json(courses);
+		})
+		.catch((error) => {
+			res.status(500).json({ error: 'Erro ao buscar todos os cursos' });
+			console.error(error);
+		});
+}

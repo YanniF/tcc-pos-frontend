@@ -36,10 +36,10 @@ const styles = (theme) => ({
 	},
 });
 
-function MyCourses(props) {
+function Home(props) {
 	const [ searchTerm, setSearchTerm ] = useState('');
 
-	const { classes, getNewCourses, courses = [], isRequestingNewCourses, getCourseDetails } = props;
+	const { classes, getNewCourses, courses = [], isRequestingNewCourses, isRequestingEnrolledCourses, setSelectedCourse } = props;
 
 	useEffect(
 		() => {
@@ -58,7 +58,7 @@ function MyCourses(props) {
 
 	return (
 		<main className={classes.main}>
-			{isRequestingNewCourses ? (
+			{isRequestingNewCourses || isRequestingEnrolledCourses ? (
 				<div className={classes.loaderWrapper}>
 					<CircularProgress size={170} color="primary" />
 				</div>
@@ -75,7 +75,7 @@ function MyCourses(props) {
 							{filteredCourses.length ? (
 								filteredCourses.map((course) => (
 									<Grid item sm={4} key={course.id}>
-										<CourseCard course={course} setSelectedCourse={getCourseDetails} />
+										<CourseCard course={course} setSelectedCourse={setSelectedCourse} />
 									</Grid>
 								))
 							) : (
@@ -103,12 +103,13 @@ function MyCourses(props) {
 
 const mapStateToProps = ({ coursesUser }) => ({
 	isRequestingNewCourses: coursesUser.isRequestingNewCourses,
+	isRequestingEnrolledCourses: coursesUser.isRequestingEnrolledCourses,
 	courses: coursesUser.courses || [],
 });
 
 const mapDispatchToProps = {
 	getNewCourses: coursesUser.getNewCourses,
-	getCourseDetails: coursesUser.getCourseDetails,
+	setSelectedCourse: coursesUser.setSelectedCourse,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MyCourses));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));

@@ -10,7 +10,7 @@ function Logo({ option = 'logo', width = '250px' }) {
 			{option === 'logo' ? (
 				<img src={logo} alt="Logo" style={{ width }} />
 			) : (
-				<Link to="/courses">
+				<Link to="/">
 					<img src={logoWhite} alt="Logo" style={{ width }} />
 				</Link>
 			)}
