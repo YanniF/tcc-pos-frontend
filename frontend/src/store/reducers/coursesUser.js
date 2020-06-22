@@ -112,7 +112,7 @@ const coursesUser = (state = initialState, action) => {
             });
 				});
 				
-				return courses
+				return courses && courses[0]
 			});
 			
       return {

@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux'
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Typography } from '@material-ui/core/';
 
 import CourseCard from './components/CourseCard';
 import SearchInput from '../shared/components/SearchInput';
-import image1 from '../shared/assets/thumb1.jpg';
-import image2 from '../shared/assets/placeholder.jpg';
+import { coursesUser } from '../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
 	grid: {
 		marginBottom: '3rem',
+		height: '100%'
 	},
 	wrapper: {
 		display: 'flex',
@@ -34,62 +35,16 @@ const styles = (theme) => ({
 });
 
 function MyCourses(props) {
-	// useEffect(
-	// 	() => {
-	// 		// pegar cursos
-	// 	},
-	// 	[  ],
-	// );
+	const { classes, myCourses, getAllEnrolledCourses } = props;
 
-	const ongoing = [
-		{
-			id: 1,
-			title: 'Titulo do Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 5, numberOfRatings: 10 },
-		},
-		{
-			id: 2,
-			title: 'Titulo do Curso',
-			teacher: 'John Doe',
-			image: image2,
-			rating: { rating: 3.5, numberOfRatings: 8 },
-		},
-		{
-			id: 3,
-			title: 'Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 4, numberOfRatings: 90 },
-		},
-	];
+	useEffect(() => {
+		if(myCourses.length === 0) {
+			getAllEnrolledCourses()
+		}
+	}, [myCourses, getAllEnrolledCourses])
 
-	const finished = [
-		{
-			id: 4,
-			title: 'Curso',
-			teacher: 'John Doe',
-			image: image2,
-			rating: { rating: 4, numberOfRatings: 17 },
-		},
-		{
-			id: 5,
-			title: 'Titulo do Curso',
-			teacher: 'John Doe',
-			image: image1,
-			rating: { rating: 5, numberOfRatings: 10 },
-		},
-		{
-			id: 6,
-			title: 'Curso',
-			teacher: 'John Doe',
-			image: image2,
-			rating: { rating: 4, numberOfRatings: 7 },
-		},
-	];
-
-	const { classes } = props;
+	const ongoing = myCourses.filter(course => !course.hasFinishedCourse)
+	const finished = myCourses.filter(course => course.hasFinishedCourse)
 
 	return (
 		<main className={classes.main}>
@@ -99,32 +54,40 @@ function MyCourses(props) {
 				</Typography>
 				<SearchInput onClick={() => console.log('click')} />
 			</div>
-			<div>
-				<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
-					Em Andamento
-				</Typography>
-				<Grid container spacing={10} className={classes.grid}>
-					{ongoing.map((course) => (
-						<Grid item sm={4} key={course.id}>
-							<CourseCard course={course} isFinished={false} />
-						</Grid>
-					))}
-				</Grid>
-			</div>
-			<div>
-				<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
-					Concluídos
-				</Typography>
-				<Grid container spacing={10} className={classes.grid}>
-					{finished.map((course) => (
-						<Grid item sm={4} key={course.id}>
-							<CourseCard course={course} isFinished />
-						</Grid>
-					))}
-				</Grid>
-			</div>
+			{ongoing.length > 0 && (
+				<div>
+					<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
+						Em Andamento
+					</Typography>
+					<Grid container spacing={10} className={classes.grid}>
+						{ongoing.map((course) => (
+							<Grid item sm={4} key={course.id}>
+								<CourseCard course={course} isFinished={false} />
+							</Grid>
+						))}
+					</Grid>
+				</div>
+			)}
+			{finished.length > 0 && (
+				<div>
+					<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
+						Concluídos
+					</Typography>
+					<Grid container spacing={10} className={classes.grid}>
+						{finished.map((course) => (
+							<Grid item sm={4} key={course.id}>
+								<CourseCard course={course} isFinished />
+							</Grid>
+						))}
+					</Grid>
+				</div>
+			)}
 		</main>
 	);
 }
 
-export default withStyles(styles)(MyCourses);
+const mapStateToProps = ({ coursesUser }) => ({
+	myCourses: coursesUser.myCourses || [],
+});
+
+export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(MyCourses));
