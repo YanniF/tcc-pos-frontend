@@ -29,11 +29,13 @@ const styles = (theme) => ({
 		width: '100%',
 		maxHeight: '350px',
 		objectFit: 'cover',
+		borderRadius: '5px',
 	},
 	image: {
 		position: 'relative',
 		paddingTop: '30%',
 		objectFit: 'cover',
+		borderRadius: '5px',
 	},
 	placeholderText: {
 		position: 'absolute',
@@ -45,9 +47,15 @@ const styles = (theme) => ({
 		textAlign: 'center',
 	},
 });
-
 function CourseDetails(props) {
-	const { classes, isRequestingCourseDetails, selectedCourse, enrollInCourse, isRequestingEnrollCourse } = props;
+	const {
+		classes,
+		isRequestingCourseDetails,
+		selectedCourse,
+		enrollInCourse,
+		isRequestingEnrollCourse,
+		history,
+	} = props;
 
 	return (
 		<main className={classes.main}>
@@ -95,12 +103,18 @@ function CourseDetails(props) {
 									variant="contained"
 									className={classes.btnLarge}
 									disabled={isRequestingEnrollCourse}
-									onClick={selectedCourse.isEnrolled ? () => console.log('oi') : enrollInCourse}
+									onClick={
+										selectedCourse.isEnrolled ? (
+											() => history.push(`/courses/${selectedCourse.id}/tutorial`)
+										) : (
+											enrollInCourse
+										)
+									}
 								>
 									{isRequestingEnrollCourse ? (
 										<CircularProgress size={24} color="primary" />
 									) : selectedCourse.isEnrolled ? (
-										'Assitir aulas'
+										'Assistir aulas'
 									) : (
 										'Matricular'
 									)}

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid, Typography } from '@material-ui/core/';
@@ -12,7 +12,7 @@ const styles = (theme) => ({
 	...theme.properties,
 	grid: {
 		marginBottom: '3rem',
-		height: '100%'
+		height: '100%',
 	},
 	wrapper: {
 		display: 'flex',
@@ -35,16 +35,27 @@ const styles = (theme) => ({
 });
 
 function MyCourses(props) {
-	const { classes, myCourses, getAllEnrolledCourses } = props;
+	const [ searchTerm, setSearchTerm ] = useState('');
 
-	useEffect(() => {
-		if(myCourses.length === 0) {
-			getAllEnrolledCourses()
-		}
-	}, [myCourses, getAllEnrolledCourses])
+	const { classes, myCourses, getAllEnrolledCourses, setSelectedCourse } = props;
 
-	const ongoing = myCourses.filter(course => !course.hasFinishedCourse)
-	const finished = myCourses.filter(course => course.hasFinishedCourse)
+	useEffect(
+		() => {
+			if (myCourses.length === 0) {
+				getAllEnrolledCourses();
+			}
+		},
+		[ myCourses, getAllEnrolledCourses ],
+	);
+
+	const handleSearchCourse = (search = '') => {
+		setSearchTerm(search);
+	};
+
+	const filteredCourses = myCourses.filter((course) => course.title.toLowerCase().includes(searchTerm));
+
+	const ongoing = filteredCourses.filter((course) => !course.hasFinishedCourse);
+	const finished = filteredCourses.filter((course) => course.hasFinishedCourse);
 
 	return (
 		<main className={classes.main}>
@@ -52,7 +63,7 @@ function MyCourses(props) {
 				<Typography variant="h3" component="h2" gutterBottom className={classes.title}>
 					<span>Meus</span> Cursos
 				</Typography>
-				<SearchInput onClick={() => console.log('click')} />
+				<SearchInput onChange={handleSearchCourse} />
 			</div>
 			{ongoing.length > 0 && (
 				<div>
@@ -61,8 +72,12 @@ function MyCourses(props) {
 					</Typography>
 					<Grid container spacing={10} className={classes.grid}>
 						{ongoing.map((course) => (
-							<Grid item sm={4} key={course.id}>
-								<CourseCard course={course} isFinished={false} />
+							<Grid item sm={4} key={course.courseId}>
+								<CourseCard
+									course={{ ...course, id: course.courseId }}
+									isFinished={false}
+									setSelectedCourse={setSelectedCourse}
+								/>
 							</Grid>
 						))}
 					</Grid>
@@ -75,8 +90,12 @@ function MyCourses(props) {
 					</Typography>
 					<Grid container spacing={10} className={classes.grid}>
 						{finished.map((course) => (
-							<Grid item sm={4} key={course.id}>
-								<CourseCard course={course} isFinished />
+							<Grid item sm={4} key={course.courseId}>
+								<CourseCard
+									course={{ ...course, id: course.courseId }}
+									isFinished
+									setSelectedCourse={setSelectedCourse}
+								/>
 							</Grid>
 						))}
 					</Grid>
@@ -88,6 +107,7 @@ function MyCourses(props) {
 
 const mapStateToProps = ({ coursesUser }) => ({
 	myCourses: coursesUser.myCourses || [],
+	setSelectedCourse: coursesUser.setSelectedCourse,
 });
 
 export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(MyCourses));
