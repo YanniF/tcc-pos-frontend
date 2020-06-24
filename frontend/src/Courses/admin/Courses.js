@@ -10,6 +10,7 @@ import CourseCard from '../components/CourseCard';
 import coursesStyles from '../coursesStyles';
 import Notifications from './Notifications';
 import CourseModal from './CourseModal';
+import CourseImageModal from './CourseImageModal';
 import DeleteModal from './DeleteModal';
 import NoData from '../../shared/components/SVG/NoData';
 
@@ -68,7 +69,7 @@ function Courses(props) {
 		setSearchTerm(search);
 	};
 
-	const { classes, loading, getCourse, errors, message, setToasterMessage } = props;
+	const { classes, loading, getCourse, errors, message, setToasterMessage, setModalImageCourseVisibility, imageCourseModalOpen } = props;
 	const filteredCourses = courses.filter((course) => course.title.toLowerCase().includes(searchTerm));
 
 	return (
@@ -93,6 +94,7 @@ function Courses(props) {
 												isAdmin
 												setSelectedCourse={getCourse}
 												setModalDeleteVisibility={handleModalDeleteVisibility}
+												setModalImageCourseVisibility={setModalImageCourseVisibility}
 											/>
 										</Grid>
 									))
@@ -153,6 +155,9 @@ function Courses(props) {
 							errors={errors}
 						/>
 					)}
+					{imageCourseModalOpen && (
+						<CourseImageModal />
+					)}
 				</Fragment>
 			)}
 			<SnackBar message={message} setToasterMessage={setToasterMessage} />
@@ -167,6 +172,7 @@ const mapStateToProps = ({ coursesAdmin }) => ({
 	selectedCourse: coursesAdmin.selectedCourse || {},
 	open: coursesAdmin.courseModalOpen || false,
 	deleteModalOpen: coursesAdmin.deleteModalOpen || false,
+	imageCourseModalOpen: coursesAdmin.imageCourseModalOpen,
 	errors: coursesAdmin.errors || {},
 	message: coursesAdmin.message,
 });
@@ -174,6 +180,7 @@ const mapStateToProps = ({ coursesAdmin }) => ({
 const mapDispatchToProps = {
 	setModalVisibility: coursesAdmin.setModalVisibility,
 	setModalDeleteVisibility: coursesAdmin.setModalDeleteVisibility,
+	setModalImageCourseVisibility: coursesAdmin.setModalImageCourseVisibility,
 	getAllCourses: coursesAdmin.getAllCourses,
 	getCourse: coursesAdmin.getCourse,
 	addCourse: coursesAdmin.addCourse,

@@ -136,8 +136,6 @@ exports.addCourse = (req, res) => {
 		title: req.body.title,
 		teacher: req.body.teacher,
 		category: req.body.category,
-		description: req.body.description,
-		// thumbnail: req.body.thumbnail,
 	};
 
 	const { valid, errors } = validateCourseData(course);
@@ -152,7 +150,6 @@ exports.addCourse = (req, res) => {
 		teacher: req.body.teacher,
 		category: req.body.category,
 		description: req.body.description,
-		// thumbnail: req.body.thumbnail,
 		createdBy: req.user.user_id,
 		createdAt: new Date().toISOString(),
 		enrolledCount: 0,

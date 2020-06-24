@@ -1,5 +1,6 @@
 import {
 	SET_VISIBILITY_COURSE_MODAL,
+	SET_VISIBILITY_IMAGE_COURSE_MODAL,
 	SET_VISIBILITY_DELETE_MODAL,
 	SET_TOASTER_MESSAGE,
 	CLEAR_COURSE_ERRORS,
@@ -35,11 +36,13 @@ const initialState = {
 	courses: [],
 	selectedCourse: null,
 	courseModalOpen: false,
+	imageCourseModalOpen: false,
 	deleteModalOpen: false,
 	errors: null,
 	message: '',
 	loading: false,
 	isRequestingCourses: false,
+	isSavingImage: false,
 };
 
 const coursesAdmin = (state = initialState, action) => {
@@ -48,6 +51,11 @@ const coursesAdmin = (state = initialState, action) => {
 			return {
 				...state,
 				courseModalOpen: action.payload,
+			};
+		case SET_VISIBILITY_IMAGE_COURSE_MODAL:
+			return {
+				...state,
+				imageCourseModalOpen: action.payload,
 			};
 		case SET_VISIBILITY_DELETE_MODAL:
 			return {

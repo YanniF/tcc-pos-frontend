@@ -17,18 +17,10 @@ import CloseIcon from '@material-ui/icons/Close';
 
 const styles = (theme) => ({
 	...theme.properties,
-	hidden: {
-		display: 'none',
-	},
-	fileButton: {
-		...theme.properties.btnLarge,
-		...theme.properties.inputSpacing,
-	},
 });
 
 function CourseModal(props) {
 	const [ values, setValues ] = useState({ title: '', teacher: '', category: '', description: '' });
-	const [ fileName, seFileName ] = useState('');
 	const [ showAlert, setShowAlert ] = useState(false);
 
 	const { classes, open, setVisibility, addCourse, editCourse, loading, course, errors } = props;
@@ -46,11 +38,6 @@ function CourseModal(props) {
 		},
 		[ course, errors ],
 	);
-
-	const handleUploadFile = (e) => {
-		const { files = [] } = e.target;
-		seFileName(files[0].name);
-	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -149,20 +136,7 @@ function CourseModal(props) {
 						className={classes.inputSpacing}
 						fullWidth
 					/>
-					<input
-						accept="image/*"
-						className={classes.hidden}
-						id="thumbnail"
-						name="thumbnail"
-						type="file"
-						onChange={handleUploadFile}
-					/>
-					<label htmlFor="thumbnail">
-						<Button variant="contained" color="primary" component="span" className={classes.fileButton}>
-							Adicionar Imagem do Curso
-						</Button>
-						<span style={{ paddingLeft: '1rem' }}>{fileName}</span>
-					</label>
+					
 				</DialogContent>
 				<DialogActions style={{ marginRight: '1rem' }}>
 					<Button onClick={handleCancel} color="primary" disabled={loading}>

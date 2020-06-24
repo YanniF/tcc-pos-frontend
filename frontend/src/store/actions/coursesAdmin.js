@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
 	SET_VISIBILITY_COURSE_MODAL,
+	SET_VISIBILITY_IMAGE_COURSE_MODAL,
 	SET_VISIBILITY_DELETE_MODAL,
 	SET_TOASTER_MESSAGE,
 	CLEAR_COURSE_ERRORS,
@@ -47,6 +48,14 @@ export const setModalDeleteVisibility = (open, id) => (dispatch) => {
 		dispatch(actionCreator(SELECT_COURSE, id));
 	}
 	dispatch(actionCreator(SET_VISIBILITY_DELETE_MODAL, open));
+};
+
+export const setModalImageCourseVisibility = (open, id) => (dispatch) => {
+	if (id) {
+		dispatch(actionCreator(SELECT_COURSE, id));
+	}
+
+	dispatch(actionCreator(	SET_VISIBILITY_IMAGE_COURSE_MODAL, open));
 };
 
 export const setToasterMessage = (value) => (dispatch) => {
