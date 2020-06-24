@@ -17,6 +17,9 @@ import {
 	REQUEST_ADD_COURSE,
 	SUCCESS_ADD_COURSE,
 	FAILED_ADD_COURSE,
+	REQUEST_ADD_IMAGE_COURSE,
+	SUCCESS_ADD_IMAGE_COURSE,
+	FAILED_ADD_IMAGE_COURSE,
 	REQUEST_EDIT_COURSE,
 	SUCCESS_EDIT_COURSE,
 	FAILED_EDIT_COURSE,
@@ -55,7 +58,7 @@ export const setModalImageCourseVisibility = (open, id) => (dispatch) => {
 		dispatch(actionCreator(SELECT_COURSE, id));
 	}
 
-	dispatch(actionCreator(	SET_VISIBILITY_IMAGE_COURSE_MODAL, open));
+	dispatch(actionCreator(SET_VISIBILITY_IMAGE_COURSE_MODAL, open));
 };
 
 export const setToasterMessage = (value) => (dispatch) => {
@@ -103,6 +106,17 @@ export const addCourse = (course, history) => (dispatch) => {
 			history.push(`/admin/courses/${res.data.id}/details`);
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_ADD_COURSE, err.response.data)));
+};
+
+export const addCourseImage = (courseId, file) => (dispatch) => {
+	dispatch(actionCreator(REQUEST_ADD_IMAGE_COURSE));
+
+	axios
+		.post(`/admin/courses/${courseId}/image`, file)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_ADD_IMAGE_COURSE, { id: courseId, thumbnail: res.data }));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_ADD_IMAGE_COURSE, err.response.data)));
 };
 
 export const editCourse = (course) => (dispatch) => {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
@@ -8,7 +8,6 @@ import {
 	DialogContent,
 	DialogActions,
 	Button,
-	Typography,
 	CircularProgress,
 	Collapse,
 	IconButton,
@@ -16,7 +15,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { coursesAdmin } from '../../store/actions'
+import { coursesAdmin } from '../../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -30,12 +29,12 @@ const styles = (theme) => ({
 });
 
 function CourseImageModal(props) {
-  const [ showAlert, setShowAlert ] = useState(false);
+	const [ showAlert, setShowAlert ] = useState(false);
 	const [ file, setFile ] = useState({});
-  
-  const { addCourseImage, setVisibilityCourseImageModal, open, selectedCourse, errors, classes, isSavingImage } = props
 
-  useEffect(
+	const { addCourseImage, setModalImageCourseVisibility, open, selectedCourse, errors, classes, isSavingImage } = props;
+
+	useEffect(
 		() => {
 			const { errors } = props;
 
@@ -44,25 +43,28 @@ function CourseImageModal(props) {
 			}
 		},
 		[ props ],
-  );
+	);
 
-  const handleUploadFile = (e) => {
+	const handleUploadFile = (e) => {
 		const { files = [] } = e.target;
-		setFile(files[0].name);
-  };
-  
-	const handleSubmit = (e) => {
-		e.preventDefault();
-    addCourseImage(file);
-  };
-
-  const handleCancel = () => {
-		setVisibilityCourseImageModal(false);
-    setFile({})
+		setFile(files[0]);
 	};
 
-  return (
-    <Dialog open={open} onClose={() => setVisibilityCourseImageModal(false)} maxWidth="sm" fullWidth>
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		const formData = new FormData();
+		formData.append('image', file, file.name);
+		addCourseImage(selectedCourse.id, formData);
+	};
+
+	const handleCancel = () => {
+		setModalImageCourseVisibility(false);
+		setFile({});
+	};
+
+	return (
+		<Dialog open={open} onClose={() => setModalImageCourseVisibility(false)} maxWidth="sm" fullWidth>
 			<DialogTitle>{selectedCourse.title}</DialogTitle>
 			<DialogContent>
 				<Collapse in={showAlert}>
@@ -79,30 +81,30 @@ function CourseImageModal(props) {
 					</Alert>
 				</Collapse>
 				<input
-						accept="image/*"
-						className={classes.hidden}
-						id="thumbnail"
-						name="thumbnail"
-						type="file"
-						onChange={handleUploadFile}
-					/>
-					<label htmlFor="thumbnail">
-						<Button variant="contained" color="primary" component="span" className={classes.fileButton}>
-							Adicionar Imagem do Curso
-						</Button>
-						<span style={{ paddingLeft: '1rem' }}>{file.name}</span>
-					</label>
+					accept="image/*"
+					className={classes.hidden}
+					id="thumbnail"
+					name="thumbnail"
+					type="file"
+					onChange={handleUploadFile}
+				/>
+				<label htmlFor="thumbnail">
+					<Button variant="contained" color="primary" component="span" className={classes.fileButton}>
+						Adicionar Imagem do Curso
+					</Button>
+					<span style={{ paddingLeft: '1rem' }}>{file.name}</span>
+				</label>
 			</DialogContent>
 			<DialogActions style={{ marginRight: '1rem' }}>
-				<Button onClick={() => handleCancel()} color="primary">
+				<Button onClick={handleCancel} color="primary">
 					Cancelar
 				</Button>
-				<Button onClick={() => handleSubmit()} color="secondary">
-					{isSavingImage ? <CircularProgress size={24} color="primary" /> : 'Apagar'}
+				<Button onClick={handleSubmit} color="secondary">
+					{isSavingImage ? <CircularProgress size={24} color="primary" /> : 'Salvar'}
 				</Button>
 			</DialogActions>
 		</Dialog>
-  )
+	);
 }
 
 const mapStateToProps = ({ coursesAdmin }) => ({
@@ -115,7 +117,7 @@ const mapStateToProps = ({ coursesAdmin }) => ({
 
 const mapDispatchToProps = {
 	setModalImageCourseVisibility: coursesAdmin.setModalImageCourseVisibility,
-	addCourseImage: coursesAdmin.addCourse,
+	addCourseImage: coursesAdmin.addCourseImage,
 	setToasterMessage: coursesAdmin.setToasterMessage,
 	clearCourseErrors: coursesAdmin.clearCourseErrors,
 };

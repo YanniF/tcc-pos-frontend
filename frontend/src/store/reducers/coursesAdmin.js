@@ -15,6 +15,9 @@ import {
 	REQUEST_ADD_COURSE,
 	SUCCESS_ADD_COURSE,
 	FAILED_ADD_COURSE,
+	REQUEST_ADD_IMAGE_COURSE,
+	SUCCESS_ADD_IMAGE_COURSE,
+	FAILED_ADD_IMAGE_COURSE,
 	REQUEST_EDIT_COURSE,
 	SUCCESS_EDIT_COURSE,
 	FAILED_EDIT_COURSE,
@@ -110,12 +113,26 @@ const coursesAdmin = (state = initialState, action) => {
 				...state,
 				loading: true,
 			};
+		case REQUEST_ADD_IMAGE_COURSE:
+			return {
+				...state,
+				isSavingImage: true,
+			};
 		case SUCCESS_ADD_COURSE:
 			return {
 				...state,
 				courses: [ ...state.courses, action.payload ],
 				loading: false,
 				courseModalOpen: false,
+			};
+		case SUCCESS_ADD_IMAGE_COURSE:
+			return {
+				...state,
+				courses: state.courses.map(
+					(course) => (course.id === action.payload.id ? { ...course, thumbnail: action.payload.thumbnail } : course),
+				),
+				isSavingImage: false,
+				imageCourseModalOpen: false,
 			};
 		case SUCCESS_EDIT_COURSE:
 			return {
@@ -174,6 +191,7 @@ const coursesAdmin = (state = initialState, action) => {
 		}
 		case FAILED_GET_COURSES:
 		case FAILED_ADD_COURSE:
+		case FAILED_ADD_IMAGE_COURSE:
 		case FAILED_GET_COURSE:
 		case FAILED_EDIT_COURSE:
 		case FAILED_DELETE_COURSE:
@@ -185,6 +203,7 @@ const coursesAdmin = (state = initialState, action) => {
 				errors: action.payload,
 				loading: false,
 				isRequestingCourses: false,
+				isSavingImage: false,
 			};
 		default:
 			return state;

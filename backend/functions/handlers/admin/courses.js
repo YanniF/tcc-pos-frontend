@@ -1,4 +1,5 @@
-const { db } = require('../../util/admin');
+const { db, admin } = require('../../util/admin');
+const config = require('../../keys/firebaseConfig');
 
 const { validateCourseData } = require('../../util/validation');
 
@@ -173,13 +174,75 @@ exports.addCourse = (req, res) => {
 		});
 };
 
+exports.addImageCourse = (req, res) => {
+	const BusBoy = require('busboy');
+	const path = require('path');
+	const os = require('os');
+	const fs = require('fs');
+
+	const busboy = new BusBoy({ headers: req.headers });
+	let imageFileName,
+		imageToBeUploaded = {},
+		imageUrl;
+
+	busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+		if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+			return res.status(400).json({ error: 'Tipo inválido. Por favor, selecione uma imagem' });
+		}
+
+		const imageExtension = filename.split('.').pop();
+		imageFileName = 'thumbnail-' + Math.round(Math.random() * 1000000) + '.' + imageExtension;
+
+		const filepath = path.join(os.tmpdir(), imageFileName);
+		imageToBeUploaded = { filepath, mimetype };
+		file.pipe(fs.createWriteStream(filepath));
+	});
+
+	busboy.on('finish', () => {
+		admin
+			.storage()
+			.bucket(config.storageBucket)
+			.upload(imageToBeUploaded.filepath, {
+				resumable: false,
+				metadata: {
+					metadata: {
+						contentType: imageToBeUploaded.mimetype,
+					},
+				},
+			})
+			.then(() => {
+				imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+
+				db
+					.doc(`/courses/${req.params.courseId}`)
+					.get()
+					.then((doc) => {
+						if (!doc.exists) {
+							return res.status(404).json({ error: 'Curso não encontrado' });
+						}
+						else {
+							return db.doc(`/courses/${req.params.courseId}`).update({ thumbnail: imageUrl });
+						}
+					})
+					.then(() => {
+						return res.json(imageUrl);
+					});
+			})
+			.catch((err) => {
+				console.error(err);
+				return res.status(500).json({ error: 'Não foi possível cadastrar a imagem do curso.' });
+			});
+	});
+
+	busboy.end(req.rawBody);
+};
+
 exports.editCourse = (req, res) => {
 	const course = {
 		title: req.body.title,
 		teacher: req.body.teacher,
 		category: req.body.category,
 		description: req.body.description,
-		// thumbnail: req.body.teacher,
 	};
 
 	const { valid, errors } = validateCourseData(course);

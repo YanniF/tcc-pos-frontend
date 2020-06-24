@@ -32,7 +32,7 @@ exports.getLatestCourses = (req, res) => {
 
 exports.enrollInCourse = (req, res) => {
 	let course = {};
-
+	//  TODO: update course, enrolled++
 	db
 		.doc(`/courses/${req.params.courseId}`)
 		.get()
@@ -90,4 +90,4 @@ exports.getAllEnrolledCourses = (req, res) => {
 			res.status(500).json({ error: 'Erro ao buscar todos os cursos' });
 			console.error(error);
 		});
-}
+};

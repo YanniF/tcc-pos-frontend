@@ -8,7 +8,14 @@ const cors = require('cors');
 app.use(cors());
 
 const { signup, login, getAuthenticatedUser } = require('./handlers/admin/users');
-const { getAllCoursesByUser, getCourse, addCourse, editCourse, deleteCourse } = require('./handlers/admin/courses');
+const {
+	getAllCoursesByUser,
+	getCourse,
+	addCourse,
+	editCourse,
+	deleteCourse,
+	addImageCourse,
+} = require('./handlers/admin/courses');
 const { getAllModulesByCourse, getModule, addModule, editModule, deleteModule } = require('./handlers/admin/modules');
 const { getAllVideosByModule, getVideo, addVideo, deleteVideo } = require('./handlers/admin/videos');
 const { getAllDocumentsByModule, getDocument, addDocument, deleteDocument } = require('./handlers/admin/documents');
@@ -29,6 +36,7 @@ app.get('/admin/courses/:courseId', fbAuthAdmin, getCourse);
 app.post('/admin/courses', fbAuthAdmin, addCourse);
 app.put('/admin/courses/:courseId', fbAuthAdmin, editCourse);
 app.delete('/admin/courses/:courseId', fbAuthAdmin, deleteCourse);
+app.post('/admin/courses/:courseId/image', fbAuthAdmin, addImageCourse);
 
 // Module routes
 app.get('/admin/courses/:courseId/modules', fbAuthAdmin, getAllModulesByCourse);

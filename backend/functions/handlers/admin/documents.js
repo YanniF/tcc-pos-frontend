@@ -60,13 +60,10 @@ exports.addDocument = (req, res) => {
 
 	busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 		// TODO - verificar se tem restricao de formato dos arquivos
-		/* if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-			return res.status(400).json({ error: 'Wrong file type submitted' });
-		} */
 		documentTitle = fieldname;
 
 		const documentExtension = filename.split('.').pop();
-		documentFileName = Math.round(Math.random() * 10000000) + '.' + documentExtension;
+		documentFileName = 'doc-' + Math.round(Math.random() * 10000000) + '.' + documentExtension;
 
 		const filepath = path.join(os.tmpdir(), documentFileName);
 		documentToBeUploaded = { filepath, mimetype };
