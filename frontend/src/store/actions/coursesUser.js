@@ -22,6 +22,7 @@ import {
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
+	UPDATE_WATCHED_VIDEOS
 } from '../types';
 
 import { calcRatingValue } from '../../shared/util/utility';
@@ -102,6 +103,11 @@ export const getAllEnrolledCourses = () => (dispatch) => {
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_GET_ENROLLED_COURSES, err.response.data)));
 };
+
+export const updatedWatchedVideos = (videos) => (dispatch) => {
+	dispatch(actionCreator(UPDATE_WATCHED_VIDEOS, videos));
+
+}
 
 export const addRating = (courseId, rating) => (dispatch, getState) => {
 	dispatch(actionCreator(REQUEST_ADD_RATING, { key: 'isRequestingRatings' }));

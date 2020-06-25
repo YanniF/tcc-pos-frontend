@@ -28,11 +28,14 @@ const styles = (theme) => ({
 	},
 	contentTitle: {
 		marginTop: '-5px'
-	}
+  },
+  contentDocumentTitle: {
+    padding: '9px 9px 9px 45px',
+  }
 });
 
 function Sidebar(props) {
-  const { classes, selectedCourse, myCourse, setSelectedContent } = props;
+  const { classes, selectedCourse, myCourse, setSelectedContent, handleWatchedVideos } = props;
 
 	const handleOnClick = (e, id, type) => {
 		e.stopPropagation()
@@ -59,8 +62,12 @@ function Sidebar(props) {
                     key={video.id}
                     className={classes.details}
                     onClick={(e) => handleOnClick(e, video.id, 'videos')}
-                  >		
-										<Checkbox color="primary" value={myCourse.finishedVideos.includes(video.id)} onChange={() => console.log(!myCourse.finishedVideos.includes(video.id))} />
+                  >
+                    <Checkbox
+                      color="primary"
+                      value={myCourse.finishedVideos.includes(video.id)}
+                      onChange={() => handleWatchedVideos(video.id, module.id, !myCourse.finishedVideos.includes(video.id))}
+                    />
 										<span className={classes.contentTitle}>
 											{video.title}
 										</span>
@@ -90,7 +97,7 @@ function Sidebar(props) {
                     className={classes.details}
                     onClick={(e) => handleOnClick(e, document.id, 'documents')}
                   >
-										<span className={classes.contentTitle}>
+										<span className={classes.contentDocumentTitle}>
 											{document.title}
 										</span>
                   </ExpansionPanelDetails>

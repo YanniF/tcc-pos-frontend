@@ -138,7 +138,7 @@ function AddContentModal(props) {
 		else if (type === 'document') {
 			const formData = new FormData();
 			formData.append(documentValues.title, documentValues.file, documentValues.file.name);
-			formData.append('moduleId', documentValues.module);
+			formData.append('moduleId', documentValues.moduleId);
 
 			addContent('documents', selectedCourse.id, formData);
 		}

@@ -20,6 +20,7 @@ import {
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
+	UPDATE_WATCHED_VIDEOS
 } from '../types';
 
 import { calcRatingValue } from '../../shared/util/utility';
@@ -159,6 +160,11 @@ const coursesUser = (state = initialState, action) => {
 				isRequestingRatings: false,
 			};
 		}
+		case UPDATE_WATCHED_VIDEOS:
+			return {
+				...state,
+				myCourses: state.myCourses.map(course => course.courseId === state.selectedCourse.id ? action.payload : course)
+			}
 		case FAILED_GET_NEW_COURSES:
 		case FAILED_GET_COURSE_DETAILS:
 		case FAILED_GET_COURSE_RATINGS:

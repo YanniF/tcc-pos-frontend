@@ -27,7 +27,8 @@ function ViewTutorial(props) {
 		getCourseDetails,
 		isRequestingCourseDetails,
 		selectedCourse,
-		myCourses
+		myCourses,
+		updatedWatchedVideos
 	} = props;
 	const [ selectedContent, setSelectedContent ] = useState({});
 
@@ -51,10 +52,23 @@ function ViewTutorial(props) {
 		},
 		[ modules, id, videos ],
 	);
-console.log(selectedContent)
+
 	const handleOnEnded = () => {
 		alert('Acaboooooou!!! eh tetra!!!');
 	};
+
+	const handleWatchedVideos = (id, moduleId, value) => {
+		let myCourse = myCourses.filter(course => course.courseId === selectedCourse.id)[0]
+
+		if(value) {
+			myCourse.finishedVideos.push({ id, moduleId })
+		}
+		else {
+			///////////////////////////////////////////////////////////
+			myCourse = myCourse.finishedVideos.filter(video => video.id !== id)
+		}
+		updatedWatchedVideos(myCourse)
+	}
 
 	return (
 		<main className={classes.main}>
@@ -73,7 +87,7 @@ console.log(selectedContent)
 							{/* <Test /> */}
 						</Grid>
 						<Grid item sm={4}>
-							<Sidebar selectedCourse={selectedCourse} myCourse={myCourse} setSelectedContent={setSelectedContent} />
+							<Sidebar selectedCourse={selectedCourse} myCourse={myCourse} setSelectedContent={setSelectedContent} handleWatchedVideos={handleWatchedVideos} />
 						</Grid>
 					</Grid>
 				</React.Fragment>
