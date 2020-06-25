@@ -26,8 +26,12 @@ function ViewTutorial(props) {
 		selectedCourse: { id, title, modules = [], videos = [] },
 		getCourseDetails,
 		isRequestingCourseDetails,
+		selectedCourse,
+		myCourses
 	} = props;
 	const [ selectedContent, setSelectedContent ] = useState({});
+
+	const myCourse = myCourses && myCourses.filter(course => course.courseId === selectedCourse.id)[0]
 
 	useEffect(
 		() => {
@@ -47,7 +51,7 @@ function ViewTutorial(props) {
 		},
 		[ modules, id, videos ],
 	);
-
+console.log(selectedContent)
 	const handleOnEnded = () => {
 		alert('Acaboooooou!!! eh tetra!!!');
 	};
@@ -69,7 +73,7 @@ function ViewTutorial(props) {
 							{/* <Test /> */}
 						</Grid>
 						<Grid item sm={4}>
-							<Sidebar />
+							<Sidebar selectedCourse={selectedCourse} myCourse={myCourse} setSelectedContent={setSelectedContent} />
 						</Grid>
 					</Grid>
 				</React.Fragment>
@@ -81,6 +85,7 @@ function ViewTutorial(props) {
 const mapStateToProps = ({ coursesUser }) => ({
 	isRequestingCourseDetails: coursesUser.isRequestingCourseDetails,
 	selectedCourse: coursesUser.selectedCourse || {},
+	myCourses: coursesUser.myCourses || []
 });
 
 export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(ViewTutorial));
