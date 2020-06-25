@@ -9,7 +9,6 @@ import Rating from '@material-ui/lab/Rating';
 import coursesStyles from './coursesStyles';
 import Ratings from './components/Ratings';
 import Image from '../shared/components/SVG/PressPlay';
-import courseImage from '../shared/assets/thumb1.jpg';
 import placeholder from '../shared/assets/placeholder.jpg';
 import { coursesUser } from '../store/actions';
 
@@ -70,8 +69,7 @@ function CourseDetails(props) {
 							<Paper className={classes.paper}>
 								{selectedCourse.thumbnail ? (
 									// TODO: fix image
-									// <img src={selectedCourse.thumbnail} alt={selectedCourse.title} className={classes.thumbnail} />
-									<img src={courseImage} alt={selectedCourse.title} className={classes.thumbnail} />
+									<img src={selectedCourse.thumbnail} alt={selectedCourse.title} className={classes.thumbnail} />
 								) : (
 									<div style={{ backgroundImage: `url(${placeholder})` }} className={classes.image}>
 										<span className={classes.placeholderText}>{selectedCourse.title}</span>

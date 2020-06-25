@@ -28,11 +28,11 @@ function ViewTutorial(props) {
 		isRequestingCourseDetails,
 		selectedCourse,
 		myCourses,
-		updatedWatchedVideos
+		updateWatchedVideos,
 	} = props;
 	const [ selectedContent, setSelectedContent ] = useState({});
 
-	const myCourse = myCourses && myCourses.filter(course => course.courseId === selectedCourse.id)[0]
+	const myCourse = myCourses && myCourses.filter((course) => course.courseId === selectedCourse.id)[0];
 
 	useEffect(
 		() => {
@@ -53,22 +53,19 @@ function ViewTutorial(props) {
 		[ modules, id, videos ],
 	);
 
-	const handleOnEnded = () => {
-		alert('Acaboooooou!!! eh tetra!!!');
-	};
-
 	const handleWatchedVideos = (id, moduleId, value) => {
-		let myCourse = myCourses.filter(course => course.courseId === selectedCourse.id)[0]
+		let myCourse = myCourses.filter((course) => course.courseId === selectedCourse.id)[0];
 
-		if(value) {
-			myCourse.finishedVideos.push({ id, moduleId })
+		if (value) {
+			if (myCourse.finishedVideos.filter((item) => item.id === id).length > 0) return;
+
+			myCourse.finishedVideos.push({ id, moduleId });
 		}
 		else {
-			///////////////////////////////////////////////////////////
-			myCourse = myCourse.finishedVideos.filter(video => video.id !== id)
+			myCourse.finishedVideos = myCourse.finishedVideos.filter((video) => video.id !== id);
 		}
-		updatedWatchedVideos(myCourse)
-	}
+		updateWatchedVideos(selectedCourse.id, myCourse.id, myCourse.finishedVideos);
+	};
 
 	return (
 		<main className={classes.main}>
@@ -83,11 +80,16 @@ function ViewTutorial(props) {
 					</Typography>
 					<Grid container spacing={10}>
 						<Grid item sm={8}>
-							<Player video={selectedContent} onEnded={handleOnEnded} />
+							<Player video={selectedContent} onEnded={handleWatchedVideos} />
 							{/* <Test /> */}
 						</Grid>
 						<Grid item sm={4}>
-							<Sidebar selectedCourse={selectedCourse} myCourse={myCourse} setSelectedContent={setSelectedContent} handleWatchedVideos={handleWatchedVideos} />
+							<Sidebar
+								selectedCourse={selectedCourse}
+								myCourse={myCourse}
+								setSelectedContent={setSelectedContent}
+								handleWatchedVideos={handleWatchedVideos}
+							/>
 						</Grid>
 					</Grid>
 				</React.Fragment>
@@ -99,7 +101,7 @@ function ViewTutorial(props) {
 const mapStateToProps = ({ coursesUser }) => ({
 	isRequestingCourseDetails: coursesUser.isRequestingCourseDetails,
 	selectedCourse: coursesUser.selectedCourse || {},
-	myCourses: coursesUser.myCourses || []
+	myCourses: coursesUser.myCourses || [],
 });
 
 export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(ViewTutorial));

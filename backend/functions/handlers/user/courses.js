@@ -76,7 +76,7 @@ exports.getAllEnrolledCourses = (req, res) => {
 
 			data.forEach((doc) => {
 				courses.push({
-					id: doc.data().id,
+					id: doc.id,
 					courseId: doc.data().courseId,
 					finishedVideos: doc.data().finishedVideos,
 					finishedTests: doc.data().finishedTests,
@@ -89,5 +89,26 @@ exports.getAllEnrolledCourses = (req, res) => {
 		.catch((error) => {
 			res.status(500).json({ error: 'Erro ao buscar todos os cursos' });
 			console.error(error);
+		});
+};
+
+exports.updateWatchedVideos = (req, res) => {
+	db
+		.doc(`/studentCourse/${req.params.contentId}`)
+		.get()
+		.then((doc) => {
+			if (doc.exists) {
+				return db.doc(`/studentCourse/${req.params.contentId}`).update({ finishedVideos: req.body.finishedVideos });
+			}
+			else {
+				return res.json({ error: 'Conteúdo não encontrado' });
+			}
+		})
+		.then(() => {
+			return res.json({ message: 'Conteúdo alterado com sucesso' });
+		})
+		.catch((err) => {
+			console.error(err);
+			return res.status(500).json({ error: err.code });
 		});
 };

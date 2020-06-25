@@ -22,7 +22,7 @@ import {
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
-	UPDATE_WATCHED_VIDEOS
+	UPDATE_WATCHED_VIDEOS,
 } from '../types';
 
 import { calcRatingValue } from '../../shared/util/utility';
@@ -51,7 +51,7 @@ export const getNewCourses = () => (dispatch) => {
 		.get('/newcourses')
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_NEW_COURSES, res.data));
-			dispatch(getAllEnrolledCourses())
+			dispatch(getAllEnrolledCourses());
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_GET_NEW_COURSES, err.response.data)));
 };
@@ -104,10 +104,16 @@ export const getAllEnrolledCourses = () => (dispatch) => {
 		.catch((err) => dispatch(actionCreator(FAILED_GET_ENROLLED_COURSES, err.response.data)));
 };
 
-export const updatedWatchedVideos = (videos) => (dispatch) => {
-	dispatch(actionCreator(UPDATE_WATCHED_VIDEOS, videos));
+export const updateWatchedVideos = (courseId, contentId, videos) => (dispatch) => {
+	dispatch(actionCreator(UPDATE_WATCHED_VIDEOS, { courseId, videos }));
 
-}
+	axios
+		.put(`/courses/${courseId}/content/${contentId}`, { finishedVideos: videos })
+		.then((res) => {
+			console.log(res.data);
+		})
+		.catch((err) => console.log(err));
+};
 
 export const addRating = (courseId, rating) => (dispatch, getState) => {
 	dispatch(actionCreator(REQUEST_ADD_RATING, { key: 'isRequestingRatings' }));
