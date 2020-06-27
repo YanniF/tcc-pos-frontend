@@ -26,6 +26,7 @@ const {
 	enrollInCourse,
 	getAllEnrolledCourses,
 	updateWatchedVideos,
+	setFinishedCourse,
 } = require('./handlers/user/courses');
 const { getAllRatingsByCourse, getRating, addRating, editRating, deleteRating } = require('./handlers/user/ratings');
 
@@ -75,7 +76,8 @@ app.get('/newcourses', fbAuth, getLatestCourses);
 app.get('/courses/:courseId/details', fbAuth, getCourse);
 app.get('/mycourses', fbAuth, getAllEnrolledCourses);
 app.post('/courses/:courseId/enroll', fbAuth, enrollInCourse);
-app.put('/courses/:courseId/content/:contentId', fbAuth, updateWatchedVideos);
+app.put('/courses/:courseId/content/:studentCourseId', fbAuth, updateWatchedVideos);
+app.put('/courses/:courseId/finished/:studentCourseId', fbAuth, setFinishedCourse);
 
 // Rating routes
 app.get('/courses/:courseId/ratings', fbAuth, getAllRatingsByCourse);
@@ -84,13 +86,9 @@ app.post('/courses/:courseId/ratings', fbAuth, addRating);
 app.put('/courses/:courseId/ratings/:ratingId', fbAuth, editRating);
 app.delete('/courses/:courseId/ratings/:ratingId', fbAuth, deleteRating);
 
-// Report
-
-// Enroll student
-
-// Get Certificate
-
 // Notifications
+
+// Report
 
 // https://baseurl.com/api/
 exports.api = functions.region('europe-west1').https.onRequest(app);

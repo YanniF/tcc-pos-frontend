@@ -19,6 +19,8 @@ import {
 	REQUEST_GET_ENROLLED_COURSES,
 	SUCCESS_GET_ENROLLED_COURSES,
 	FAILED_GET_ENROLLED_COURSES,
+	SUCCESS_SET_FINISHED_COURSE,
+	FAILED_SET_FINISHED_COURSE,
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
@@ -63,20 +65,9 @@ export const getCourseDetails = (id) => (dispatch) => {
 		.get(`/courses/${id}/details`)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_GET_COURSE_DETAILS, res.data));
-			dispatch(getAllRatingsByCourse(id));
+			// dispatch(getAllRatingsByCourse(id));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE_DETAILS, err.response.data)));
-};
-
-export const getAllRatingsByCourse = (id) => (dispatch) => {
-	dispatch(actionCreator(REQUEST_COURSE_RATINGS, { key: 'isRequestingRatings' }));
-
-	axios
-		.get(`/courses/${id}/ratings`)
-		.then((res) => {
-			dispatch(actionCreator(SUCCESS_GET_COURSE_RATINGS, res.data));
-		})
-		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE_RATINGS, err.response.data)));
 };
 
 export const enrollInCourse = () => (dispatch, getState) => {
@@ -115,6 +106,19 @@ export const updateWatchedVideos = (courseId, contentId, videos) => (dispatch) =
 		.catch((err) => console.log(err));
 };
 
+export const setFinishedCourse = (courseId, studentCourseId) => (dispatch) => {
+	axios
+		.put(`/courses/${courseId}/finished/${studentCourseId}`, { hasFinishedCourse: true })
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_SET_FINISHED_COURSE, true));
+			dispatch(setToasterMessage(res.data.message));
+		})
+		.catch((err) => {
+			console.log(err);
+			dispatch(actionCreator(FAILED_SET_FINISHED_COURSE, true));
+		});
+};
+
 export const addRating = (courseId, rating) => (dispatch, getState) => {
 	dispatch(actionCreator(REQUEST_ADD_RATING, { key: 'isRequestingRatings' }));
 
@@ -135,4 +139,20 @@ export const addRating = (courseId, rating) => (dispatch, getState) => {
 			dispatch(setToasterMessage('Cadastro realizado'));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_ADD_RATING, err.response.data)));
+};
+
+export const getAllRatingsByCourse = (id) => (dispatch) => {
+	dispatch(actionCreator(REQUEST_COURSE_RATINGS, { key: 'isRequestingRatings' }));
+
+	axios
+		.get(`/courses/${id}/ratings`)
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_GET_COURSE_RATINGS, res.data));
+		})
+		.catch((err) => dispatch(actionCreator(FAILED_GET_COURSE_RATINGS, err.response.data)));
+};
+
+export const showRatingsPage = (id, history) => (dispatch) => {
+	history.push(`/courses/${id}/details`);
+	dispatch(setVisibilityRatingsModal(true));
 };

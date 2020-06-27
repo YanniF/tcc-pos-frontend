@@ -17,6 +17,8 @@ import {
 	REQUEST_GET_ENROLLED_COURSES,
 	SUCCESS_GET_ENROLLED_COURSES,
 	FAILED_GET_ENROLLED_COURSES,
+	SUCCESS_SET_FINISHED_COURSE,
+	FAILED_SET_FINISHED_COURSE,
 	REQUEST_ADD_RATING,
 	SUCCESS_ADD_RATING,
 	FAILED_ADD_RATING,
@@ -54,12 +56,16 @@ const coursesUser = (state = initialState, action) => {
 		case SET_SELECTED_COURSE: {
 			const enrolledCoursesIds = state.myCourses.map((course) => course.courseId);
 			const selectedCourse = state.courses && state.courses.filter((course) => course.id === action.payload)[0];
+			const hasFinishedCourse = state.myCourses.filter(
+				(course) => selectedCourse.id === course.courseId && course.hasFinishedCourse,
+			);
 
 			return {
 				...state,
 				selectedCourse: {
 					...selectedCourse,
 					isEnrolled: enrolledCoursesIds.includes(selectedCourse.id),
+					hasFinishedCourse: !!hasFinishedCourse.length,
 				},
 			};
 		}
@@ -88,15 +94,35 @@ const coursesUser = (state = initialState, action) => {
 				},
 				isRequestingCourseDetails: false,
 			};
-		case SUCCESS_ENROLL_COURSE:
+		case SUCCESS_ENROLL_COURSE: {
+			const updatedCourses = [ ...state.myCourses ];
+
+			state.courses.forEach(
+				(course) =>
+					course.id === action.payload.courseId &&
+					updatedCourses.push({
+						title: course.title,
+						thumbnail: course.thumbnail,
+						description: course.description,
+						teacher: course.teacher,
+						category: course.category,
+						numberOfRatings: course.numberOfRatings,
+						rating: course.rating,
+						...action.payload,
+					}),
+			);
+
 			return {
 				...state,
 				selectedCourse: {
 					...state.selectedCourse,
 					isEnrolled: true,
+					hasFinishedCourse: false,
 				},
+				myCourses: updatedCourses,
 				isRequestingEnrollCourse: false,
 			};
+		}
 		case SUCCESS_GET_ENROLLED_COURSES: {
 			const myCourses = action.payload.map((myCourse) => {
 				let courses = [];
@@ -123,6 +149,18 @@ const coursesUser = (state = initialState, action) => {
 				isRequestingEnrolledCourses: false,
 			};
 		}
+		case SUCCESS_SET_FINISHED_COURSE:
+			return {
+				...state,
+				selectedCourse: {
+					...state.selectedCourse,
+					hasFinishedCourse: action.payload,
+				},
+				myCourses: state.myCourses.map(
+					(course) =>
+						course.courseId === state.selectedCourse.id ? { ...course, hasFinishedCourse: action.payload } : course,
+				),
+			};
 		case SUCCESS_GET_COURSE_RATINGS:
 			return {
 				...state,
@@ -177,6 +215,7 @@ const coursesUser = (state = initialState, action) => {
 		case FAILED_ADD_RATING:
 		case FAILED_ENROLL_COURSE:
 		case FAILED_GET_ENROLLED_COURSES:
+		case FAILED_SET_FINISHED_COURSE:
 			return {
 				...state,
 				errors: action.payload,

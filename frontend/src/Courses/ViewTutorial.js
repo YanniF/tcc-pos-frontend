@@ -29,6 +29,9 @@ function ViewTutorial(props) {
 		selectedCourse,
 		myCourses,
 		updateWatchedVideos,
+		setFinishedCourse,
+		showRatingsPage,
+		history,
 	} = props;
 	const [ selectedContent, setSelectedContent ] = useState({});
 
@@ -60,6 +63,13 @@ function ViewTutorial(props) {
 			if (myCourse.finishedVideos.filter((item) => item.id === id).length > 0) return;
 
 			myCourse.finishedVideos.push({ id, moduleId });
+
+			const selectedCourseVideosIds = selectedCourse.videos.map((video) => video.id).sort().join(',');
+			const myCourseVideosIds = myCourse.finishedVideos.map((video) => video.id).sort().join(',');
+
+			if (selectedCourseVideosIds === myCourseVideosIds) {
+				setFinishedCourse(selectedCourse.id, myCourse.id);
+			}
 		}
 		else {
 			myCourse.finishedVideos = myCourse.finishedVideos.filter((video) => video.id !== id);
@@ -89,6 +99,7 @@ function ViewTutorial(props) {
 								myCourse={myCourse}
 								setSelectedContent={setSelectedContent}
 								handleWatchedVideos={handleWatchedVideos}
+								showRatingsPage={() => showRatingsPage(id, history)}
 							/>
 						</Grid>
 					</Grid>

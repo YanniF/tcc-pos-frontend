@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -53,8 +53,16 @@ function CourseDetails(props) {
 		selectedCourse,
 		enrollInCourse,
 		isRequestingEnrollCourse,
+		getAllRatingsByCourse,
 		history,
 	} = props;
+
+	useEffect(
+		() => {
+			getAllRatingsByCourse(selectedCourse.id);
+		},
+		[ getAllRatingsByCourse, selectedCourse.id ],
+	);
 
 	return (
 		<main className={classes.main}>
@@ -68,7 +76,6 @@ function CourseDetails(props) {
 						<Grid item sm={8}>
 							<Paper className={classes.paper}>
 								{selectedCourse.thumbnail ? (
-									// TODO: fix image
 									<img src={selectedCourse.thumbnail} alt={selectedCourse.title} className={classes.thumbnail} />
 								) : (
 									<div style={{ backgroundImage: `url(${placeholder})` }} className={classes.image}>
@@ -95,7 +102,6 @@ function CourseDetails(props) {
 						<Grid item sm={4}>
 							<Paper className={classes.paper}>
 								<Image height="200px" width="400px" />
-								{/* TODO: matricular ou ver aula */}
 								<Button
 									color="secondary"
 									variant="contained"

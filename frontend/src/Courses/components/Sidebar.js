@@ -3,6 +3,7 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Checkbox } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -24,12 +25,19 @@ const styles = (theme) => ({
 		marginTop: '-5px',
 	},
 	contentDocumentTitle: {
-		padding: '9px 9px 9px 45px',
+		display: 'flex',
+		alignItems: 'center',
+		padding: '9px 15px 9px 9px',
+		textDecoration: 'none',
+		color: theme.palette.text.primary,
+	},
+	downloadIcon: {
+		marginRight: '9px',
 	},
 });
 
 function Sidebar(props) {
-	const { classes, selectedCourse, myCourse, setSelectedContent, handleWatchedVideos } = props;
+	const { classes, selectedCourse, myCourse, setSelectedContent, handleWatchedVideos, showRatingsPage } = props;
 
 	const handleOnClick = (e, id, type) => {
 		e.stopPropagation();
@@ -64,6 +72,7 @@ function Sidebar(props) {
 												<Checkbox
 													color="primary"
 													checked={!!hasFinishedVideo.length}
+													disabled={myCourse.hasFinishedCourse}
 													onChange={() => handleWatchedVideos(video.id, module.id, !hasFinishedVideo.length)}
 												/>
 												<span className={classes.contentTitle}>{video.title}</span>
@@ -90,24 +99,35 @@ function Sidebar(props) {
 								selectedCourse.documents.map(
 									(document) =>
 										document.moduleId === module.id && (
-											<ExpansionPanelDetails
-												key={document.id}
-												className={classes.details}
-												onClick={(e) => handleOnClick(e, document.id, 'documents')}
-											>
-												<span className={classes.contentDocumentTitle}>{document.title}</span>
+											<ExpansionPanelDetails key={document.id} className={classes.details}>
+												<a
+													className={classes.contentDocumentTitle}
+													href={document.documentUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													<GetAppIcon className={classes.downloadIcon} />
+													{document.title}
+												</a>
 											</ExpansionPanelDetails>
 										),
 								)}
 						</ExpansionPanel>
 					))}
 
-				<ExpansionPanel disabled className={classes.panelDisabled}>
+				<ExpansionPanel
+					disabled={!myCourse.hasFinishedCourse}
+					className={!myCourse.hasFinishedCourse ? classes.panelDisabled : ''}
+				>
 					<ExpansionPanelSummary>
 						<Typography>Emitir Certificado</Typography>
 					</ExpansionPanelSummary>
 				</ExpansionPanel>
-				<ExpansionPanel disabled className={classes.panelDisabled}>
+				<ExpansionPanel
+					disabled={!myCourse.hasFinishedCourse}
+					className={!myCourse.hasFinishedCourse ? classes.panelDisabled : ''}
+					onClick={showRatingsPage}
+				>
 					<ExpansionPanelSummary>
 						<Typography>Avaliar Curso</Typography>
 					</ExpansionPanelSummary>

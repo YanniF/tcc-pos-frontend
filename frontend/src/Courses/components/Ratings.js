@@ -69,7 +69,7 @@ function Ratings({
 	setVisibilityRatingsModal,
 	addRating,
 	errors,
-	courseId,
+	selectedCourse,
 	setToasterMessage,
 	message,
 }) {
@@ -94,6 +94,7 @@ function Ratings({
 		setVisibilityRatingsModal(false);
 	};
 
+	// TODO: verificar se o aluno ja fez uma avaliação
 	return (
 		<React.Fragment>
 			<Paper className={classes.paper}>
@@ -101,10 +102,11 @@ function Ratings({
 					<Typography variant="h4" component="h3" gutterBottom>
 						Avaliações
 					</Typography>
-					{/* TODO: verificar se o aluno terminou o curso */}
-					<Button color="secondary" variant="contained" onClick={handleOpen}>
-						Fazer avaliação
-					</Button>
+					{selectedCourse.hasFinishedCourse && (
+						<Button color="secondary" variant="contained" onClick={handleOpen}>
+							Fazer avaliação
+						</Button>
+					)}
 				</div>
 				{isRequestingRatings ? (
 					<div className={classes.loaderWrapper}>
@@ -165,7 +167,7 @@ function Ratings({
 					<Button onClick={handleClose} color="primary">
 						Cancelar
 					</Button>
-					<Button onClick={() => addRating(courseId, { rating, comment })} color="secondary" autoFocus>
+					<Button onClick={() => addRating(selectedCourse.id, { rating, comment })} color="secondary" autoFocus>
 						{isRequestingRatings ? <CircularProgress size={24} color="primary" /> : 'Avaliar'}
 					</Button>
 				</DialogActions>
@@ -179,7 +181,7 @@ const mapStateToProps = ({ coursesUser }) => ({
 	isRequestingRatings: coursesUser.isRequestingRatings,
 	isOpen: coursesUser.isOpenRatingsModal,
 	ratings: (coursesUser.selectedCourse && coursesUser.selectedCourse.ratings) || [],
-	courseId: coursesUser.selectedCourse && coursesUser.selectedCourse.id,
+	selectedCourse: coursesUser.selectedCourse || {},
 	errors: coursesUser.errors,
 	message: coursesUser.message,
 });

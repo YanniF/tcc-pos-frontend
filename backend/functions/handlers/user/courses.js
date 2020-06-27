@@ -32,15 +32,19 @@ exports.getLatestCourses = (req, res) => {
 
 exports.enrollInCourse = (req, res) => {
 	let course = {};
-	//  TODO: update course, enrolled++
+	let resCourse = {};
+	let enrolledCount;
+
 	db
 		.doc(`/courses/${req.params.courseId}`)
 		.get()
 		.then((doc) => {
 			if (!doc.exists) {
-				res.status(404).json({ error: 'Curso não encontrado' });
+				return res.status(404).json({ error: 'Curso não encontrado' });
 			}
 			else {
+				enrolledCount = doc.data().enrolledCount;
+
 				course = {
 					userId: req.user.user_id,
 					courseId: req.params.courseId,
@@ -55,9 +59,12 @@ exports.enrollInCourse = (req, res) => {
 			}
 		})
 		.then((doc) => {
-			const resCourse = course;
+			resCourse = course;
 			resCourse.id = doc.id;
 
+			return db.doc(`/courses/${req.params.courseId}`).update({ enrolledCount: enrolledCount + 1 });
+		})
+		.then(() => {
 			res.json(resCourse);
 		})
 		.catch((err) => {
@@ -94,11 +101,13 @@ exports.getAllEnrolledCourses = (req, res) => {
 
 exports.updateWatchedVideos = (req, res) => {
 	db
-		.doc(`/studentCourse/${req.params.contentId}`)
+		.doc(`/studentCourse/${req.params.studentCourseId}`)
 		.get()
 		.then((doc) => {
 			if (doc.exists) {
-				return db.doc(`/studentCourse/${req.params.contentId}`).update({ finishedVideos: req.body.finishedVideos });
+				return db
+					.doc(`/studentCourse/${req.params.studentCourseId}`)
+					.update({ finishedVideos: req.body.finishedVideos });
 			}
 			else {
 				return res.json({ error: 'Conteúdo não encontrado' });
@@ -106,6 +115,34 @@ exports.updateWatchedVideos = (req, res) => {
 		})
 		.then(() => {
 			return res.json({ message: 'Conteúdo alterado com sucesso' });
+		})
+		.catch((err) => {
+			console.error(err);
+			return res.status(500).json({ error: err.code });
+		});
+};
+
+exports.setFinishedCourse = (req, res) => {
+	db
+		.doc(`/studentCourse/${req.params.studentCourseId}`)
+		.get()
+		.then((doc) => {
+			if (doc.exists) {
+				return db
+					.doc(`/studentCourse/${req.params.studentCourseId}`)
+					.update({ hasFinishedCourse: req.body.hasFinishedCourse });
+			}
+			else {
+				return res.json({ error: 'Conteúdo não encontrado' });
+			}
+		})
+		.then(() => {
+			db.doc(`/courses/${req.params.courseId}`).get().then((doc) => {
+				return db.doc(`/courses/${req.params.courseId}`).update({ finishedCount: doc.data().finishedCount + 1 });
+			});
+		})
+		.then(() => {
+			return res.json({ message: 'Parabéns! Você terminou o curso' });
 		})
 		.catch((err) => {
 			console.error(err);
