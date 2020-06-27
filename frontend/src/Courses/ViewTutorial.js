@@ -32,6 +32,7 @@ function ViewTutorial(props) {
 		setFinishedCourse,
 		showRatingsPage,
 		history,
+		setHideNavbar,
 	} = props;
 	const [ selectedContent, setSelectedContent ] = useState({});
 
@@ -40,8 +41,9 @@ function ViewTutorial(props) {
 	useEffect(
 		() => {
 			getCourseDetails(id);
+			setHideNavbar(false);
 		},
-		[ getCourseDetails, id ],
+		[ getCourseDetails, id, setHideNavbar ],
 	);
 
 	useEffect(

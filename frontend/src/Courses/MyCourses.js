@@ -52,7 +52,7 @@ function MyCourses(props) {
 		setSearchTerm(search);
 	};
 
-	const filteredCourses = myCourses.filter((course) => course.title.toLowerCase().includes(searchTerm));
+	const filteredCourses = myCourses.filter((course) => course && course.title.toLowerCase().includes(searchTerm));
 
 	const ongoing = filteredCourses.filter((course) => !course.hasFinishedCourse);
 	const finished = filteredCourses.filter((course) => course.hasFinishedCourse);

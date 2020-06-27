@@ -46,6 +46,7 @@ const styles = (theme) => ({
 		textAlign: 'center',
 	},
 });
+
 function CourseDetails(props) {
 	const {
 		classes,

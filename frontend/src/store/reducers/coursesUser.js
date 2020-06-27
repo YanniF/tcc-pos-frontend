@@ -2,6 +2,7 @@ import {
 	SET_VISIBILITY_RATINGS_MODAL,
 	SET_TOASTER_MESSAGE_USER,
 	SET_SELECTED_COURSE,
+	SET_HIDE_NAVBAR,
 	REQUEST_NEW_COURSES,
 	SUCCESS_GET_NEW_COURSES,
 	FAILED_GET_NEW_COURSES,
@@ -37,6 +38,7 @@ const initialState = {
 	isRequestingEnrollCourse: false,
 	isRequestingRatings: false,
 	isRequestingEnrolledCourses: false,
+	hideNavbar: false,
 	message: '',
 	errors: null,
 };
@@ -52,6 +54,11 @@ const coursesUser = (state = initialState, action) => {
 			return {
 				...state,
 				message: action.payload,
+			};
+		case SET_HIDE_NAVBAR:
+			return {
+				...state,
+				hideNavbar: action.payload,
 			};
 		case SET_SELECTED_COURSE: {
 			const enrolledCoursesIds = state.myCourses.map((course) => course.courseId);

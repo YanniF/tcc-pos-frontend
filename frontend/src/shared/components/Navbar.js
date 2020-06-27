@@ -22,9 +22,9 @@ const styles = (theme) => ({
 
 // TODO: link para o relatorio
 function Navbar(props) {
-	const { classes, logout, isAdmin } = props;
+	const { classes, logout, isAdmin, hideNavbar } = props;
 	return (
-		<AppBar>
+		<AppBar style={{ display: hideNavbar ? 'none' : 'flex' }}>
 			<div className={classes.container}>
 				<Toolbar className={classes.toolbar}>
 					<Logo option="logoWhite" width="250px" />
@@ -58,4 +58,10 @@ Navbar.propTypes = {
 	logout: PropTypes.func,
 };
 
-export default connect(null, { logout })(withStyles(styles)(Navbar));
+const mapStateToProps = ({ coursesUser }) => ({
+	hideNavbar: coursesUser.hideNavbar
+});
+
+
+
+export default connect(mapStateToProps, { logout })(withStyles(styles)(Navbar));

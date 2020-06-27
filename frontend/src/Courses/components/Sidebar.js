@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Checkbox } from '@material-ui/core';
@@ -33,6 +34,10 @@ const styles = (theme) => ({
 	},
 	downloadIcon: {
 		marginRight: '9px',
+	},
+	certificate: {
+		textDecoration: 'none',
+		color: theme.palette.text.primary,
 	},
 });
 
@@ -119,9 +124,11 @@ function Sidebar(props) {
 					disabled={!myCourse.hasFinishedCourse}
 					className={!myCourse.hasFinishedCourse ? classes.panelDisabled : ''}
 				>
-					<ExpansionPanelSummary>
-						<Typography>Emitir Certificado</Typography>
-					</ExpansionPanelSummary>
+					<Link to={`/courses/${selectedCourse.id}/certificate`} className={classes.certificate}>
+						<ExpansionPanelSummary>
+							<Typography>Emitir Certificado</Typography>
+						</ExpansionPanelSummary>
+					</Link>
 				</ExpansionPanel>
 				<ExpansionPanel
 					disabled={!myCourse.hasFinishedCourse}

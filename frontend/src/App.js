@@ -16,6 +16,7 @@ import CourseDetails from './Courses/CourseDetails';
 import ViewTutorial from './Courses/ViewTutorial';
 import AdminCourses from './Courses/admin/Courses';
 import AdminDetails from './Courses/admin/Details';
+import Certificate from './Courses/Certificate';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -55,6 +56,7 @@ function App(props) {
 				<Route path="/courses" exact component={MyCourses} />
 				<Route path="/courses/:courseId/details" exact component={CourseDetails} />
 				<Route path="/courses/:courseId/tutorial" exact component={ViewTutorial} />
+				<Route path="/courses/:courseId/certificate" exact component={Certificate} />
 				<Redirect to="/" />
 			</Switch>
 		);

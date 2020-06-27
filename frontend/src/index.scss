@@ -8,3 +8,8 @@ body {
 	background-color: #3f3d56;
 	color: #fff;
 }
+
+* {
+	-webkit-print-color-adjust: exact !important;
+	color-adjust: exact !important;
+}
