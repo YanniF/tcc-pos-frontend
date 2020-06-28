@@ -48,6 +48,7 @@ exports.enrollInCourse = (req, res) => {
 				course = {
 					userId: req.user.user_id,
 					courseId: req.params.courseId,
+					courseTitle: doc.data().title,
 					hasFinishedCourse: false,
 					finishedVideos: [],
 					finishedTests: [],
@@ -138,7 +139,9 @@ exports.setFinishedCourse = (req, res) => {
 		})
 		.then(() => {
 			db.doc(`/courses/${req.params.courseId}`).get().then((doc) => {
-				return db.doc(`/courses/${req.params.courseId}`).update({ finishedCount: doc.data().finishedCount + 1 });
+				return db
+					.doc(`/courses/${req.params.courseId}`)
+					.update({ finishedCount: doc.data().finishedCount + 1, enrolledCount: doc.data().enrolledCount - 1 });
 			});
 		})
 		.then(() => {

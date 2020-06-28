@@ -14,7 +14,7 @@ import CourseImageModal from './CourseImageModal';
 import DeleteModal from './DeleteModal';
 import NoData from '../../shared/components/SVG/NoData';
 
-import { coursesAdmin } from '../../store/actions';
+import { coursesAdmin, auth } from '../../store/actions';
 
 const styles = (theme) => ({
 	...theme.properties,
@@ -42,13 +42,23 @@ function Courses(props) {
 		selectedCourse,
 		deleteModalOpen,
 		clearCourseErrors,
+		classes,
+		loading,
+		getCourse,
+		errors,
+		message,
+		setToasterMessage,
+		setModalImageCourseVisibility,
+		imageCourseModalOpen,
+		getNotifications,
 	} = props;
 
 	useEffect(
 		() => {
 			getAllCourses();
+			getNotifications();
 		},
-		[ getAllCourses ],
+		[ getAllCourses, getNotifications ],
 	);
 
 	const handleSetVisibility = (open) => {
@@ -69,7 +79,6 @@ function Courses(props) {
 		setSearchTerm(search);
 	};
 
-	const { classes, loading, getCourse, errors, message, setToasterMessage, setModalImageCourseVisibility, imageCourseModalOpen } = props;
 	const filteredCourses = courses.filter((course) => course.title.toLowerCase().includes(searchTerm));
 
 	return (
@@ -95,6 +104,7 @@ function Courses(props) {
 												setSelectedCourse={getCourse}
 												setModalDeleteVisibility={handleModalDeleteVisibility}
 												setModalImageCourseVisibility={setModalImageCourseVisibility}
+												setModalVisibility={setModalVisibility}
 											/>
 										</Grid>
 									))
@@ -155,9 +165,7 @@ function Courses(props) {
 							errors={errors}
 						/>
 					)}
-					{imageCourseModalOpen && (
-						<CourseImageModal />
-					)}
+					{imageCourseModalOpen && <CourseImageModal />}
 				</Fragment>
 			)}
 			<SnackBar message={message} setToasterMessage={setToasterMessage} />
@@ -187,6 +195,7 @@ const mapDispatchToProps = {
 	deleteCourse: coursesAdmin.deleteCourse,
 	setToasterMessage: coursesAdmin.setToasterMessage,
 	clearCourseErrors: coursesAdmin.clearCourseErrors,
+	getNotifications: auth.getNotifications,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Courses));

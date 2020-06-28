@@ -27,8 +27,8 @@ const styles = (theme) => ({
 	},
 });
 
-// axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
-axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
+axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
+// axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
 
 function App(props) {
 	const token = localStorage.FBIdToken;
@@ -66,6 +66,7 @@ function App(props) {
 			<Switch>
 				<Route path="/admin/courses" exact component={AdminCourses} />
 				<Route path="/admin/courses/:courseId/details/" exact component={AdminDetails} />
+				<Route path="/courses/:courseId/details" exact component={CourseDetails} />
 				<Redirect to="/admin/courses" />
 			</Switch>
 		);

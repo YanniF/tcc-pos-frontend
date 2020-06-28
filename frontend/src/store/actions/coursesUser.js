@@ -141,7 +141,7 @@ export const addRating = (courseId, rating) => (dispatch, getState) => {
 		.post(`/courses/${courseId}/ratings`, newRating)
 		.then((res) => {
 			dispatch(actionCreator(SUCCESS_ADD_RATING, res.data));
-			dispatch(setToasterMessage('Cadastro realizado'));
+			dispatch(setToasterMessage('Avaliação cadastrada'));
 		})
 		.catch((err) => dispatch(actionCreator(FAILED_ADD_RATING, err.response.data)));
 };

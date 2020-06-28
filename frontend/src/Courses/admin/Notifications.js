@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper, Typography, Divider } from '@material-ui/core';
+import { Paper, Typography, Divider, CircularProgress } from '@material-ui/core';
 import Assignment from '@material-ui/icons/Assignment';
 import Star from '@material-ui/icons/Star';
 
@@ -26,19 +27,21 @@ const styles = (theme) => ({
 	divider: {
 		margin: '.5rem 0',
 	},
+	loaderWrapper: {
+		...coursesStyles.loaderWrapper,
+		height: 'initial',
+		marginTop: '15px',
+	},
 });
 
 function Notifications(props) {
-	const { classes } = props;
+	const { classes, isRequestingNotifications, notifications } = props;
 
-	const notifications = [
-		{ id: 1, name: 'Rob Smith', course: 'Front end master ninja', type: 'finished' },
-		{ id: 2, name: 'Jackie Chan', course: 'Back end master ninja', type: 'rated' },
-		{ id: 3, name: 'Max Mustermann', course: 'Back end master ninja', type: 'rated' },
-		{ id: 4, name: 'Frau Francis', course: 'Front end master ninja', type: 'finished' },
-	];
-
-	const textNot = { finished: ' concluiu o curso ', rated: ' avaliou o curso ' };
+	const textNot = {
+		newStudent: ' se matriculou no curso ',
+		finishedCourse: ' concluiu o curso ',
+		newRating: ' avaliou o curso ',
+	};
 
 	return (
 		<Paper className={classes.paper}>
@@ -46,17 +49,28 @@ function Notifications(props) {
 				Notificações
 			</Typography>
 			{/* TODO: link para ver as notificacoes */}
-			{notifications.map((not, index) => (
-				<React.Fragment key={not.id}>
-					<div className={classes.notification}>
-						{not.type === 'finished' ? <Assignment /> : <Star />}
-						<span className={classes.text}>{not.name + textNot[not.type] + not.course}</span>
-					</div>
-					{index !== notifications.length - 1 && <Divider className={classes.divider} />}
-				</React.Fragment>
-			))}
+			{isRequestingNotifications ? (
+				<div className={classes.loaderWrapper}>
+					<CircularProgress size={100} color="primary" />
+				</div>
+			) : (
+				notifications.map((not, index) => (
+					<React.Fragment key={not.id}>
+						<div className={classes.notification}>
+							{not.type === 'newStudent' || not.type === 'finishedCourse' ? <Assignment /> : <Star />}
+							<span className={classes.text}>{not.studentName + textNot[not.type] + not.courseTitle}</span>
+						</div>
+						{index !== notifications.length - 1 && <Divider className={classes.divider} />}
+					</React.Fragment>
+				))
+			)}
 		</Paper>
 	);
 }
 
-export default withStyles(styles)(Notifications);
+const mapStateToProps = ({ auth }) => ({
+	isRequestingNotifications: auth.isRequestingNotifications,
+	notifications: auth.notifications || [],
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Notifications));

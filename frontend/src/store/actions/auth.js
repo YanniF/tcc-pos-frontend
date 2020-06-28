@@ -6,6 +6,9 @@ import {
 	SET_USER,
 	SET_UNAUTHENTICATED,
 	SET_ADDITIONAL_DATA_USER,
+	REQUEST_GET_NOTIFICATIONS,
+	SUCCESS_GET_NOTIFICATIONS,
+	FAILED_GET_NOTIFICATIONS,
 } from '../types';
 
 const actionCreator = (type, payload) => ({
@@ -80,4 +83,17 @@ export const logout = () => (dispatch) => {
 	delete axios.defaults.headers.common['Authorization'];
 
 	dispatch({ type: SET_UNAUTHENTICATED });
+};
+
+export const getNotifications = () => (dispatch) => {
+	dispatch(actionCreator(REQUEST_GET_NOTIFICATIONS));
+
+	axios
+		.get('/admin/notifications')
+		.then((res) => {
+			dispatch(actionCreator(SUCCESS_GET_NOTIFICATIONS, res.data));
+		})
+		.catch((err) => {
+			dispatch(actionCreator(FAILED_GET_NOTIFICATIONS, err.response.data));
+		});
 };

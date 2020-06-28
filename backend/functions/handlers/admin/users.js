@@ -181,3 +181,34 @@ exports.getAuthenticatedUser = (req, res) => {
 			return res.status(500).json({ error: err.code });
 		});
 };
+
+exports.getNotificationsByUser = (req, res) => {
+	return db
+		.collection('notifications')
+		.where('userId', '==', req.user.user_id)
+		.orderBy('createdAt', 'desc')
+		.limit(10)
+		.get()
+		.then((data) => {
+			const notifications = [];
+
+			data.forEach((doc) => {
+				notifications.push({
+					id: doc.id,
+					studentId: doc.data().studentId,
+					studentName: doc.data().studentName,
+					courseId: doc.data().courseId,
+					courseTitle: doc.data().courseTitle,
+					userId: doc.data().userId,
+					type: doc.data().type,
+					createdAt: doc.data().createdAt,
+				});
+			});
+
+			return res.json(notifications);
+		})
+		.catch((err) => {
+			console.error(err);
+			return res.status(500).json({ error: 'Erro ao buscar as notificações' });
+		});
+};

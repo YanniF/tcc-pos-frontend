@@ -7,7 +7,7 @@ const { db } = require('./util/admin');
 const cors = require('cors');
 app.use(cors());
 
-const { signup, login, getAuthenticatedUser } = require('./handlers/admin/users');
+const { signup, login, getAuthenticatedUser, getNotificationsByUser } = require('./handlers/admin/users');
 const {
 	getAllCoursesByUser,
 	getCourse,
@@ -34,6 +34,7 @@ const { getAllRatingsByCourse, getRating, addRating, editRating, deleteRating } 
 app.post('/signup', signup);
 app.post('/login', login);
 app.get('/user', fbAuth, getAuthenticatedUser);
+app.get('/admin/notifications', fbAuthAdmin, getNotificationsByUser);
 
 // ADMIN
 // Courses routes
@@ -87,6 +88,92 @@ app.put('/courses/:courseId/ratings/:ratingId', fbAuth, editRating);
 app.delete('/courses/:courseId/ratings/:ratingId', fbAuth, deleteRating);
 
 // Notifications
+exports.createNotificationOnEnrolledCourse = functions
+	.region('europe-west1')
+	.firestore.document('studentCourse/{id}')
+	.onCreate((snapshot) => {
+		return db
+			.doc(`/users/${snapshot.data().userId}`)
+			.get()
+			.then((doc) => {
+				let newNotification = {
+					createdAt: new Date().toISOString(),
+					studentId: doc.data().userId,
+					studentName: doc.data().name,
+					courseId: snapshot.data().courseId,
+					type: 'newStudent',
+				};
+
+				return db.doc(`/courses/${snapshot.data().courseId}`).get().then((data) => {
+					newNotification.courseTitle = data.data().title;
+					newNotification.userId = data.data().createdBy;
+
+					return db.doc(`/notifications/${snapshot.id}`).set(newNotification);
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	});
+
+exports.createNotificationOnFinishedCourse = functions
+	.region('europe-west1')
+	.firestore.document('studentCourse/{id}')
+	.onUpdate((change) => {
+		if (change.before.data().hasFinishedCourse !== change.after.data().hasFinishedCourse) {
+			return db
+				.doc(`/users/${change.after.data().userId}`)
+				.get()
+				.then((doc) => {
+					let newNotification = {
+						createdAt: new Date().toISOString(),
+						studentId: doc.data().userId,
+						studentName: doc.data().name,
+						courseId: change.after.data().courseId,
+						type: 'finishedCourse',
+					};
+
+					return db.doc(`/courses/${change.after.data().courseId}`).get().then((data) => {
+						newNotification.courseTitle = data.data().title;
+						newNotification.userId = data.data().createdBy;
+
+						return db.doc(`/notifications/${snapshot.id}`).set(newNotification);
+					});
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		}
+		return;
+	});
+
+exports.createNotificationOnRatingCourse = functions
+	.region('europe-west1')
+	.firestore.document('ratings/{id}')
+	.onCreate((snapshot) => {
+		return db
+			.doc(`/users/${snapshot.data().createdBy}`)
+			.get()
+			.then((doc) => {
+				let newNotification = {
+					createdAt: new Date().toISOString(),
+					studentId: doc.data().userId,
+					studentName: doc.data().name,
+					courseId: snapshot.data().courseId,
+					type: 'newRating',
+				};
+
+				return db.doc(`/courses/${snapshot.data().courseId}`).get().then((data) => {
+					newNotification.courseTitle = data.data().title;
+					newNotification.userId = data.data().createdBy;
+
+					return db.doc(`/notifications/${snapshot.id}`).set(newNotification);
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	});
 
 // Report
 

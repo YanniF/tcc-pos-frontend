@@ -5,12 +5,17 @@ import {
 	SET_USER,
 	SET_UNAUTHENTICATED,
 	SET_ADDITIONAL_DATA_USER,
+	REQUEST_GET_NOTIFICATIONS,
+	SUCCESS_GET_NOTIFICATIONS,
+	FAILED_GET_NOTIFICATIONS,
 } from '../types';
 
 const initialState = {
 	user: null,
 	errors: null,
 	loading: false,
+	notifications: [],
+	isRequestingNotifications: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,6 +48,23 @@ const reducer = (state = initialState, action) => {
 				...state,
 				user: { ...state.user, name: action.payload.name },
 				loading: false,
+			};
+		case REQUEST_GET_NOTIFICATIONS:
+			return {
+				...state,
+				isRequestingNotifications: true,
+			};
+		case SUCCESS_GET_NOTIFICATIONS:
+			return {
+				...state,
+				notifications: action.payload,
+				isRequestingNotifications: false,
+			};
+		case FAILED_GET_NOTIFICATIONS:
+			return {
+				...state,
+				errors: action.payload,
+				isRequestingNotifications: false,
 			};
 		case SET_UNAUTHENTICATED:
 			return initialState;

@@ -83,13 +83,14 @@ function CourseCard(props) {
 		setSelectedCourse,
 		setModalDeleteVisibility,
 		setModalImageCourseVisibility,
+		setModalVisibility,
 	} = props;
 
 	const isFinishedLinks = [ { id: 1, text: 'Avaliar', link: '/' }, { id: 2, text: 'Certificado', link: '/' } ];
 
 	const isAdminLinks = [
 		{ id: 1, text: 'Detalhes', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
-		{ id: 2, text: 'Editar', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
+		{ id: 2, text: 'Editar', link: `/admin/courses/${id}/details`, onClick: () => handleEdit(id) },
 		{
 			id: 3,
 			text: 'Excluir',
@@ -122,6 +123,11 @@ function CourseCard(props) {
 
 	const handleEditImage = () => {
 		setModalImageCourseVisibility(true, id);
+	};
+
+	const handleEdit = (id) => {
+		setSelectedCourse(id);
+		setModalVisibility(true);
 	};
 
 	// TODO: fix card height

@@ -51,12 +51,16 @@ function CourseDetails(props) {
 	const {
 		classes,
 		isRequestingCourseDetails,
-		selectedCourse,
+		selectedCourseUser,
+		selectedCourseAdmin,
 		enrollInCourse,
 		isRequestingEnrollCourse,
 		getAllRatingsByCourse,
 		history,
+		isAdmin,
 	} = props;
+
+	const selectedCourse = isAdmin ? selectedCourseAdmin : selectedCourseUser;
 
 	useEffect(
 		() => {
@@ -103,27 +107,29 @@ function CourseDetails(props) {
 						<Grid item sm={4}>
 							<Paper className={classes.paper}>
 								<Image height="200px" width="400px" />
-								<Button
-									color="secondary"
-									variant="contained"
-									className={classes.btnLarge}
-									disabled={isRequestingEnrollCourse}
-									onClick={
-										selectedCourse.isEnrolled ? (
-											() => history.push(`/courses/${selectedCourse.id}/tutorial`)
+								{!isAdmin && (
+									<Button
+										color="secondary"
+										variant="contained"
+										className={classes.btnLarge}
+										disabled={isRequestingEnrollCourse}
+										onClick={
+											selectedCourse.isEnrolled ? (
+												() => history.push(`/courses/${selectedCourse.id}/tutorial`)
+											) : (
+												enrollInCourse
+											)
+										}
+									>
+										{isRequestingEnrollCourse ? (
+											<CircularProgress size={24} color="primary" />
+										) : selectedCourse.isEnrolled ? (
+											'Assistir aulas'
 										) : (
-											enrollInCourse
-										)
-									}
-								>
-									{isRequestingEnrollCourse ? (
-										<CircularProgress size={24} color="primary" />
-									) : selectedCourse.isEnrolled ? (
-										'Assistir aulas'
-									) : (
-										'Matricular'
-									)}
-								</Button>
+											'Matricular'
+										)}
+									</Button>
+								)}
 								<div className={classes.group}>
 									<Typography variant="body1" color="primary" component="p">
 										Professor(a)
@@ -152,10 +158,12 @@ function CourseDetails(props) {
 	);
 }
 
-const mapStateToProps = ({ coursesUser }) => ({
+const mapStateToProps = ({ coursesUser, coursesAdmin, auth }) => ({
 	isRequestingCourseDetails: coursesUser.isRequestingCourseDetails,
 	isRequestingEnrollCourse: coursesUser.isRequestingEnrollCourse,
-	selectedCourse: coursesUser.selectedCourse || {},
+	selectedCourseUser: coursesUser.selectedCourse || {},
+	selectedCourseAdmin: coursesAdmin.selectedCourse || {},
+	isAdmin: auth.user && auth.user.admin,
 });
 
 export default connect(mapStateToProps, { ...coursesUser })(withStyles(styles)(CourseDetails));
