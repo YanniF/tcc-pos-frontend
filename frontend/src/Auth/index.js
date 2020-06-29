@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 
 import { auth } from '../store/actions';
 import Login from './Login';
@@ -15,15 +16,6 @@ let randomNumber = Math.floor(Math.random() * 2);
 function Auth(props) {
 	const [ showLogin, setShowLogin ] = useState(true);
 
-	/* 	if (props.isAuthenticatedEmployee) {
-		return <Redirect to="/courses" />;
-	}
-*/
-	/* if (props.isAuthenticatedAdmin) {
-		console.log(props.isAuthenticatedAdmin)
-		return <Redirect to="/admin/courses" />;
-	}  */
-
 	const handleChangeForm = (value) => {
 		setShowLogin(value);
 		props.clearAuthErrors();
@@ -32,11 +24,13 @@ function Auth(props) {
 	return (
 		<div>
 			<Logo />
-			<Grid container spacing={1}>
-				<Grid item sm={7}>
-					{randomNumber % 2 === 0 ? <Image1 width="50rem" /> : <Image2 width="50rem" />}
-				</Grid>
-				<Grid item sm={5} style={{ display: 'flex', alignItems: 'center' }}>
+			<Grid container spacing={8}>
+				<Hidden only={['xs', 'sm', 'md']}>
+					<Grid item xl={7} lg={6}>
+						{randomNumber % 2 === 0 ? <Image1 width="100%" /> : <Image2 width="100%" />}
+					</Grid>
+				</Hidden>
+				<Grid item xl={5} lg={6} md={12} style={{ display: 'flex', alignItems: 'center' }}>
 					{showLogin ? (
 						<Login
 							showLogin={showLogin}
