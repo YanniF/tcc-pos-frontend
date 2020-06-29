@@ -131,7 +131,7 @@ function Ratings({
 				)}
 			</Paper>
 			<Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-				<DialogTitle>Titulo do curso</DialogTitle>
+				<DialogTitle>{selectedCourse.title}</DialogTitle>
 				<DialogContent>
 					<Collapse in={showAlert}>
 						<Alert

@@ -27,7 +27,7 @@ const styles = (theme) => ({
 	},
 });
 
-axios.defaults.baseURL = 'https://europe-west1-yanni-scream.cloudfunctions.net/api';
+axios.defaults.baseURL = 'https://europe-west1-yanni-evoluindo.cloudfunctions.net/api';
 // axios.defaults.baseURL = 'http://localhost:5000/yanni-evoluindo/europe-west1/api';
 
 function App(props) {
