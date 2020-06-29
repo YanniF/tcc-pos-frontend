@@ -32,7 +32,16 @@ function CourseImageModal(props) {
 	const [ showAlert, setShowAlert ] = useState(false);
 	const [ file, setFile ] = useState({});
 
-	const { addCourseImage, setModalImageCourseVisibility, open, selectedCourse, errors, classes, isSavingImage } = props;
+	const {
+		addCourseImage,
+		setModalImageCourseVisibility,
+		open,
+		selectedCourse,
+		errors,
+		classes,
+		isSavingImage,
+		clearCourseErrors,
+	} = props;
 
 	useEffect(
 		() => {
@@ -48,6 +57,7 @@ function CourseImageModal(props) {
 	const handleUploadFile = (e) => {
 		const { files = [] } = e.target;
 		setFile(files[0]);
+		clearCourseErrors();
 	};
 
 	const handleSubmit = (e) => {
@@ -61,6 +71,7 @@ function CourseImageModal(props) {
 	const handleCancel = () => {
 		setModalImageCourseVisibility(false);
 		setFile({});
+		clearCourseErrors();
 	};
 
 	return (

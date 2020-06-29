@@ -117,7 +117,7 @@ function Courses(props) {
 											<Typography variant="h6" component="h5">
 												Nenhum curso encontrado.
 											</Typography>
-											{courses.length > 0 && !searchTerm ? (
+											{courses.length === 0 ? (
 												<Typography variant="body1" component="p">
 													Clique no botão "Adicionar Curso" para cadastrar um novo curso.
 												</Typography>
