@@ -41,6 +41,9 @@ const styles = (theme) => ({
 		marginBottom: 0,
 		paddingBottom: 0,
 	},
+	ratingsWrapper: {
+		width: '100%'
+	},
 	comment: {
 		margin: '1rem 5px',
 	},
@@ -59,6 +62,11 @@ const styles = (theme) => ({
 	noRatingsText: {
 		marginLeft: '15px',
 	},
+	btnRating: {
+		'@media screen and (max-width: 600px)': {
+			fontSize: '12px'
+		}
+	}
 });
 
 function Ratings({
@@ -96,14 +104,14 @@ function Ratings({
 
 	// TODO: verificar se o aluno ja fez uma avaliação
 	return (
-		<React.Fragment>
+		<div className={classes.ratingsWrapper}>
 			<Paper className={classes.paper}>
 				<div className={classes.top}>
 					<Typography variant="h4" component="h3" gutterBottom>
 						Avaliações
 					</Typography>
 					{selectedCourse.hasFinishedCourse && (
-						<Button color="secondary" variant="contained" onClick={handleOpen}>
+						<Button color="secondary" variant="contained" onClick={handleOpen} className={classes.btnRating}>
 							Fazer avaliação
 						</Button>
 					)}
@@ -173,7 +181,7 @@ function Ratings({
 				</DialogActions>
 			</Dialog>
 			<SnackBar message={message} setToasterMessage={setToasterMessage} />
-		</React.Fragment>
+		</div>
 	);
 }
 

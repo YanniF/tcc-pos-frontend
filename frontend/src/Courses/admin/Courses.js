@@ -2,7 +2,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Paper, Button, Typography, CircularProgress, useMediaQuery } from '@material-ui/core';
 
 import SearchInput from '../../shared/components/SearchInput';
 import SnackBar from '../../shared/components/SnackBar';
@@ -27,6 +28,20 @@ const styles = (theme) => ({
 	spacingTop: {
 		marginTop: '2rem',
 	},
+	item1: {
+		order: 1,
+
+		'@media screen and (max-width: 1280px)': {
+			order: 2,
+		}
+	},
+	item2: {
+		order: 2,
+
+		'@media screen and (max-width: 1280px)': {
+			order: 1,
+		}
+	}
 });
 
 function Courses(props) {
@@ -52,6 +67,11 @@ function Courses(props) {
 		imageCourseModalOpen,
 		getNotifications,
 	} = props;
+
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
 
 	useEffect(
 		() => {
@@ -92,12 +112,12 @@ function Courses(props) {
 				</div>
 			) : (
 				<Fragment>
-					<Grid container spacing={10}>
-						<Grid item sm={8}>
-							<Grid container spacing={10}>
+					<Grid container spacing={smallSpacing ? 5 : 10}>
+						<Grid item lg={8} md={12} sm={12} className={classes.item1}>
+							<Grid container spacing={smallSpacing ? 5 : 10}>
 								{filteredCourses.length ? (
 									filteredCourses.map((course) => (
-										<Grid item sm={6} key={course.id}>
+										<Grid item md={6} key={course.id}>
 											<CourseCard
 												course={course}
 												isAdmin
@@ -131,7 +151,7 @@ function Courses(props) {
 								)}
 							</Grid>
 						</Grid>
-						<Grid item sm={4}>
+						<Grid item lg={4} md={12} sm={12} className={classes.item2}>
 							<Paper className={classes.paper}>
 								<SearchInput fullWidth onChange={handleSearchCourse} />
 								<Button

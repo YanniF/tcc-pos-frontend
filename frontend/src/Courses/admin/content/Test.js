@@ -32,7 +32,19 @@ const styles = (theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		margin: '0 50px',
+
+		'@media screen and (max-width: 600px)': {
+			flexDirection: 'column',
+		}
 	},
+	bottomItems: {
+		...theme.properties.inputSpacing,
+		width: '30%',
+
+		'@media screen and (max-width: 600px)': {
+			width: '100%',
+		}
+	}
 });
 
 function Test(props) {
@@ -160,7 +172,7 @@ function Test(props) {
 						</div>
 					))}
 					<div className={classes.bottomGroup}>
-						<FormControl variant="outlined" className={classes.inputSpacing} style={{ width: '30%' }}>
+						<FormControl variant="outlined" className={classes.bottomItems}>
 							<InputLabel id="answer">Resposta Correta</InputLabel>
 							<Select
 								labelId="answer"
@@ -183,9 +195,8 @@ function Test(props) {
 							value={question.points}
 							label="Pontos"
 							onChange={({ target }) => handleOnChange(target.name, target.value, index)}
-							className={classes.inputSpacing}
+							className={classes.bottomItems}
 							variant="outlined"
-							style={{ width: '30%' }}
 							required
 						/>
 						<Button

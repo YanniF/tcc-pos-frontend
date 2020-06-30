@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Paper, Typography, Button, CircularProgress } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Paper, Typography, Button, CircularProgress, useMediaQuery } from '@material-ui/core';
 import { TreeView, TreeItem } from '@material-ui/lab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -55,6 +56,21 @@ const styles = (theme) => ({
 			marginRight: '.5rem',
 		},
 	},
+	main: {
+		order: 1,
+
+		'@media screen and (max-width: 1280px)': {
+			order: 2,
+			width: '100%',
+		}
+	},
+	sidebar: {
+		order: 2,
+
+		'@media screen and (max-width: 1280px)': {
+			order: 1,
+		}
+	},
 });
 
 function Details(props) {
@@ -88,13 +104,17 @@ function Details(props) {
 		[ unselectCourse ],
 	);
 
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
+
 	const handleSetVisibilityAddContent = (open) => {
 		props.clearCourseErrors();
 		setOpenAddContent(open);
 	};
 
 	const handleSetVisibilityEditContent = (open, id, type) => {
-		// TODO: test after creating a course
 		const content = selectedCourse[type + 's'] && selectedCourse[type + 's'].find((item) => item.id === id);
 		setDetailsEdit({ content, type });
 		props.clearCourseErrors();
@@ -125,8 +145,8 @@ function Details(props) {
 				</div>
 			) : (
 				<React.Fragment>
-					<Grid container spacing={10}>
-						<Grid item sm={8}>
+					<Grid container spacing={smallSpacing ? 5 : 10}>
+						<Grid item lg={8} md={12} className={classes.main}>
 							<Paper className={classes.paper}>
 								<div className={classes.wrapper}>
 									<Typography variant="h4" component="h3">
@@ -136,19 +156,6 @@ function Details(props) {
 										<ButtonIcon tip="Editar Curso" onClick={() => setCourseModalVisibility(true)}>
 											<EditIcon color="primary" />
 										</ButtonIcon>
-										{/* <ButtonIcon
-											tip="Apagar Curso"
-											disabled={selectedCourse.enrolledCount !== 0}
-											btnClassName={selectedCourse.enrolledCount !== 0 ? classes.btnDisabled : ''}
-											onClick={() =>
-												handleSetVisibilityDelete(true, {
-													id: selectedCourse.id,
-													title: selectedCourse.title,
-													type: 'curso',
-												})}
-										>
-											<DeleteIcon color="primary" />
-										</ButtonIcon> */}
 									</span>
 								</div>
 								{selectedCourse.modules &&
@@ -300,9 +307,9 @@ function Details(props) {
 								)}
 							</Paper>
 						</Grid>
-						<Grid item sm={4}>
+						<Grid item lg={4} md={12} sm={12} className={classes.sidebar}>
 							<Paper className={classes.paper}>
-								<Image height="200px" width="400px" />
+								<Image height="200px" width="100%" />
 								<Button
 									color="secondary"
 									variant="contained"

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Paper, Button, Typography, CircularProgress, useMediaQuery } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
 import coursesStyles from './coursesStyles';
@@ -45,6 +46,31 @@ const styles = (theme) => ({
 		color: '#fff',
 		textAlign: 'center',
 	},
+	main: {
+		order: 1,
+
+		'@media screen and (max-width: 1290px)': {
+			order: 2,
+			width: '100%',
+		}
+	},
+	sidebar: {
+		width: '100%',
+		order: 2,
+
+		'@media screen and (max-width: 1290px)': {
+			order: 1,
+		}
+	},
+	sidebarGroup: {
+		'@media screen and (max-width: 1270px)': {
+			display: 'flex',
+			justifyContent: 'space-between'
+		},
+		'@media screen and (max-width: 600px)': {
+			flexDirection: 'column',
+		}
+	}
 });
 
 function CourseDetails(props) {
@@ -69,6 +95,11 @@ function CourseDetails(props) {
 		[ getAllRatingsByCourse, selectedCourse.id ],
 	);
 
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
+
 	return (
 		<main className={classes.main}>
 			{isRequestingCourseDetails ? (
@@ -77,8 +108,8 @@ function CourseDetails(props) {
 				</div>
 			) : (
 				<React.Fragment>
-					<Grid container spacing={10}>
-						<Grid item sm={8}>
+					<Grid container spacing={smallSpacing ? 5 : 10}>
+						<Grid item lg={8} md={12} className={classes.main}>
 							<Paper className={classes.paper}>
 								{selectedCourse.thumbnail ? (
 									<img src={selectedCourse.thumbnail} alt={selectedCourse.title} className={classes.thumbnail} />
@@ -104,9 +135,9 @@ function CourseDetails(props) {
 								</Typography>
 							</Paper>
 						</Grid>
-						<Grid item sm={4}>
+						<Grid item lg={4} md={12} className={classes.sidebar}>
 							<Paper className={classes.paper}>
-								<Image height="200px" width="400px" />
+								<Image height="200px" width="100%" />
 								{!isAdmin && (
 									<Button
 										color="secondary"
@@ -130,25 +161,27 @@ function CourseDetails(props) {
 										)}
 									</Button>
 								)}
-								<div className={classes.group}>
-									<Typography variant="body1" color="primary" component="p">
-										Professor(a)
-									</Typography>
-									<Typography variant="h4" component="p">
-										{selectedCourse.teacher}
-									</Typography>
-								</div>
-								<div className={classes.group} style={{ marginBottom: 0 }}>
-									<Typography variant="body1" color="primary" component="p">
-										Avaliações
-									</Typography>
-									<Rating value={+selectedCourse.rating} precision={0.5} size="large" readOnly />
+								<div className={classes.sidebarGroup}>
+									<div className={classes.group}>
+										<Typography variant="body1" color="primary" component="p">
+											Professor(a)
+										</Typography>
+										<Typography variant="h4" component="p">
+											{selectedCourse.teacher}
+										</Typography>
+									</div>
+									<div className={classes.group} style={{ marginBottom: 0 }}>
+										<Typography variant="body1" color="primary" component="p">
+											Avaliações
+										</Typography>
+										<Rating value={+selectedCourse.rating} precision={0.5} size="large" readOnly />
+									</div>
 								</div>
 							</Paper>
 						</Grid>
 					</Grid>
-					<Grid container spacing={10}>
-						<Grid item sm={8}>
+					<Grid container spacing={smallSpacing ? 5 : 10}>
+						<Grid item lg={8} md={12} sm={12}>
 							<Ratings />
 						</Grid>
 					</Grid>

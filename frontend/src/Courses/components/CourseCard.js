@@ -86,7 +86,10 @@ function CourseCard(props) {
 		setModalVisibility,
 	} = props;
 
-	const isFinishedLinks = [ { id: 1, text: 'Avaliar', link: '/' }, { id: 2, text: 'Certificado', link: '/' } ];
+	const isFinishedLinks = [
+		{ id: 1, text: 'Avaliar', link: `/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
+		{ id: 2, text: 'Certificado', link: `/courses/${id}/certificate`, onClick: () => setSelectedCourse(id) }
+	];
 
 	const isAdminLinks = [
 		{ id: 1, text: 'Detalhes', link: `/admin/courses/${id}/details`, onClick: () => setSelectedCourse(id) },
@@ -174,7 +177,7 @@ function CourseCard(props) {
 						<Paper>
 							<ClickAwayListener onClickAway={() => setAnchorEl(null)}>
 								<MenuList autoFocusItem={!!anchorEl} id="menu-list-grow">
-									{isFinished && isFinishedLinks.map(({ id, text, link }) => menuLink(id, text, link))}
+									{isFinished && isFinishedLinks.map((menu) => menuLink(menu))}
 									{isAdmin && isAdminLinks.map((menu) => menuLink(menu))}
 								</MenuList>
 							</ClickAwayListener>

@@ -14,6 +14,10 @@ const styles = (theme) => ({
 	toolbar: {
 		justifyContent: 'space-between',
 		padding: 0,
+
+		'@media screen and (max-width: 650px)': {
+			flexDirection: 'column',
+		}
 	},
 	activeLink: {
 		color: theme.palette.secondary.main,

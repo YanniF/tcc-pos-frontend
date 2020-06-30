@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Typography, CircularProgress, useMediaQuery } from '@material-ui/core';
 
 import Sidebar from './components/Sidebar';
 import Player from './components/Player';
@@ -58,6 +59,11 @@ function ViewTutorial(props) {
 		[ modules, id, videos ],
 	);
 
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
+
 	const handleWatchedVideos = (id, moduleId, value) => {
 		let myCourse = myCourses.filter((course) => course.courseId === selectedCourse.id)[0];
 
@@ -90,12 +96,12 @@ function ViewTutorial(props) {
 					<Typography variant="h4" component="h2" gutterBottom className={classes.title}>
 						{title}
 					</Typography>
-					<Grid container spacing={10}>
-						<Grid item sm={8}>
+					<Grid container spacing={smallSpacing ? 5 : 10}>
+						<Grid item lg={8} md={12} sm={12} xs={12}>
 							<Player video={selectedContent} onEnded={handleWatchedVideos} />
 							{/* <Test /> */}
 						</Grid>
-						<Grid item sm={4}>
+						<Grid item lg={4} md={12} sm={12}>
 							<Sidebar
 								selectedCourse={selectedCourse}
 								myCourse={myCourse}

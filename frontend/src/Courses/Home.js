@@ -2,7 +2,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Typography, CircularProgress } from '@material-ui/core/';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Typography, CircularProgress, useMediaQuery } from '@material-ui/core/';
 
 import CourseCard from './components/CourseCard';
 import SearchInput from '../shared/components/SearchInput';
@@ -21,6 +22,10 @@ const styles = (theme) => ({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginBottom: '3rem',
+
+		'@media screen and (max-width: 900px)': {
+			flexDirection: 'column'
+		}
 	},
 	title: {
 		margin: 0,
@@ -29,6 +34,11 @@ const styles = (theme) => ({
 
 		'& span': {
 			color: theme.palette.secondary.main,
+		},
+
+		'@media screen and (max-width: 1000px)': {
+			marginBottom: '1rem',
+			fontSize: '2.5em',
 		},
 	},
 	subtitle: {
@@ -40,6 +50,11 @@ function Home(props) {
 	const [ searchTerm, setSearchTerm ] = useState('');
 
 	const { classes, getNewCourses, courses = [], isRequestingNewCourses, isRequestingEnrolledCourses, setSelectedCourse } = props;
+
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
 
 	useEffect(
 		() => {
@@ -71,10 +86,10 @@ function Home(props) {
 						<SearchInput onChange={handleSearchCourse} />
 					</div>
 					<div>
-						<Grid container spacing={10} className={classes.grid}>
+						<Grid container spacing={smallSpacing ? 7 : 10} className={classes.grid}>
 							{filteredCourses.length ? (
 								filteredCourses.map((course) => (
-									<Grid item sm={4} key={course.id}>
+									<Grid item lg={4} md={6} key={course.id}>
 										<CourseCard course={course} setSelectedCourse={setSelectedCourse} />
 									</Grid>
 								))

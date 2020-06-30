@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid, Typography } from '@material-ui/core/';
+import { useTheme } from '@material-ui/styles';
+import { Grid, Typography, useMediaQuery } from '@material-ui/core/';
 
 import CourseCard from './components/CourseCard';
 import SearchInput from '../shared/components/SearchInput';
@@ -19,6 +20,10 @@ const styles = (theme) => ({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginBottom: '3rem',
+
+		'@media screen and (max-width: 900px)': {
+			flexDirection: 'column'
+		}
 	},
 	title: {
 		margin: 0,
@@ -27,6 +32,11 @@ const styles = (theme) => ({
 
 		'& span': {
 			color: theme.palette.secondary.main,
+		},
+
+		'@media screen and (max-width: 1000px)': {
+			marginBottom: '1rem',
+			fontSize: '2.5em',
 		},
 	},
 	subtitle: {
@@ -37,16 +47,22 @@ const styles = (theme) => ({
 function MyCourses(props) {
 	const [ searchTerm, setSearchTerm ] = useState('');
 
-	const { classes, myCourses, getAllEnrolledCourses, setSelectedCourse } = props;
+	const { classes, myCourses, getAllEnrolledCourses, setSelectedCourse, setHideNavbar } = props;
 
 	useEffect(
 		() => {
 			if (myCourses.length === 0) {
 				getAllEnrolledCourses();
 			}
+			setHideNavbar(false)
 		},
-		[ myCourses, getAllEnrolledCourses ],
+		[ myCourses, getAllEnrolledCourses, setHideNavbar ],
 	);
+
+	const theme = useTheme();
+	const smallSpacing = useMediaQuery(theme.breakpoints.down('lg'), {
+		defaultMatches: true
+	});
 
 	const handleSearchCourse = (search = '') => {
 		setSearchTerm(search);
@@ -70,9 +86,9 @@ function MyCourses(props) {
 					<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
 						Em Andamento
 					</Typography>
-					<Grid container spacing={10} className={classes.grid}>
+					<Grid container spacing={smallSpacing ? 7 : 10} className={classes.grid}>
 						{ongoing.map((course) => (
-							<Grid item sm={4} key={course.courseId}>
+							<Grid item lg={4} md={6} key={course.courseId}>
 								<CourseCard
 									course={{ ...course, id: course.courseId }}
 									isFinished={false}
@@ -88,9 +104,9 @@ function MyCourses(props) {
 					<Typography variant="h4" component="h3" gutterBottom className={classes.subtitle}>
 						Concluídos
 					</Typography>
-					<Grid container spacing={10} className={classes.grid}>
+					<Grid container spacing={smallSpacing ? 7 : 10} className={classes.grid}>
 						{finished.map((course) => (
-							<Grid item sm={4} key={course.courseId}>
+							<Grid item lg={4} md={6} key={course.courseId}>
 								<CourseCard
 									course={{ ...course, id: course.courseId }}
 									isFinished
